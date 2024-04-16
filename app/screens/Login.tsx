@@ -1,4 +1,4 @@
-import { View, Image, Text, Button, StyleSheet, TextInput } from 'react-native'
+import { View, Image, Text, Button, StyleSheet, TextInput, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { API_URL, useAuth } from '../context/AuthContext';
 import axios from 'axios';
@@ -44,7 +44,9 @@ const Login: React.FC<LoginScreenProps> = ({ navigation })=> {
         <View style={styles.form}>
             <TextInput style={styles.input} placeholder="Email" onChangeText={(text: string) => setEmail(text)} value={email} />
             <TextInput style={styles.input} placeholder="Password" secureTextEntry={true} onChangeText={(text:string) => setPassword(text)} value={password}/>
-            <Button onPress={login} title="Sign in" />
+            <Pressable style={styles.button} onPress={login}>
+                <Text style={styles.textButton}>Ingresar</Text>
+            </Pressable>
             <Button onPress={() => navigation.navigate('Register')} title="Registrar" />
             {/* <Button onPress={register} title="Create Account" />    */}
             
@@ -78,6 +80,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         width: '100%',
 
+    },
+    button:{       
+        alignItems: 'center', 
+        justifyContent: 'center',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,        
+        backgroundColor: '#012677',
+    },
+    textButton:{
+        fontSize: 14,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
     },
 
 

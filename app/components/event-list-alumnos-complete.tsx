@@ -1,6 +1,6 @@
 import { Text, View, FlatList, RefreshControl } from "react-native";
 import React from "react";
-import EventItem from "./event-item-subjects";
+import EventItemAlumnosComplete from "./event-item-alumnos-complete";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../screens/Home";
 //import { RootStackParamList } from "../screens/Home";
@@ -21,11 +21,11 @@ interface EventListProps extends DetailSubjectsProps{
   
 }
   
-  const EventList_alumnos: React.FC<EventListProps> = ({data2,navigation }) => {    
+  const EventList_alumnos_complete: React.FC<EventListProps> = ({data2,navigation}) => {    
     //console.log("datalistalumnos",data)
     const renderItem = ({ item }: { item: alumnos }) => (
       <View>
-        <Text> {item.id}  {item.firstname} {item.lastname} </Text>
+        <EventItemAlumnosComplete alumno_id={item.id} firstname={item.firstname} lastname={item.lastname} navigation={navigation}/>        
       </View>
       );
    
@@ -47,4 +47,4 @@ interface EventListProps extends DetailSubjectsProps{
   };
   
  
-export default EventList_alumnos;
+export default EventList_alumnos_complete;

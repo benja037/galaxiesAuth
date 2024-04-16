@@ -1,20 +1,21 @@
 import { View, Image, Text, Button, StyleSheet, TextInput, Pressable, Platform, Touchable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { API_URL, useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../Home';
+import {Picker} from '@react-native-picker/picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+type HorarioProps = NativeStackScreenProps<RootStackParamList, 'Add_horario'>;
+const AddHorarioScreen = ({ navigation, route }:HorarioProps) => {
+    const {subject_id} = route.params;
+    const [selectedDay, setSelectedDay] = useState('lunes');
+    const [selectedTime, setSelectedTime] = useState('');
+    
+    const [time, setTime] = useState(new Date());
+    
 
-const Register = () => {
-    const [firstname, setFirstname] = useState('');
-    const [lastname, setLastname] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [email, setEmail] = useState('');
-    const [date_of_birth, setDate_of_birth] = useState('');
-    const [user_type, setUser_type] = useState('');
-    const [gender, setGender] = useState('');
-    const { onLogin, onRegister } = useAuth();
 
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
@@ -22,14 +23,15 @@ const Register = () => {
     const toggleDatepicker = () => {
         setShowPicker(!showPicker)
     }; 
-    const onChange = ({ type }: { type: string },selectedDate:any) => {
+
+    const onChange = ({ type }: { type: string },selectedTime:any) => {
         if (type == "set"){
-            const currentDate = selectedDate;
-            setDate(currentDate);
+            const currentTime = selectedTime;
+            setTime(currentTime);
             
             if (Platform.OS === "android"){
                 toggleDatepicker();
-                setDate_of_birth(formatDate(date));
+                setSelectedTime(formatDate(time));
             }
 
         } else {
@@ -38,49 +40,59 @@ const Register = () => {
 
     };
     const confirmIOSDate = () =>{
-        setDate_of_birth(formatDate(date));
+        setSelectedTime(formatDate(time));
         toggleDatepicker();
     };
     const formatDate = (rawDate: Date | string) => {
-        let date = new Date(rawDate);
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
+        const hours = time.getHours().toString().padStart(2, '0');
+        const minutes = time.getMinutes().toString().padStart(2, '0');
+        const seconds = '00';
 
-        let formattedMonth  = month < 10 ? `0${month}` : month;
-        let formattedDay = day < 10 ? `0${day}` : day;
-
-        return `${year}-${formattedMonth}-${formattedDay}`;
-
-    }
-
-const login = async () => {
-    const result = await onLogin!(email,password);
-   /*  if (result && result.error) {
-        alert(result.msg);
-    } */
-    };
-  // We automatically call the login after a succesful registration
- const register = async () => {
-    const result = await onRegister!(username,password,email,date_of_birth,user_type,firstname,lastname,gender);
-    if (result && result.error) {
-        console.log(result)
-        alert(result.msg);
-    } else {
         
-        login()
-    } 
-  };
+
+        return `${hours}:${minutes}:${seconds}`;
+
+    };
+    
+    const post_horario = async () => {
+        try {
+            const token = await SecureStore.getItemAsync('tikin');
+            console.log("HORAAAAA",{selectedTime})
+            console.log("DAYYY",{selectedDay})
+            const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjectss/${subject_id}/horarios/`, {day_of_week:selectedDay,time:selectedTime,
+                headers: {
+                    Authorization: `Bearer ${token}` 
+                }
+            });
+            console.log("RESPONSE axios result", response)
+            console.log("axios result", response.data)
+            navigation.goBack();
+            
+        } catch (error) {
+            console.error("Error:", error);
+        }
+      };
 
     return (
-    <View style ={styles.container}>
-        <Image source = {require('./images/LogoCDUC.png')} style={styles.image}/>
-        <View style={styles.form}>            
-            {showPicker && (<DateTimePicker  
+    <View style ={styles.container}>        
+        <View style={styles.form}>  
+        <Picker
+            selectedValue={selectedDay}
+            onValueChange={(itemValue, itemIndex) =>setSelectedDay(itemValue)
+            }>
+            <Picker.Item label="lunes" value="lunes" />
+            <Picker.Item label="martes" value="martes" />
+            <Picker.Item label="miercoles" value="miercoles" />
+            <Picker.Item label="jueves" value="jueves" />
+            <Picker.Item label="viernes" value="viernes" />
+            <Picker.Item label="sabado" value="sabado" />
+            <Picker.Item label="domingo" value="domingo" />
+        </Picker>
+        {showPicker && (<DateTimePicker  
             timeZoneName={'America/Santiago'}          
-            mode="date"
+            mode="time"
             display='spinner'
-            value={date}
+            value={time}
             onChange={onChange}
             style = {styles.datePicker}
             />
@@ -126,24 +138,17 @@ const login = async () => {
                     
                     <TextInput
                         style={styles.input}
-                        placeholder='Sat Aug 21 2004'
-                        value = {date_of_birth}
-                        onChangeText = {setDate_of_birth}
+                        placeholder='12:00:00'
+                        value = {selectedTime}
+                        onChangeText = {setSelectedTime}
                         placeholderTextColor={'#11182744'}
                         editable={false}
                         onPressIn = {toggleDatepicker}
                         />
                 </Pressable>
-            )}
-            <TextInput style={styles.input} placeholder="FirstName" onChangeText={(text: string) => setFirstname(text)} value={firstname} />
-            <TextInput style={styles.input} placeholder="LastName" onChangeText={(text: string) => setLastname(text)} value={lastname} />
-            <TextInput style={styles.input} placeholder="Username" onChangeText={(text: string) => setUsername(text)} value={username} />
-            <TextInput style={styles.input} placeholder="email" onChangeText={(text: string) => setEmail(text)} value={email} />            
-            <TextInput style={styles.input} placeholder="Type of User" onChangeText={(text: string) => setUser_type(text)} value={user_type} />
-            <TextInput style={styles.input} placeholder="Gender" onChangeText={(text: string) => setGender(text)} value={gender} />
-            <TextInput style={styles.input} placeholder="Password" secureTextEntry={true} onChangeText={(text:string) => setPassword(text)} value={password}/>
-            <Button onPress={register} title="Crear Cuenta" />
-            {/* <Button onPress={register} title="Create Account" />    */}
+            )}                       
+            <Button onPress={post_horario} title="Crear" />
+           
         </View>
     </View>
   );
@@ -196,4 +201,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Register
+export default AddHorarioScreen
