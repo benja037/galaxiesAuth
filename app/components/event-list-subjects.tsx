@@ -5,34 +5,32 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-naviga
 import { RootStackParamList } from "../screens/Home";
 //import { RootStackParamList } from "../screens/Home";
 
-interface alumnos {
-  id: string;
-  lastname:string;
-  firstname:string;
-}
-
-
-//Deberia ser subjects no subjects_detail
-type DetailSubjectsProps = NativeStackScreenProps<RootStackParamList,'Subjects_detail'>;
+interface Item {
+    id: string;
+    subject_name: string;
+    course_id: string;
+  }
+  
+type DetailSubjectsProps = NativeStackScreenProps<RootStackParamList, 'Subjects'>;
 
 interface EventListProps extends DetailSubjectsProps{
-  data2: alumnos[];
-  //navigation: NativeStackNavigationProp<RootStackParamList>;
+    data: Item[];
+    //navigation: NativeStackNavigationProp<RootStackParamList>;
+    
+  }
   
-}
-  
-  const EventList_alumnos: React.FC<EventListProps> = ({data2,navigation }) => {    
-    //console.log("datalistalumnos",data)
-    const renderItem = ({ item }: { item: alumnos }) => (
+  const EventList: React.FC<EventListProps> = ({ data,navigation } :EventListProps) => {
+    
+    const renderItem = ({ item }: { item: Item }) => (
       <View>
-        <Text> {item.id}  {item.firstname} {item.lastname} </Text>
+        <EventItem subject_id={item.id} subject_name={item.subject_name} course_id ={item.course_id} navigation={navigation}/>
       </View>
-      );
-   
-    return ( 
+    );
+  
+    return (
       <View>
         <FlatList
-          data={data2}
+          data={data}
           keyExtractor={item => item.id}
           renderItem={renderItem}
           refreshControl={
@@ -47,4 +45,4 @@ interface EventListProps extends DetailSubjectsProps{
   };
   
  
-export default EventList_alumnos;
+export default EventList;

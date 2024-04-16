@@ -10,10 +10,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 
+
 const Stack = createNativeStackNavigator();
 
-
 export default function App() {
+  
   return (
     <AuthProvider>
       <Layout>
@@ -23,17 +24,19 @@ export default function App() {
   );
 }
 
-export const Layout = () => {
+export const Layout = () => {  
   const { authState, onLogout } = useAuth();
   return (
     <NavigationContainer>        
-      <Stack.Navigator>
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
         {authState?.authenticated ? (
         <Stack.Screen 
           name="Home" 
           component={Home}
           options ={{
-            headerRight: () => <Button onPress={onLogout} title="Sign Out" />,
+            headerRight: () => <Button onPress={onLogout} title="Sign Out" />, //lo vamos a dejar porque no hace daño
           }}>
         </Stack.Screen>
       ) : (
