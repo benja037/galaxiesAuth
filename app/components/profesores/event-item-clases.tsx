@@ -2,8 +2,8 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { StyleSheet,Text, TouchableOpacity, View ,Image } from "react-native";
-import { RootStackParamList } from "../screens/Home";
-import {styles_card_horario} from "../styles/stylesheet"
+import { RootStackParamList } from "../../screens/Home";
+import {styles_card_horario} from "../../styles/stylesheet"
 import { AntDesign } from '@expo/vector-icons';
 //type ItemDetailSubjectsProps = NativeStackScreenProps<RootStackParamList,'Subjects_detail'>;
 interface ClasesEventItemProps {    
@@ -27,8 +27,7 @@ const ClasesEventItem: React.FC<ClasesEventItemProps> = ({clase_id,estado,date,t
                             <Text style={styles_card_horario.categoryStyle}>{date} {time} {estado}</Text>
 
                             <View style={styles_card_horario.iconLabelStyle}>
-                            <AntDesign name="pushpin" size={24} color="black" />
-                            <AntDesign name="pushpin" size={24} color="black" />
+                            
                             </View>
                         </View>
                 </View>

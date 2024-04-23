@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         // justifyContent: 'center',
   },
-    box_rigth: {        
+    box_right: {        
         width: '20%',
         height: '100%',
         padding:5,
@@ -120,7 +120,7 @@ export const styles_card = StyleSheet.create({
 });
 export const styles_card_horario = StyleSheet.create({
   container: {
-    width: deviceWidth - 20,
+    width: 140,
     alignItems: 'center',
     marginTop: 5,
     marginBottom:5,
@@ -128,8 +128,8 @@ export const styles_card_horario = StyleSheet.create({
     //borderColor:"black",
   },
   cardContainer: {
-    width: deviceWidth - offset2,
-    backgroundColor: '#00b4fc',
+    width: 120,
+    backgroundColor: '#ffeaad',
     height: 100,
     borderRadius: radius,
 
@@ -138,7 +138,7 @@ export const styles_card_horario = StyleSheet.create({
       width: 5,
       height: 5,
     },
-    shadowOpacity: 0.75,
+    shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 9,
   },
@@ -153,7 +153,7 @@ export const styles_card_horario = StyleSheet.create({
   },
   titleStyle: {
     fontSize: 20,
-    fontWeight: '800',
+    fontWeight: '400',
   },
   categoryStyle: {
     fontWeight: '200',

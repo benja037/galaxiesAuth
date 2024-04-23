@@ -5,10 +5,11 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
 import React from "react";
-import EventList_alumnos from "../../components/event-list-alumnos";
+import EventList_alumnos from "../../components/profesores/event-list-alumnos";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store'
-import ClasesEventList from "../../components/event-list-clases";
+import ClasesEventList from "../../components/profesores/event-list-clases";
+import EventList_alumnos_complete from "../../components/profesores/event-list-alumnos-complete";
 
 type HorarioDetailProps = NativeStackScreenProps<RootStackParamList,'Horario_detail'>;
 
@@ -46,6 +47,7 @@ const HorarioDetailProfesoresScreen: React.FC<HorarioDetailProps> = ({navigation
             setDay_of_week(response.data.day_of_week)
             setTime(response.data.time)
             setAlumnos(response.data.alumnos_horario );
+            console.log("ALUMNOS",response.data.alumnos_horario)
             //setData(response.data.subjects_from_teacher );
         } catch (error) {
             console.error("Error:", error);
@@ -83,11 +85,8 @@ const HorarioDetailProfesoresScreen: React.FC<HorarioDetailProps> = ({navigation
         <View style={styles.screen}>
             <Text>{day_of_week}  {time}</Text>
             <Text>Lista de Alumnos:</Text>
-            <FlatList
-                data={alumnos}
-                keyExtractor={(item) => item.id}
-                renderItem={renderAlumnoItem} />  
-            <ClasesEventList data={clases} navigation={navigation} route={route}/> 
+            <EventList_alumnos_complete data2={alumnos} navigation = {navigation} />
+            <ClasesEventList data={clases} navigation={navigation}/> 
             <Button onPress={()=>navigation.navigate('Add_clase',{horario_id})} title="Añadir"/>
         </View>
      

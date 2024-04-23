@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Text, View } from "react-native"
-import EventList from "../../components/event-list-subjects";
+import EventList from "../../components/profesores/event-list-subjects";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
 import * as SecureStore from 'expo-secure-store'
@@ -51,7 +51,7 @@ const SubjectsAlumnosScreen: React.FC<SubjectProps> = ({ navigation, route }) =>
   return (
       <View>        
         <Text>Bienvenido {authState?.user_type} que es de alumnos llamado: {authState?.firstname}</Text>
-        <EventList data ={data} navigation = {navigation} route= {route}/>
+        <EventList data ={data} navigation = {navigation}/>
       </View>
     )
   }

@@ -11,12 +11,12 @@ type HorarioProps = NativeStackScreenProps<RootStackParamList, 'Add_clase'>;
 const AddClaseScreen = ({ navigation, route }:HorarioProps) => {
     const {horario_id} = route.params;
     const [estado, setEstado] = useState('proximamente');
-
+    //TIME
     const [selectedTime, setSelectedTime] = useState('');    
     const [time, setTime] = useState(new Date());
     
 
-
+    //DATE
     const [date, setDate] = useState(new Date());
     const [dateString, setDateString] = useState('');
     
@@ -26,6 +26,7 @@ const AddClaseScreen = ({ navigation, route }:HorarioProps) => {
     const toggleTimepicker = () => {
         setShowPickerTime(!showPickerTime)
     }; 
+    //TIME
     const onChangeTime = ({ type }: { type: string },selectedTime:any) => {
         if (type == "set"){
             const currentTime = selectedTime;
@@ -41,12 +42,13 @@ const AddClaseScreen = ({ navigation, route }:HorarioProps) => {
         }
 
     };
-
+    //TIME
     const confirmIOSTime = () =>{
         setSelectedTime(formatTime(time));
         toggleTimepicker();
 
     };
+    //TIME
     const formatTime = (rawDate: Date | string) => {
         const hours = time.getHours().toString().padStart(2, '0');
         const minutes = time.getMinutes().toString().padStart(2, '0');
@@ -57,10 +59,11 @@ const AddClaseScreen = ({ navigation, route }:HorarioProps) => {
         return `${hours}:${minutes}:${seconds}`;
 
     };
-
+    //DATE
     const toggleDatepicker = () => {
         setShowPicker(!showPicker)
     }; 
+    //DATE
     const onChange = ({ type }: { type: string },selectedDate:any) => {
         if (type == "set"){
             const currentDate = selectedDate;
@@ -76,10 +79,12 @@ const AddClaseScreen = ({ navigation, route }:HorarioProps) => {
         }
 
     };
+    //DATE
     const confirmIOSDate = () =>{
         setDateString(formatDate(date));
         toggleDatepicker();
     };
+    //DATE
     const formatDate = (rawDate: Date | string) => {
         let date = new Date(rawDate);
         let year = date.getFullYear();
@@ -174,12 +179,16 @@ const AddClaseScreen = ({ navigation, route }:HorarioProps) => {
                         />
                 </Pressable>
             )}
+
+
+
+            {/* TIME */}
             {showPickerTime && (<DateTimePicker  
             timeZoneName={'America/Santiago'}          
             mode="time"
             display='spinner'
             value={time}
-            onChange={onChange}
+            onChange={onChangeTime}
             style = {styles.datePicker}
             />
             )}

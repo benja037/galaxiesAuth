@@ -2,7 +2,7 @@ import { Text, View, FlatList, RefreshControl } from "react-native";
 import React from "react";
 import EventItem from "./event-item-subjects";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../screens/Home";
+import { RootStackParamList } from "../../screens/Home";
 //import { RootStackParamList } from "../screens/Home";
 
 interface alumnos {

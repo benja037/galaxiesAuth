@@ -1,36 +1,33 @@
 import { Text, View, FlatList, RefreshControl } from "react-native";
 import React from "react";
-
+import EventItem from "./event-item-courses";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../screens/Home";
-import ClasesEventItem from "./event-item-clases";
+import { RootStackParamList } from "../../screens/Home";
 //import { RootStackParamList } from "../screens/Home";
 
 interface Item {
-    id:string;
-    date: string;
-    time:string;
-    estado: string;    
+    id: string;
+    course_name: string;
   }
   
-type HorarioProps = NativeStackScreenProps<RootStackParamList, 'Horario_detail'>;
 
-interface HorarioListProps extends HorarioProps{
+
+interface EventListCoursesProps{
     data: Item[];
-    //navigation: NativeStackNavigationProp<RootStackParamList>;
+    navigation: NativeStackNavigationProp<RootStackParamList>;
     
   }
   
-  const ClasesEventList: React.FC<HorarioListProps> = ({ data,navigation }) => {
+  const EventList: React.FC<EventListCoursesProps> = ({ data,navigation }) => {
     
     const renderItem = ({ item }: { item: Item }) => (
       <View>
-        <ClasesEventItem  clase_id = {item.id} date = {item.date} time={item.time} estado ={item.estado} navigation={navigation}/>
+        <EventItem course_id={item.id} course_name={item.course_name} navigation={navigation}/>
       </View>
     );
   
     return (
-      <View style={{ height: 300 }}>
+      <View>
         <FlatList
           data={data}
           keyExtractor={item => item.id}
@@ -47,4 +44,4 @@ interface HorarioListProps extends HorarioProps{
   };
   
  
-export default ClasesEventList;
+export default EventList;

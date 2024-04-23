@@ -57,15 +57,16 @@ const AddHorarioScreen = ({ navigation, route }:HorarioProps) => {
     const post_horario = async () => {
         try {
             const token = await SecureStore.getItemAsync('tikin');
-            console.log("HORAAAAA",{selectedTime})
-            console.log("DAYYY",{selectedDay})
+            //console.log("HORAAAAA",{selectedTime})
+            //console.log("DAYYY",{selectedDay})
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjectss/${subject_id}/horarios/`, {day_of_week:selectedDay,time:selectedTime,
                 headers: {
                     Authorization: `Bearer ${token}` 
                 }
             });
-            console.log("RESPONSE axios result", response)
-            console.log("axios result", response.data)
+            console.log("HORARIO AGREGADO")
+            //console.log("RESPONSE axios result", response)
+            //console.log("axios result", response.data)
             navigation.goBack();
             
         } catch (error) {

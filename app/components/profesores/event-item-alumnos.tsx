@@ -2,7 +2,7 @@
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
 import { StyleSheet,Text, TouchableOpacity } from "react-native";
-import { RootStackParamList } from "../screens/Home";
+import { RootStackParamList } from "../../screens/Home";
 
 //type ItemDetailSubjectsProps = NativeStackScreenProps<RootStackParamList,'Subjects_detail'>;
 

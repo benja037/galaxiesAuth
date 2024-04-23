@@ -5,10 +5,10 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
 import React from "react";
-import EventList_alumnos from "../../components/event-list-alumnos";
+import EventList_alumnos from "../../components/alumnos/event-list-alumnos";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store'
-import HorarioEventList from "../../components/event-list-horarios";
+import HorarioEventList from "../../components/alumnos/event-list-horarios";
 
 type DetailSubjectsProps = NativeStackScreenProps<RootStackParamList,'Subjects_detail'>;
 
@@ -148,7 +148,7 @@ const SubjectDetailAlumnosScreen: React.FC<DetailSubjectsProps> = ({navigation,r
             <Button title="Desinscribirse" onPress={handleDesinscribirse} />
             
             )}
-            <HorarioEventList data= {horarios} navigation = {navigation} route = {route}/>
+            <HorarioEventList data= {horarios} navigation = {navigation}/>
         </View>
     );
 }
