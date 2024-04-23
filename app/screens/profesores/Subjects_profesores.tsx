@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button, Text, TouchableOpacity, View } from "react-native"
-import EventList from "../../components/event-list-subjects";
+import EventList from "../../components/profesores/event-list-subjects";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
 import * as SecureStore from 'expo-secure-store'
@@ -53,14 +53,14 @@ const SubjectsProfesoresScreen: React.FC<SubjectProps> = ({ navigation, route })
           <View style = {styles.box_left}>
             <Text>Bienvenido {authState?.user_type} que es profesor: {authState?.firstname}</Text>        
           </View>  
-          <View style = {styles.box_rigth}>
+          <View style = {styles.box_right}>
             <TouchableOpacity style={styles.circularbutton} onPress={() => navigation.navigate("Add_subject",{course_id})}>        
               <Text>+</Text>
             </TouchableOpacity>               
           </View>
         </View>
         <View style={styles.container_list}>                
-        <EventList data={data} navigation={navigation} route={route} />   
+        <EventList data={data} navigation={navigation} />   
         
         </View> 
        

@@ -22,6 +22,7 @@ import HorarioDetailProfesoresScreen from './profesores/Horario_detail_profesore
 import HorarioDetailAlumnosScreen from './alumnos/Horario_detail_alumnos';
 import ClaseDetailProfesoresScreen from './profesores/Clase_detail_profesores';
 import AddClaseScreen from './profesores/Add_clase';
+import AlumnoDetailProfesoresScreen from './profesores/Alumno_perfil';
 
 
 export type RootStackParamList = {
@@ -59,7 +60,7 @@ const Home = () => {
       <Stack2.Screen name='Add_subject' component={AddSubjectScreen}></Stack2.Screen>
       <Stack2.Screen name='Subjects_detail' component={SubjectDetailProfesoresScreen}></Stack2.Screen>
       <Stack2.Screen name='Horario_detail' component={HorarioDetailProfesoresScreen}></Stack2.Screen>
-      <Stack2.Screen name='Alumno_perfil' component={Profile}></Stack2.Screen>  
+      <Stack2.Screen name='Alumno_perfil' component={AlumnoDetailProfesoresScreen}></Stack2.Screen>  
       <Stack2.Screen name='Add_horario' component={AddHorarioScreen}></Stack2.Screen>  
       <Stack2.Screen name='Clase_detail' component={ClaseDetailProfesoresScreen}></Stack2.Screen>
       <Stack2.Screen name='Add_clase' component={AddClaseScreen}></Stack2.Screen>

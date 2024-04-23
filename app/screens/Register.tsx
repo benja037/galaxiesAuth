@@ -77,7 +77,8 @@ const login = async () => {
         <Image source = {require('./images/LogoCDUC.png')} style={styles.image}/>
         <View style={styles.form}>            
             {showPicker && (<DateTimePicker  
-            timeZoneName={'America/Santiago'}          
+            timeZoneName={'America/Santiago'}
+            locale="es"          
             mode="date"
             display='spinner'
             value={date}
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     },
     form: {
         gap: 10,
-        width:'60%',
+        width:'65   %',
     },
     input: {
         height: 44,

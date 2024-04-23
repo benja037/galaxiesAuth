@@ -42,7 +42,7 @@ const Login: React.FC<LoginScreenProps> = ({ navigation })=> {
     <View style ={styles.container}>
         <Image source = {require('./images/LogoCDUC.png')} style={styles.image}/>
         <View style={styles.form}>
-            <TextInput style={styles.input} placeholder="Email" onChangeText={(text: string) => setEmail(text)} value={email} />
+            <TextInput autoCapitalize="none" style={styles.input} placeholder="Email" onChangeText={(text: string) => setEmail(text)} value={email} />
             <TextInput style={styles.input} placeholder="Password" secureTextEntry={true} onChangeText={(text:string) => setPassword(text)} value={password}/>
             <Pressable style={styles.button} onPress={login}>
                 <Text style={styles.textButton}>Ingresar</Text>

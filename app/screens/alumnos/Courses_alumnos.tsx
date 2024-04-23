@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Text, TouchableOpacity, View } from "react-native"
-import EventList from "../../components/event-list-courses";
+import EventList from "../../components/profesores/event-list-courses";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
 import * as SecureStore from 'expo-secure-store'
@@ -47,7 +47,7 @@ const CourseAlumnosScreen: React.FC<CourseProps> = ({ navigation, route }) => {
           </View>            
         </View>
         <View style={styles.container_list}>                
-        <EventList data={data} navigation={navigation} route={route} />   
+        <EventList data={data} navigation={navigation}/>   
         </View> 
        
       </View>

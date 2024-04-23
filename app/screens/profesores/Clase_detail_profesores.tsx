@@ -7,6 +7,7 @@ import { RootStackParamList } from "../Home";
 import React from "react";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store'
+import EventListAsistencias from "../../components/profesores/event-list-asistencias";
 
 type ClaseDetailProps = NativeStackScreenProps<RootStackParamList,'Clase_detail'>;
 
@@ -94,11 +95,7 @@ const ClaseDetailProfesoresScreen: React.FC<ClaseDetailProps> = ({navigation,rou
         <View style={styles.screen}>
             <Text>{clase_id} {date} {time}  {estado}</Text>
             <Button onPress={add_default} title="Agregar lista"/>
-            <FlatList
-                data={asistencias}
-                keyExtractor={(item) => item.id}
-                renderItem={renderAsistencias} />  
-            
+            <EventListAsistencias data2={asistencias} navigation={navigation}/>
              
         </View>
     );

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Text, View } from "react-native"
-import EventList from "../../components/event-list-subjects";
+import EventList from "../../components/profesores/event-list-subjects";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
 import * as SecureStore from 'expo-secure-store'
