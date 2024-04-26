@@ -5,12 +5,14 @@ import { HeaderBackButton } from "@react-navigation/elements";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
 import React from "react";
-import EventList_alumnos_complete from "../../components/profesores/event-list-alumnos-complete";
+import EventList_alumnos_complete from "../../components/profesores/event-list-alumnos-row";
 import HorarioEventList from "../../components/profesores/event-list-horarios";
+import { styles } from "../../styles/stylesheet";
 
 
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store'
+import EventListProfesores from "../../components/profesores/event-list-profesores";
 
 type DetailSubjectsProps = NativeStackScreenProps<RootStackParamList,'Subjects_detail'>;
 
@@ -20,18 +22,6 @@ interface Item {
     time: string;
     day_of_week: string;
   }
-/* interface Item {
-    id: string;
-    horario_id: string;
-    time: string;
-    day_of_week: string;
-  }   
-
-interface DetailSubjectsProps2 extends DetailSubjectsProps{
-    horarios:tem[];
-}
-   */
-
 
 const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigation,route}) => {  
     
@@ -42,42 +32,30 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
 
     const url = `https://catolica-backend.vercel.app/apiv1/courses/${course_id}/subjectss/${subject_id}/`;    
     const [alumnos, setAlumnos] = useState([])
-    const [horarios, setHorarios] = useState<Item[]>([]);
-    
-    
-    
-   // const [data2, setData2] = React.useState<any>(null); // Usando un estado para almacenar los datos obtenidos
-    /* useEffect(() => {            
-            fetchData()  
-                           
-    },[]); */
+    const [profesores, setProfesores] = useState([])
+    const [horarios, setHorarios] = useState<Item[]>([]);  
+   
     useFocusEffect(
         React.useCallback(() => {
-            fetchData()             
-            fetchData2()                   
+            async function getData() {
+                await fetchData();
+                await fetchData2();
+            }getData()                 
         },[])
         );
 
 
     const fetchData = async() => {
         try {
-            const token = await SecureStore.getItemAsync('tikin');
-  
-            const response = await axios.get(url, {
-                headers: {
-                    Authorization: `Bearer ${token}` 
-                }
-            });
-            console.log("==================a======================================================")
+            const token = await SecureStore.getItemAsync('tikin');  
+            const response = await axios.get(url, {});           
             console.log("Fetchdata1");
+            console.log("SUBJECT DETAIL:", response.data);
             setAlumnos(response.data.alumnos );
             setSubject_name(response.data.subject_name)
-            console.log("===============================")
-           
-            //setData(response.data.subjects_from_teacher );
+            setProfesores(response.data.profesores)
         } catch (error) {
-            console.error("Error:", error);
-            
+            console.error("Error:", error);            
         }
        
     }
@@ -85,19 +63,11 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
         try {
             const token = await SecureStore.getItemAsync('tikin');
   
-            const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjectss/${subject_id}/horarios/`, {
-                headers: {
-                    Authorization: `Bearer ${token}` 
-                }
-            });
-            console.log("===============================")
+            const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjectss/${subject_id}/horarios/`, {});
+           
             console.log("Fetchdata2");
             console.log("SUBJECT HORARIO DETAIL:", response.data);
-            setHorarios(response.data);
-            //setForceUpdate(prevState => !prevState);
-            console.log("=============================================================")
-            
-            //setData(response.data.subjects_from_teacher );
+            setHorarios(response.data);          
         } catch (error) {
             console.error("Error:", error);            
         } finally {
@@ -109,11 +79,6 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
         setIsEditing(!isEditing);
       };
     
-    /* const handleUpdate = () => {
-        setShouldUpdate(prevState => !prevState);
-    }; */
-    
-      
     
     if (loading) {
         return (
@@ -125,11 +90,28 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
     
     return ( 
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
-            <Text>{subject_name}</Text>
-            <Button title='Agregar Horario' onPress={()=>navigation.navigate('Add_horario',{subject_id})}/>
-            <Text>Lista de Alumnos:</Text>
+            <View style={styles.container_header}>
+                <Text style={styles.title}>{subject_name}</Text>      
+            </View>
+            <View>
+                <EventListProfesores data={profesores} navigation={navigation}/>
+            </View>
+                  
+            <Text style={styles.subtitle}>Lista de Alumnos</Text>            
             <EventList_alumnos_complete data2={alumnos} navigation = {navigation} />
-            <Button title={isEditing ? "Terminar Edición" : "Editar"} onPress={handleEditButtonPress} />
+            <Button title='Editar alumnos' onPress={()=>navigation.navigate('Edit_subject_alumnos',{subject_id})}/>
+            <View style={styles.container_horario_title}>
+                <View style={styles.box_left_short}>
+                    <Text>Horarios</Text>
+                </View>
+                <View style={styles.box_right}>
+                    <Button title='Agregar Horario' onPress={()=>navigation.navigate('Add_horario',{subject_id})}/>
+                </View>
+                <View style={styles.box_right}>
+                    <Button title={isEditing ? "Terminar Edición" : "Editar"} onPress={handleEditButtonPress} />
+                </View>
+                
+            </View>           
             
             <HorarioEventList  data= {horarios} isEditing={isEditing}  navigation= {navigation} />
             
@@ -139,12 +121,3 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
  
 export default SubjectDetailProfesoresScreen
 ;
-const styles = StyleSheet.create({
-    scrollViewContent: {
-        paddingVertical: 20,
-        paddingHorizontal: 5,
-      },
-    screen: {
-        padding: 20,
-    }
-})

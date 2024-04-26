@@ -1,6 +1,24 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { colors } from "./colors";
 export const styles = StyleSheet.create({
+    container_header: {
+      width: '100%',  
+      height:'6%',
+      backgroundColor:"#ffbc11",
+      justifyContent: 'center',
+      borderBottomStartRadius:20,
+   
+    },
+    title: {
+      fontSize: 22, 
+      padding:8
+     
+    },
+    subtitle: {
+      fontSize: 16, 
+      padding:8
+     
+    },
     card: {
         borderWidth: 1,
         borderColor: colors.card,
@@ -23,6 +41,25 @@ export const styles = StyleSheet.create({
         flexWrap:'wrap',    
         // justifyContent: 'center',
     },
+    container_horario_title: {
+      width: '100%',  
+      height:'6%',
+      backgroundColor:"#c1ecf5",
+      justifyContent: 'center',
+      borderBottomStartRadius:20,
+      flexDirection:'row',
+      flexWrap:'wrap',
+   
+    },
+    box_left_short: {        
+      width: '60%',
+      height: '100%',
+      
+      padding:5,
+
+        // justifyContent: 'center',
+      // justifyContent: 'center',
+    },
     
     container_list: {        
         flex: 1,
@@ -42,7 +79,7 @@ export const styles = StyleSheet.create({
         width: '20%',
         height: '100%',
         padding:5,
-        backgroundColor: '#fff',
+        
         // justifyContent: 'center',
 },
     containerbutton: {        
@@ -51,7 +88,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'flex-end',
         // justifyContent: 'center',
-  },
+    },
     circularbutton: {
         position:"relative",
         borderWidth:1,
@@ -63,6 +100,13 @@ export const styles = StyleSheet.create({
         backgroundColor:'#fff',
         borderRadius:50,
     },
+    scrollViewContent: {
+      paddingVertical: 20,
+      paddingHorizontal: 5,
+    },
+    screen: {
+      padding: 20,
+    }
 }) 
 
 const deviceWidth = Math.round(Dimensions.get('window').width);

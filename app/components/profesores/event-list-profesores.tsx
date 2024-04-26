@@ -4,9 +4,10 @@ import EventItem from "./event-item-subjects";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../screens/Home";
 import EventItemAlumnosComplete from "./event-item-alumnos-complete";
+import EventItemProfesores from "./event-item-profesores";
 //import { RootStackParamList } from "../screens/Home";
 
-interface alumno {
+interface profesor {
   id: string;
   lastname:string;
   firstname:string;
@@ -14,31 +15,31 @@ interface alumno {
 
 
 
-interface EventListAlumnosProps {
-  data2: alumno[];
+interface EventListProfesoresProps {
+  data: profesor[];
   navigation: NativeStackNavigationProp<RootStackParamList>;
 }
 
 
   
-const EventList_alumnos_complete: React.FC<EventListAlumnosProps> = ({data2,navigation }) => {    
+const EventListProfesores: React.FC<EventListProfesoresProps> = ({data,navigation }) => {    
     //console.log("datalistalumnos",data)
-    const renderItem = ({ item }: { item: alumno }) => (
+    const renderItem = ({ item }: { item: profesor }) => (
       <View>
-        <EventItemAlumnosComplete alumno_id={item.id} firstname={item.firstname} lastname={item.lastname} navigation={navigation} />
+        <EventItemProfesores profesor_id={item.id} firstname={item.firstname} lastname={item.lastname} navigation={navigation} />
       </View>
       );
    
     return ( 
       <View>
         <FlatList
-          data={data2}
+          data={data}
           keyExtractor={item => item.id}
           renderItem={renderItem}
+          horizontal={true}
           refreshControl={
             <RefreshControl
               refreshing={false}
-              onRefresh={() => console.log('refreshing...')}
             />
           }
         />
@@ -47,4 +48,4 @@ const EventList_alumnos_complete: React.FC<EventListAlumnosProps> = ({data2,navi
   };
   
  
-export default EventList_alumnos_complete;
+export default EventListProfesores;

@@ -23,6 +23,7 @@ import HorarioDetailAlumnosScreen from './alumnos/Horario_detail_alumnos';
 import ClaseDetailProfesoresScreen from './profesores/Clase_detail_profesores';
 import AddClaseScreen from './profesores/Add_clase';
 import AlumnoDetailProfesoresScreen from './profesores/Alumno_perfil';
+import EditSubjectAlumnosScreen from './profesores/Edit_subject_alumnos';
 
 
 export type RootStackParamList = {
@@ -30,7 +31,8 @@ export type RootStackParamList = {
   'Add_course':undefined;
   'Subjects': {course_id:string}; //La logica de esto fue que los tenia que tener para poder pasarlos pero no se
   'Add_subject':{course_id:string}; 
-  'Subjects_detail':{course_id:string,subject_id:string};  
+  'Subjects_detail':{course_id:string,subject_id:string}; //aca hay que sacar course_id 
+  'Edit_subject_alumnos':{subject_id:string};
   'Alumno_perfil':{alumno_id:string}
   'Horario_detail':{horario_id:string}
   'Add_horario':{subject_id:string}
@@ -61,6 +63,7 @@ const Home = () => {
       <Stack2.Screen name='Subjects_detail' component={SubjectDetailProfesoresScreen}></Stack2.Screen>
       <Stack2.Screen name='Horario_detail' component={HorarioDetailProfesoresScreen}></Stack2.Screen>
       <Stack2.Screen name='Alumno_perfil' component={AlumnoDetailProfesoresScreen}></Stack2.Screen>  
+      <Stack2.Screen name='Edit_subject_alumnos' component={EditSubjectAlumnosScreen}></Stack2.Screen>  
       <Stack2.Screen name='Add_horario' component={AddHorarioScreen}></Stack2.Screen>  
       <Stack2.Screen name='Clase_detail' component={ClaseDetailProfesoresScreen}></Stack2.Screen>
       <Stack2.Screen name='Add_clase' component={AddClaseScreen}></Stack2.Screen>
