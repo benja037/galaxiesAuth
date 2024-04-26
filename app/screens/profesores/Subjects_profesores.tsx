@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Button, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, Button, Text, TouchableOpacity, View } from "react-native"
 import EventList from "../../components/profesores/event-list-subjects";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
@@ -19,6 +19,7 @@ const SubjectsProfesoresScreen: React.FC<SubjectProps> = ({ navigation, route })
     const [data,setData] = useState([])
     const { authState } = useAuth();
     const {course_id} = route.params;
+    const [loading, setLoading] = useState(true);
     const url = `https://catolica-backend.vercel.app/apiv1/courses/${course_id}/subjectss/`;
     useFocusEffect(
       React.useCallback(() => {            
@@ -33,20 +34,24 @@ const SubjectsProfesoresScreen: React.FC<SubjectProps> = ({ navigation, route })
       try {
           const token = await SecureStore.getItemAsync('tikin');
 
-          const response = await axios.get(url, {
-              headers: {
-                  Authorization: `Bearer ${token}` 
-              }
-          });
+          const response = await axios.get(url, {});
           console.log("ALL subcjects:", response.data);
           setData(response.data );
           //setData(response.data.subjects_from_teacher );
       } catch (error) {
           console.error("Error:", error);
-      }
+      } finally {
+        setLoading(false);
+    }
     }
   
-    
+    if (loading) {
+      return (
+          <View style={styles.container}>
+              <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+      );
+    }
     return (
       <View style = {styles.container}>
         <View style = {styles.container_up}>

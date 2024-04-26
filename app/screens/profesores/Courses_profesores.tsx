@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native"
 import EventList from "../../components/profesores/event-list-courses";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../Home";
@@ -19,6 +19,7 @@ const CourseProfesoresScreen: React.FC<CourseProps> = ({ navigation, route }) =>
     
     const { authState } = useAuth();    
     const [data,setData] = useState([])
+    const [loading, setLoading] = useState(true);
     
     useFocusEffect(
         React.useCallback(() => {        
@@ -37,7 +38,17 @@ const CourseProfesoresScreen: React.FC<CourseProps> = ({ navigation, route }) =>
             setData(response.data);
         } catch (error) {
             console.error("Error:", error);
-        }
+        } finally {
+          setLoading(false);
+      }
+    }
+
+    if (loading) {
+      return (
+          <View style={styles.container}>
+              <ActivityIndicator size="large" color="#0000ff" />
+          </View>
+      );
     }
     return (
         <View style = {styles.container}>
