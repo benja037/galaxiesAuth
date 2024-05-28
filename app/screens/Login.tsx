@@ -1,64 +1,136 @@
-import { View, Image, Text, Button, StyleSheet, TextInput, Pressable } from 'react-native'
+import { View, Image, Text, Button, StyleSheet, TextInput, Pressable,TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { API_URL, useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { Link } from '@react-navigation/native';
+import {
+    Formik,
+    FormikHelpers,
+    FormikProps,
+    Form,
+    Field,
+    FieldProps,
+  } from 'formik'
+  import * as Yup from 'yup';
+interface FormData {    
+    password:string;
+    email:string;
+    
+}
+const initialValues: FormData = {    
+    password: '',
+    email: '',    
+};
 
 interface LoginScreenProps {
     navigation: any; // Esto puede ser definido de manera más específica
-  }
+}
+const SignupSchema = Yup.object().shape({    
+    password: Yup.string()      
+        .required('Required'),
+    email: Yup.string()
+        .email('Invalid email')
+        .required('Required'),    
+     
+});
 
-const Login: React.FC<LoginScreenProps> = ({ navigation })=> {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+const Login: React.FC<LoginScreenProps> = ({ navigation })=> {    
     const { onLogin, onRegister } = useAuth();
-
-    /* useEffect(() => {
-        const testCall = async () => {
-            const result = await axios.post(`${API_URL}/api/token/`);
-
-        }
-        testCall();
-    }, []) */
   
-  const login = async () => {
+  const login = async (formData:FormData) => {
+    const {  password, email } = formData;
     const result = await onLogin!(email,password);
     if (result && result.error) {
-        alert(result.msg);
+        console.log(result)
+        alert(result.message);
     }
   };
-  
-  // We automatically call the login after a succesful registration
-  /* const register = async () => {
-    const result = await onRegister!(username,password);
-    if (result && result.error) {
-        alert(result.msg);
-    } else {
-        login();
-    }
-  }; */
 
     return (
     <View style ={styles.container}>
         <Image source = {require('./images/LogoCDUC.png')} style={styles.image}/>
-        <View style={styles.form}>
-            <TextInput autoCapitalize="none" style={styles.input} placeholder="Email" onChangeText={(text: string) => setEmail(text)} value={email} />
-            <TextInput style={styles.input} placeholder="Password" secureTextEntry={true} onChangeText={(text:string) => setPassword(text)} value={password}/>
-            <Pressable style={styles.button} onPress={login}>
-                <Text style={styles.textButton}>Ingresar</Text>
-            </Pressable>
-            <Button onPress={() => navigation.navigate('Register')} title="Registrar" />
-            {/* <Button onPress={register} title="Create Account" />    */}
-            
-            
-            
-        
-      
+        <View style = {styles.containerform}>
+            <Formik
+                    initialValues={initialValues}
+                    validationSchema={SignupSchema}
+                    validateOnChange={false}
+                    onSubmit={(values) => {     
+                        login(values);
+                    }}
+            >
+            {(props: FormikProps<FormData>) => ( 
+            <View style={styles.form}>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.placeholderText}>Email:</Text>
+                    <View style={styles.onlyinputContainer}>
+                        <TextInput
+                            placeholder='Email'
+                            autoCapitalize="none"
+                            style={styles.input}                        
+                            value={props.values.email}
+                            onChangeText={props.handleChange('email')}
+                            />
+                        {props.errors.email && (
+                        <Text>{props.errors.email}</Text>
+                    )}
+                </View>
+                                          
+                </View>
+                <View style={styles.inputContainer}>
+                    <Text style={styles.placeholderText}>Contraseña:</Text>
+                    <View style={styles.onlyinputContainer}>
+                    <TextInput
+                    placeholder='Contraseña'
+                    style={styles.input}  
+                    secureTextEntry={true}                      
+                    value={props.values.password}
+                    onChangeText={props.handleChange('password')}
+                    />
+                    {props.errors.password && (
+                        <Text>{props.errors.password}</Text>
+                    )}                        
+                </View>
+                </View>
+                
+                <View>
+                    <TouchableOpacity style = {styles.button}onPress={() => props.handleSubmit()}>
+                        <Text style={styles.textButton}>Enviar</Text>
+                    </TouchableOpacity>                    
+                </View>
+            </View>
+            )}
+            </Formik> 
         </View>
+        <Button onPress={() => navigation.navigate('Register')} title="Registrar" />
     </View>
   );
 };
 const styles = StyleSheet.create({
+    inputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',// Ajusta el margen según sea necesario
+        width:150,        
+    },
+    onlyinputContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',// Ajusta el margen según sea necesario
+        width:150,        
+        marginLeft:5
+    },
+    placeholderText: {
+        width:100,
+        marginRight: 10, // Ajusta el margen según sea necesario
+        fontSize: 16, // Ajusta el tamaño de fuente según sea necesario
+        color: '#333', // Ajusta el color del texto según sea necesario
+    },
+    input: {        
+        height: 40, // Ajusta la altura según sea necesario
+        width:200,
+        borderColor: '#ccc', // Ajusta el color del borde según sea necesario
+        borderWidth: 1, // Ajusta el grosor del borde según sea necesario
+        borderRadius: 5, // Ajusta el radio del borde según sea necesario
+        paddingHorizontal: 10, // Ajusta el relleno según sea necesario
+    },
     image: {
         width:'50%',
         height:'50%',
@@ -66,26 +138,24 @@ const styles = StyleSheet.create({
     },
     form: {
         gap: 10,
-        width:'60%',
+        width:'80%',
     },
-    input: {
-        height: 44,
-        borderWidth: 1,
-        borderRadius: 4,
-        padding: 10,
-        backgroundColor: '#fff',
-
-    },
+    
     container: {
         alignItems: 'center',
         width: '100%',
 
     },
+    containerform: {
+        alignItems: 'flex-start',
+        width: '95%',
+
+    },
     button:{       
         alignItems: 'center', 
         justifyContent: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+        height:40,
+        width:100,
         borderRadius: 5,        
         backgroundColor: '#012677',
     },
