@@ -1,9 +1,13 @@
 import { View, Image, Text, Button, StyleSheet, TextInput, Pressable, Platform, Touchable, TouchableOpacity } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { API_URL, useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import * as SecureStore from 'expo-secure-store'
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../Home';
+import Checkbox from 'expo-checkbox';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {Picker} from '@react-native-picker/picker';
+import { StackActions } from '@react-navigation/native';
 
 import {
     Formik,
@@ -18,56 +22,18 @@ import * as Yup from 'yup';
 
 interface FormData {   
     firstname: string;
-    lastname: string;
-    password:string;
-    email:string;
-    date_of_birth:string;
-    user_type:string;
-    gender:string;
-    confirmPassword:string;
+    lastname: string;    
+    date_of_birth:string;    
+    gender:string;   
     phone_number:string;
     document_type:string;
     document_number:string;
+
 }
-const initialValues: FormData = {
-    date_of_birth:'',    
-    firstname: '',
-    lastname: '',
-    password: '',
-    email: '',
-    gender: 'hombre',
-    user_type: 'apoderado',
-    confirmPassword: '',
-    phone_number:'',
-    document_type:'rut',
-    document_number:'',
-};
-const validateRut = (rut:any) => {
-    // Eliminar puntos y guión (caracteres de formato)
-    rut = rut.replace(/\./g,'').replace(/\-/g,'');
 
-    // Separar el número y el dígito verificador
-    let rutNumber = rut.slice(0, -1);
-    let rutDV = rut.slice(-1).toUpperCase();
 
-    // Validar el formato del número y el dígito verificador
-    if (!/^[0-9]+$/i.test(rutNumber) || (rutDV !== 'K' && !/^[0-9K]+$/i.test(rutDV))) {
-        return false;
-    }
 
-    // Calcular el dígito verificador esperado
-    let suma = 0;
-    let multiplo = 2;
-    for (let i = rutNumber.length - 1; i >= 0; i--) {
-        suma += parseInt(rutNumber.charAt(i)) * multiplo;
-        multiplo = multiplo === 7 ? 2 : multiplo + 1;
-    }
-    let dvEsperado = 11 - (suma % 11);
 
-    // Validar el dígito verificador
-    let dvCalculado = dvEsperado === 11 ? '0' : dvEsperado === 10 ? 'K' : dvEsperado.toString();
-    return dvCalculado === rutDV;
-};
 const SignupSchema = Yup.object().shape({
     firstname: Yup.string()
         .min(1,'Too short')
@@ -76,30 +42,43 @@ const SignupSchema = Yup.object().shape({
     lastname: Yup.string()      
         .required('Required'),
     phone_number: Yup.string()      
-        .required('Required'),
-    password: Yup.string() 
-        .min(8,'Minimo 8 caracteres')     
-        .required('Required'),
-    email: Yup.string()        
-        .email('Invalid email')
-        .required('Required'),    
-    user_type: Yup.string()
-        .required('Required'),
-    confirmPassword: Yup.string()
-        .min(8,'Minimo 8 caracteres')
-        .required('Required')
-        .oneOf([Yup.ref('password')],'Tu contraseñas no coinciden'),  
-    document_number: Yup.string()     
-        .test('is-rut-valid', 'Invalid RUT', (value) => validateRut(value)) 
-        .required('Required'),
+        .required('Required'),   
 });
-const Register = () => {    
-    const { onLogin, onRegister } = useAuth();
+type AddStudentProps = any;
+
+/* type AddStudentProps = NativeStackScreenProps<RootStackParamList, 'Add_student_apoderado'>; */
+const AddStudentProfileApoderadosScreen: React.FC<AddStudentProps> = ({ navigation, route }) => {   
     const [date, setDate] = useState(new Date());
     const [showPicker, setShowPicker] = useState(false);
-
+    const { document_number, document_type } = route.params;
+    const initialValues: FormData = {
+        date_of_birth:'',    
+        firstname: '',
+        lastname: '',    
+        gender: 'Hombre',
+        phone_number:'',
+        document_type: document_type || '',
+        document_number: document_number || '',
+        
+    };
     
-
+    const post_student = async (formData:FormData) => {
+        const { date_of_birth,firstname, lastname, gender,phone_number,document_type,document_number } = formData;
+        const pushAction = StackActions.push('Choose_student');
+        try { 
+            const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/students/post-user-students/`, {gender:gender,date_of_birth:date_of_birth,firstname:firstname,lastname:lastname,phone_number:phone_number,document_type:document_type,document_number:document_number
+                
+            });
+            console.log("axios result", response.data)
+            navigation.dispatch(pushAction);
+            
+        } catch (error) {
+            console.error("Error:", error);
+        }
+      };
+    /* const handleCheckboxChange = async () => {
+        setIspublic(prev=> !prev);
+    } */
     const toggleDatepicker = () => {
         setShowPicker(!showPicker)
     }; 
@@ -120,36 +99,14 @@ const Register = () => {
         return `${year}-${formattedMonth}-${formattedDay}`;
 
     }
-
-    const login = async (formData:FormData) => {
-        const {  password, email } = formData;
-        const result = await onLogin!(email,password);
-        if (result && result.error) {
-            alert(result.msg);
-        } 
-        };
-    // We automatically call the login after a succesful registration
-    const register_post = async (formData:FormData) => {
-        const { date_of_birth,user_type,firstname, lastname, password, email, gender,phone_number } = formData;
-        console.log("date_of_birth",date_of_birth,user_type,firstname, lastname, password, email, gender,phone_number)
-        const result = await onRegister!(password,email,date_of_birth,user_type,firstname,lastname,gender,phone_number);
-        if (result && result.error) {
-            console.log(result)
-            alert(result.msg.error);
-        } else {            
-            login(formData)
-        } 
-    };
-   
-
     return (
-    <View style ={styles.container}>        
-        <Formik
+        <View style ={styles.container}>                
+            <Formik
                 initialValues={initialValues}
                 validationSchema={SignupSchema}
                 validateOnChange={false}
                 onSubmit={(values) => {     
-                    register_post(values);
+                    post_student(values);
                 }}
             >
                 {(props: FormikProps<FormData>) => ( 
@@ -260,77 +217,6 @@ const Register = () => {
                                 <Text>{props.errors.phone_number}</Text>
                             )}   
                         </View>                     
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.placeholderText}>Email:</Text>
-                        <View style={styles.onlyinputContainer}>
-                            <TextInput
-                            placeholder='Email'
-                            autoCapitalize="none"
-                            style={styles.input}                        
-                            value={props.values.email}
-                            onChangeText={props.handleChange('email')}
-                            />
-                            {props.errors.email && (
-                                <Text>{props.errors.email}</Text>
-                            )}
-                        </View>                        
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.placeholderText}>Contraseña:</Text>
-                        <View style={styles.onlyinputContainer}>
-                            <TextInput
-                            placeholder='Contraseña'
-                            style={styles.input}  
-                            secureTextEntry={true}                      
-                            value={props.values.password}
-                            onChangeText={props.handleChange('password')}
-                            />
-                            {props.errors.password && (
-                                <Text>{props.errors.password}</Text>
-                            )} 
-                        </View>                       
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.placeholderText}>Confirmar Contraseña:</Text>
-                        <View style={styles.onlyinputContainer}>
-                            <TextInput
-                            placeholder='Confirmar Contraseña'
-                            style={styles.input}      
-                            secureTextEntry={true}                  
-                            value={props.values.confirmPassword}
-                            onChangeText={props.handleChange('confirmPassword')}
-                            />
-                            {props.errors.confirmPassword && (
-                                <Text>{props.errors.confirmPassword}</Text>
-                            )} 
-                        </View>                       
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <View style={styles.pickerLeft}>
-                                <Picker
-                                    selectedValue={props.values.document_type}
-                                    onValueChange={(itemValue, itemIndex) =>
-                                        props.setFieldValue('document_type', itemValue)
-                                    }>
-                                    <Picker.Item label="rut" value="rut" />
-                                    <Picker.Item label="pasaporte" value="pasaporte" />
-                                </Picker>                          
-                        </View>                    
-                                                  
-                        <View style={styles.onlyinputContainerRut}>
-                            <TextInput
-                            placeholder='rut o pasaporte (11.111.111-0)'
-                            autoCapitalize="none"
-                            style={styles.inputRut}                        
-                            value={props.values.document_number}
-                            onChangeText={props.handleChange('document_number')}
-                            />
-                            {props.errors.document_number && (
-                                <Text>{props.errors.document_number}</Text>
-                            )}   
-                        </View>   
-                                        
                     </View>    
                     <View style={styles.pickerContainer}>
                         <View style={styles.pickerLeft}>
@@ -342,11 +228,10 @@ const Register = () => {
                                 <Picker.Item label="Hombre" value="Hombre" />
                                 <Picker.Item label="Mujer" value="Mujer" />
                             </Picker>                                              
-                        </View>                        
+                        </View>
                         
-                    </View>
-                    
-                    
+                        
+                    </View>                    
                             <Button onPress={() => props.handleSubmit()} title="Submit" />
                         </View>
 
@@ -371,29 +256,17 @@ const styles = StyleSheet.create({
         width:150,        
         marginLeft:50
     },
-    onlyinputContainerRut: {
-        flexDirection: 'column',
-        alignItems: 'center',// Ajusta el margen según sea necesario
-        width:140,        
-        marginLeft:60,
-        marginTop:70,
-        
-    },
     pickerContainer: {
         flexDirection: 'row',        
-        width:250,
+        width:350,
         height:200,
-        alignContent:"flex-end"
         
     },
     pickerLeft: {
         width:150,
-        height:150,   
-        marginBottom:5,
-        marginTop:5,
-         
+        height:300,        
     },
-    pickerRight: {
+    pickerRigth: {
         width:200,
         height:300,        
     },
@@ -406,14 +279,6 @@ const styles = StyleSheet.create({
     input: {        
         height: 40, // Ajusta la altura según sea necesario
         width:250,
-        borderColor: '#ccc', // Ajusta el color del borde según sea necesario
-        borderWidth: 1, // Ajusta el grosor del borde según sea necesario
-        borderRadius: 5, // Ajusta el radio del borde según sea necesario
-        paddingHorizontal: 10, // Ajusta el relleno según sea necesario
-    },
-    inputRut: {        
-        height: 40, // Ajusta la altura según sea necesario
-        width:180,
         borderColor: '#ccc', // Ajusta el color del borde según sea necesario
         borderWidth: 1, // Ajusta el grosor del borde según sea necesario
         borderRadius: 5, // Ajusta el radio del borde según sea necesario
@@ -433,12 +298,10 @@ const styles = StyleSheet.create({
         gap: 10,
         width:'65   %',
     },    
-    container: {
-        alignItems: 'flex-start',
-        width: '95%',
+    container: {       
+        width: '100%',
         marginLeft:10,
-        marginTop:45,
-        
+        marginTop:100
 
     },
     button:{
@@ -467,4 +330,4 @@ const styles = StyleSheet.create({
 
 });
 
-export default Register
+export default AddStudentProfileApoderadosScreen

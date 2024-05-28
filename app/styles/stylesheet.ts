@@ -1,112 +1,142 @@
 import { Dimensions, StyleSheet } from "react-native";
 import { colors } from "./colors";
 export const styles = StyleSheet.create({
-    container_header: {
-      width: '100%',  
-      height:'6%',
-      backgroundColor:"#ffbc11",
-      justifyContent: 'center',
-      borderBottomStartRadius:20,
-   
-    },
-    title: {
-      fontSize: 22, 
-      padding:8
-     
-    },
-    subtitle: {
-      fontSize: 16, 
-      padding:8
-     
-    },
-    card: {
-        borderWidth: 1,
-        borderColor: colors.card,
-        borderRadius: 10,
-        marginVertical: 30,
-        padding: 30,
-    },
-    container: {        
-          flex: 1,
-          backgroundColor: '#fff',
-          alignItems:"center",
-          // justifyContent: 'center',
-    },
-    container_up: { 
-        width:'95%',
-        height:'10%',
-        padding:5,        
-        backgroundColor: '#fff',   
-        flexDirection:'row',
-        flexWrap:'wrap',    
-        // justifyContent: 'center',
-    },
-    container_horario_title: {
-      width: '100%',  
-      height:'6%',
-      backgroundColor:"#c1ecf5",
-      justifyContent: 'center',
-      borderBottomStartRadius:20,
-      flexDirection:'row',
-      flexWrap:'wrap',
-   
-    },
-    box_left_short: {        
-      width: '60%',
-      height: '100%',
-      
-      padding:5,
-
-        // justifyContent: 'center',
-      // justifyContent: 'center',
-    },
-    
-    container_list: {        
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems:"center",
-          // justifyContent: 'center',
-    },
-    box_left: {        
-        width: '80%',
-        height: '100%',
-        padding:5,
-
-        backgroundColor: '#fff',
-        // justifyContent: 'center',
+  container_header: {
+    width: '100%',  
+    height:50,
+    backgroundColor:"#a5c8eb",
+    justifyContent: 'center',
+    borderBottomStartRadius:20,
+    flexDirection:'row',
+    flexWrap:'wrap',   
   },
-    box_right: {        
-        width: '20%',
-        height: '100%',
-        padding:5,
+  box_header_left: {        
+    width: '70%',
+    height: '100%',    
+   
+  },
+  box_header_right: {        
+    width: '25%',
+    height: '100%',
+    
+  },
+  title: {
+    fontSize: 22, 
+    padding:8
+     
+  },
+  subtitle: {
+    fontSize: 16, 
+    padding:8
+     
+  },
+  text_edit_button: {
+    fontSize: 9, 
+    padding:8
+     
+  },
+  card: {
+    borderWidth: 1,
+    borderColor: colors.card,
+    borderRadius: 10,
+    marginVertical: 30,
+    padding: 30,
+  },
+  container: {        
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems:"center",          
+  },
+  sub_container: {        
+    flex: 1,
+    backgroundColor: 'red',
+    alignItems:"center",
+    marginTop:9          
+  },
+  container_up: { 
+    width:'95%',
+    height:'10%',
+    padding:5,        
+    backgroundColor: '#fff',   
+    flexDirection:'row',
+    flexWrap:'wrap',          
+  },
+  container_horario_title: {
+    width: '100%',  
+    height:'6%',
+    backgroundColor:"#c1ecf5",
+    justifyContent: 'center',
+    borderBottomStartRadius:20,
+    flexDirection:'row',
+    flexWrap:'wrap',
+   
+  },
+  box_left_short: {        
+    width: '60%',
+    height: '100%',
+      
+    padding:5,
+  },
+    
+    
+  container_list: {        
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems:"center",
+          // justifyContent: 'center',
+  },
+  box_left: {        
+    width: '80%',
+    height: '100%',
+    padding:5,
+
         
         // justifyContent: 'center',
-},
-    containerbutton: {        
-        flex:1,
-        padding: 1,
-        backgroundColor: '#fff',
-        alignItems: 'flex-end',
+  },
+  box_right: {        
+    width: '20%',
+    height: '100%',
+    padding:5,
+        
         // justifyContent: 'center',
-    },
-    circularbutton: {
-        position:"relative",
-        borderWidth:1,
-        borderColor:'rgba(0,0,0,0.2)',
-        alignItems:'center',
-        justifyContent:'center',
-        width:50,
-        height:50,
-        backgroundColor:'#fff',
-        borderRadius:50,
-    },
-    scrollViewContent: {
-      paddingVertical: 20,
-      paddingHorizontal: 5,
-    },
-    screen: {
-      padding: 20,
-    }
+  },
+  containerbutton: {        
+    flex:1,
+    padding: 1,
+    backgroundColor: '#fff',
+    alignItems: 'flex-end',
+        // justifyContent: 'center',
+  },
+  circularbutton: {
+    position:"relative",
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:50,
+    height:50,
+    backgroundColor:'#c2f4be',
+    borderRadius:50,
+  },
+  editbutton: {
+    position:"relative",
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:90,
+    height:40,
+    backgroundColor:'#c2f4be',
+    borderRadius:50,
+    marginTop:5,
+  },
+  scrollViewContent: {
+    paddingVertical: 20,
+    paddingHorizontal: 5,
+  },
+  screen: {
+    padding: 20,
+  }
 }) 
 
 const deviceWidth = Math.round(Dimensions.get('window').width);
@@ -164,19 +194,20 @@ export const styles_card = StyleSheet.create({
 });
 export const styles_card_horario = StyleSheet.create({
   container: {
-    width: 140,
-    alignItems: 'center',
+    width: '100%',
+    alignItems: 'flex-start',
     marginTop: 5,
-    marginBottom:5,
+    marginBottom:15,
+    marginLeft:15,
     //borderWidth:1,
     //borderColor:"black",
   },
   cardContainer: {
-    width: 120,
+    width: '80%',
     backgroundColor: '#ffeaad',
-    height: 100,
+    height: 150,
     borderRadius: radius,
-
+    marginLeft:5,
     shadowColor: '#000',
     shadowOffset: {
       width: 5,
