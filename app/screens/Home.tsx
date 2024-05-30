@@ -38,6 +38,7 @@ import AddStudentProfileApoderadosScreen from './apoderados/Student/Add_student'
 import * as SecureStore from 'expo-secure-store'
 import RequestSubjectProfesoresScreen from './profesores/Disciplines/Subjects/Request/Request_subject';
 import GrupoSubjectProfesoresScreen from './profesores/Disciplines/Subjects/Grupos/Grupo_subject';
+import RequestClassProfesoresScreen from './profesores/Disciplines/Subjects/Clases/Request_class';
 
 
 
@@ -68,6 +69,7 @@ export type RootStackParamList = {
   'Check_rut':any;
   'Choose_student':any;
   'Requests_subject':{subject_id:string};
+  'Requests_class':{clase_id:string,subject_id:string};
   'Grupo_subject':{subject_id:string};
 };
 const Stack2 = createNativeStackNavigator<RootStackParamList>();
@@ -94,6 +96,7 @@ const ProfesorStack = () => {
     <Stack2.Screen name='Subject_config' component={ConfigSubjectProfesoresScreen}></Stack2.Screen>
     <Stack2.Screen name='Grupo_detail' component={GrupoDetailProfesoresScreen}></Stack2.Screen>
     <Stack2.Screen name='Requests_subject' component={RequestSubjectProfesoresScreen}></Stack2.Screen>
+    <Stack2.Screen name='Requests_class' component={RequestClassProfesoresScreen}></Stack2.Screen>
     <Stack2.Screen name='Grupo_subject' component={GrupoSubjectProfesoresScreen}></Stack2.Screen>
     <Stack2.Screen name='Alumno_perfil' component={AlumnoDetailProfesoresScreen}></Stack2.Screen>  
     <Stack2.Screen name='Alumno_perfil_subject' component={AlumnoDetailSubjectProfesoresScreen}></Stack2.Screen>  
