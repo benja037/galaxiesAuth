@@ -108,13 +108,18 @@ const ClaseDetailProfesoresScreen: React.FC<ClaseDetailProps> = ({navigation,rou
             <View style={styles.container_header}>
                 <View style = {styles.box_header_left}>
                     <Text style={styles.title}>Label: {label}</Text>
-                </View>
-                <View style = {styles.box_header_right}>
-                    <TouchableOpacity style={styles.editbutton} onPress={() => navigation.navigate("Clase_config",{subject_id,clase_id,num_max_alumnos:num_max_alumnos,mode:mode,label:label,state:state,time_start:time_start,time_end:time_end,date:date})}>        
-                        <Text style={styles.text_edit_button}>Configurar</Text>
-                    </TouchableOpacity>
-                </View>
+                </View>                
             </View> 
+            <View style = {styles.box_header_right}>
+                <TouchableOpacity style={styles.editbutton} onPress={() => navigation.navigate("Clase_config",{subject_id,clase_id,num_max_alumnos:num_max_alumnos,mode:mode,label:label,state:state,time_start:time_start,time_end:time_end,date:date})}>        
+                    <Text style={styles.text_edit_button}>Configurar</Text>
+                </TouchableOpacity>
+            </View>
+            <View style = {styles.box_header_right}>
+                <TouchableOpacity style={styles.editbutton} onPress={() => navigation.navigate("Requests_class",{subject_id,clase_id})}>        
+                    <Text style={styles.text_edit_button}>Solicitudes</Text>
+                </TouchableOpacity>
+            </View>
             <View>          
                 <EventListSRowClass clase_id={clase_id} subject_id={subject_id} data2= {alumnos} navigation={navigation}/>
                 <Button title='Agregar Estudiantes' onPress={()=>navigation.navigate('Edit_clase_alumnos',{subject_id,clase_id})}/>

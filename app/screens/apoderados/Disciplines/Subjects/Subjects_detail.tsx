@@ -262,7 +262,7 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
                     {mode === 'moderado' && request && (
                         <Text>Solicitud en espera</Text>
                     )}
-                    {mode === 'privado' && !request && (
+                    {mode === 'privado'  && (
                         <Text>Esta Asignatura es privada, solicita directamente a un profesor que te agregue</Text>
                     )}
                     {alumnos.length >= Number(num_max_alumnos) && (
