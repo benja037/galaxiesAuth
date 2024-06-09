@@ -37,13 +37,7 @@ const EventList_students_select_class: React.FC<EventListAlumnosProps> = ({data2
         <FlatList
           data={data2}
           keyExtractor={item => item.id}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={() => console.log('refreshing...')}
-            />
-          }
+          renderItem={renderItem}          
         />
       </View>
     );

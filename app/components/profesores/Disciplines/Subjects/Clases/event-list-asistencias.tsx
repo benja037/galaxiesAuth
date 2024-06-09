@@ -23,14 +23,15 @@ interface EventListAsistenciasProps {
   data2: asistencias[];
   navigation: NativeStackNavigationProp<RootStackParamList>;
   subject_id: string;
+  clase_id:string;
   
 }
   
-  const EventListAsistencias: React.FC<EventListAsistenciasProps> = ({subject_id,data2,navigation}) => {    
+  const EventListAsistencias: React.FC<EventListAsistenciasProps> = ({subject_id,clase_id,data2,navigation}) => {    
     //console.log("datalistalumnos",data)
     const renderItem = ({ item }: { item: asistencias }) => (
       <View>
-        <EventItemAlumnosAsistencias subject_id={subject_id} asistencia_id={item.id} user_previous_state={item.user_previous_state} alumno_id={item.student.id} firstname={item.student.firstname} lastname={item.student.lastname} state={item.state} navigation={navigation}/>        
+        <EventItemAlumnosAsistencias subject_id={subject_id} asistencia_id={item.id} user_previous_state={item.user_previous_state} alumno_id={item.student.id} firstname={item.student.firstname} lastname={item.student.lastname} state={item.state} navigation={navigation} clase_id={clase_id}/>        
       </View>
       );
    

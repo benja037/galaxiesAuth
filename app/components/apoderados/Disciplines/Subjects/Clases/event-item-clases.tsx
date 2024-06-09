@@ -17,11 +17,12 @@ interface ClasesEventItemProps {
     state:string;     
     navigation: NativeStackNavigationProp<RootStackParamList>;
     subject_id:string;
+    rolled:boolean;
  
 }
 
 /* CLASES FETCH CLASES [{"date": "2024-05-10", "id": 1, "label": "A", "num_max_students": 5, "public": false, "state": "proximamente", "subject": 2, "teachers": [], "time_end": "21:55:00", "time_start": "19:55:00"}]
- */const ClasesEventItem: React.FC<ClasesEventItemProps> = ({subject_id,clase_id,date,time_start,time_end,label,num_max_students,mode,state,navigation}) => {
+ */const ClasesEventItem: React.FC<ClasesEventItemProps> = ({subject_id,clase_id,date,time_start,time_end,label,num_max_students,mode,state,rolled,navigation}) => {
     //const {subject_id} = route.params || {}
     return (       
         <TouchableOpacity onPress={()=>navigation.navigate("Clase_detail",{clase_id,subject_id})}>         
@@ -33,8 +34,11 @@ interface ClasesEventItemProps {
                             <Text style={styles_card_horario.categoryStyle}> Hora de inicio: {time_start}</Text>
                             <Text style={styles_card_horario.categoryStyle}> Hora de fin: {time_end}</Text>
                             <Text style={styles_card_horario.categoryStyle}> Estado: {state}</Text>
-                            <Text style={styles_card_horario.categoryStyle}> {mode} {num_max_students} </Text>
-
+                            {rolled ? (
+                            <Text style={styles_card_horario.categoryStyle}> Inscrito</Text>
+                            ) : (
+                            <Text style={styles_card_horario.categoryStyle}> No Inscrito</Text>
+                            )}
                             <View style={styles_card_horario.iconLabelStyle}>
                             
                             </View>

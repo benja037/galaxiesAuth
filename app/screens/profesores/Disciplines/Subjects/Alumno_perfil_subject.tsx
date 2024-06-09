@@ -17,10 +17,11 @@ const AlumnoDetailSubjectProfesoresScreen: React.FC<DetailAlumnoProps> = ({navig
     const [lastname,setLastname] =useState('')
     const [gender,setGender] =useState('')
     const [phone_number,setPhone_number] =useState('')
+    const [document_type,setDocument_number] =useState('')
+    const [document_number,setDocument_type] =useState('')
     useFocusEffect(
         React.useCallback(() => {            
-        fetchData()                  
-        fetchData2()                  
+        fetchData()                   
     },[])
     );
 
@@ -33,39 +34,22 @@ const AlumnoDetailSubjectProfesoresScreen: React.FC<DetailAlumnoProps> = ({navig
                     Authorization: `Bearer ${token}` 
                 }
             });
-            console.log("ALUMNO_RETRIEVE",response.data)
+            /* console.log("ALUMNO_RETRIEVE",response.data) */
             setDate_of_birth(response.data.date_of_birth)
             setFirstname(response.data.firstname)
             setLastname(response.data.lastname)
             setGender(response.data.gender)
             setPhone_number(response.data.phone_number)
+            setDocument_number(response.data.document_number)
+            setDocument_type(response.data.document_type)
            
         } catch (error) {
-            console.error("Error:", error);
+           /*  console.error("Error:", error); */
             
         }
        
     }
-    const fetchData2 = async() => {
-        try {
-            const token = await SecureStore.getItemAsync('tikin');
-  
-            const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/students/${alumno_id}/`, {
-                headers: {
-                    Authorization: `Bearer ${token}` 
-                }
-            });
-            console.log("ALUMNO_RETRIEVE",response.data)
-            setDate_of_birth(response.data.date_of_birth)
-            setFirstname(response.data.firstname)
-            setLastname(response.data.lastname)
-            setGender(response.data.gender)
-           
-        } catch (error) {
-            console.error("Error:", error);
-            
-        }
-    }
+    
     const go_off_student = async () => {
         // Antes de eliminar, pedir confirmación al usuario
         Alert.alert(
@@ -74,7 +58,7 @@ const AlumnoDetailSubjectProfesoresScreen: React.FC<DetailAlumnoProps> = ({navig
             [
                 {
                     text: 'Cancelar',
-                    onPress: () => console.log('Cancelado'),
+                    /* onPress: () => console.log('Cancelado'), */
                     style: 'cancel',
                 },
                 {
@@ -84,7 +68,7 @@ const AlumnoDetailSubjectProfesoresScreen: React.FC<DetailAlumnoProps> = ({navig
                             const response = await axios.delete(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/students/${alumno_id}/`)
                             navigation.goBack()
                         } catch(error) {
-                            console.error("Errors:", error);      
+                           /*  console.error("Errors:", error);   */    
                                
                         }
                 },
@@ -94,15 +78,16 @@ const AlumnoDetailSubjectProfesoresScreen: React.FC<DetailAlumnoProps> = ({navig
         );
     };
     return ( 
-        <View>
-            <View>
+        <View style={{flex:1,alignItems:'center'}}>
+            <View style={styles.headerInfo}>
                 <Text>ID: {alumno_id}</Text>           
                 <Text>Nombre: {firstname}</Text>           
                 <Text>Apellido: {lastname}</Text>           
                 <Text>Fecha de Nacimiento: {date_of_birth}</Text>
                 <Text>Género: {gender}</Text>
                 <Text>Phone_number: {phone_number}</Text>
-            
+                <Text>Document_type: {document_type}</Text>
+                <Text>Document_number: {document_number}</Text>            
             </View>
             <View style={styles.buttonContainer}>        
                 <TouchableOpacity onPress={go_off_student} style={styles.deleteButton}>
@@ -118,6 +103,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',// Ajusta el margen según sea necesario
         width:150
+    },
+    headerInfo: {
+        marginBottom: 10,
+        marginTop:10,
+        padding: 10,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        width:'90%'
+    
     },
     onlyinputContainer: {
         flexDirection: 'column',

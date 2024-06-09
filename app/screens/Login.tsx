@@ -41,14 +41,14 @@ const Login: React.FC<LoginScreenProps> = ({ navigation })=> {
     const {  password, email } = formData;
     const result = await onLogin!(email,password);
     if (result && result.error) {
-        console.log(result)
+        /* console.log(result) */
         alert(result.message);
     }
   };
 
     return (
     <View style ={styles.container}>
-        <Image source = {require('./images/LogoCDUC.png')} style={styles.image}/>
+        <Image source = {require('./images/Presente.png')} style={styles.image}/>
         <View style = {styles.containerform}>
             <Formik
                     initialValues={initialValues}
@@ -60,39 +60,48 @@ const Login: React.FC<LoginScreenProps> = ({ navigation })=> {
             >
             {(props: FormikProps<FormData>) => ( 
             <View style={styles.form}>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.placeholderText}>Email:</Text>
-                    <View style={styles.onlyinputContainer}>
-                        <TextInput
-                            placeholder='Email'
-                            autoCapitalize="none"
-                            style={styles.input}                        
-                            value={props.values.email}
-                            onChangeText={props.handleChange('email')}
-                            />
-                        {props.errors.email && (
-                        <Text>{props.errors.email}</Text>
-                    )}
+                <View style={{alignItems:'baseline'}}>
+                    <View style={styles.inputContainer}>
+                        <View style={styles.onlytextContainer}>
+                            <Text style={styles.placeholderText}>Email:</Text>
+                        </View>
+                        <View style={styles.onlyinputContainer}>
+                            <TextInput
+                                placeholder='Email'
+                                autoCapitalize="none"
+                                style={styles.input}                        
+                                value={props.values.email}
+                                onChangeText={props.handleChange('email')}
+                                />
+                            {props.errors.email && (
+                            <Text>{props.errors.email}</Text>
+                        )}
+                    </View>
                 </View>
                                           
                 </View>
-                <View style={styles.inputContainer}>
-                    <Text style={styles.placeholderText}>Contraseña:</Text>
-                    <View style={styles.onlyinputContainer}>
-                    <TextInput
-                    placeholder='Contraseña'
-                    style={styles.input}  
-                    secureTextEntry={true}                      
-                    value={props.values.password}
-                    onChangeText={props.handleChange('password')}
-                    />
-                    {props.errors.password && (
-                        <Text>{props.errors.password}</Text>
-                    )}                        
-                </View>
+                <View style={{alignItems:'baseline'}}>
+                    <View style={styles.inputContainer}>
+                        <View style={styles.onlytextContainer}>
+                            <Text style={styles.placeholderText}>Contraseña:</Text>
+                        </View>
+                        
+                        <View style={styles.onlyinputContainer}>
+                            <TextInput
+                            placeholder='Contraseña'
+                            style={styles.input}  
+                            secureTextEntry={true}                      
+                            value={props.values.password}
+                            onChangeText={props.handleChange('password')}
+                            />
+                            {props.errors.password && (
+                                <Text>{props.errors.password}</Text>
+                            )}                        
+                        </View>
+                    </View>
                 </View>
                 
-                <View>
+                <View style={{alignItems:'center'}}>
                     <TouchableOpacity style = {styles.button}onPress={() => props.handleSubmit()}>
                         <Text style={styles.textButton}>Enviar</Text>
                     </TouchableOpacity>                    
@@ -101,7 +110,9 @@ const Login: React.FC<LoginScreenProps> = ({ navigation })=> {
             )}
             </Formik> 
         </View>
-        <Button onPress={() => navigation.navigate('Register')} title="Registrar" />
+        <View style ={{alignItems:'center',marginTop:15}}>
+            <Button onPress={() => navigation.navigate('Register')} title="Registrar" />
+        </View>
     </View>
   );
 };
@@ -109,13 +120,16 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',// Ajusta el margen según sea necesario
-        width:150,        
+        alignContent:'space-around',
+        width:'80%',       
     },
     onlyinputContainer: {
-        flexDirection: 'column',
-        alignItems: 'center',// Ajusta el margen según sea necesario
-        width:150,        
-        marginLeft:5
+        flexDirection: 'column',// Ajusta el margen según sea necesario
+        width:'90%',
+    },
+    onlytextContainer: {
+        flexDirection: 'column',// Ajusta el margen según sea necesario
+        width:'45%', 
     },
     placeholderText: {
         width:100,
@@ -125,7 +139,7 @@ const styles = StyleSheet.create({
     },
     input: {        
         height: 40, // Ajusta la altura según sea necesario
-        width:200,
+        width:'100%',
         borderColor: '#ccc', // Ajusta el color del borde según sea necesario
         borderWidth: 1, // Ajusta el grosor del borde según sea necesario
         borderRadius: 5, // Ajusta el radio del borde según sea necesario
@@ -142,12 +156,14 @@ const styles = StyleSheet.create({
     },
     
     container: {
+        flex: 1,
         alignItems: 'center',
         width: '100%',
+        backgroundColor:'#fff',
 
     },
     containerform: {
-        alignItems: 'flex-start',
+        alignItems: 'center',
         width: '95%',
 
     },

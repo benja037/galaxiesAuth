@@ -34,7 +34,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                     
             (
                 ()=>{
-                    console.log("subject_id", subject_id)
+                    /* console.log("subject_id", subject_id)
                     console.log("clase_id", clase_id)
                     console.log("num_max_alumnos", num_max_alumnos)
                     console.log("state", state)
@@ -42,7 +42,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                     console.log("date", date)
                     console.log("time_start", time_start)
                     console.log("time_end", time_end)
-                    console.log("label", label)                 
+                    console.log("label", label)  */                
                     
                     
                     //TIME1
@@ -57,8 +57,8 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                     newTimeEnd_date.setMinutes(Number(minutes_end));
                     newTimeEnd_date.setSeconds(Number(seconds_end));
 
-                    console.log("newTime_date", newTime_date)
-                    console.log("newTimeEnd_date", newTimeEnd_date)
+                    /* console.log("newTime_date", newTime_date)
+                    console.log("newTimeEnd_date", newTimeEnd_date) */
 
                     //DATE
                     const [year_date, month_date, day_date] = newDate.split('-').map(Number);
@@ -116,7 +116,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
     const formatTime = (rawDate: Date | string) => {
         const date = typeof rawDate === 'string' ? new Date(rawDate) : rawDate;
         if (isNaN(date.getTime())) {
-            console.error("La fecha proporcionada no es válida");
+            /* console.error("La fecha proporcionada no es válida"); */
             return ""; // Retorna una cadena vacía si la fecha no es válida
         }
         const hours = date.getHours().toString().padStart(2, '0');
@@ -132,7 +132,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
     const formatTime2 = (rawDate: Date | string) => {
         const date = typeof rawDate === 'string' ? new Date(rawDate) : rawDate;
         if (isNaN(date.getTime())) {
-            console.error("La fecha proporcionada no es válida");
+            /* console.error("La fecha proporcionada no es válida"); */
             return ""; // Retorna una cadena vacía si la fecha no es válida
         }
         const hours = date.getHours().toString().padStart(2, '0');
@@ -209,17 +209,17 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
     
     const patch_clase = async () => {
         try {
-            console.log("PUT PARAMETERS",dateString,selectedTime,selectedTimeEnd,new_num_max_alumnos,new_mode,new_label,new_estado)
+            /* console.log("PUT PARAMETERS",dateString,selectedTime,selectedTimeEnd,new_num_max_alumnos,new_mode,new_label,new_estado) */
             
             const response = await axios.patch(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/class/${clase_id}/`, {date:dateString,time_start:selectedTime,time_end:selectedTimeEnd,num_max_students:new_num_max_alumnos,mode:new_mode,label:new_label,state:new_estado,
                 
             });
-            console.log("RESPONSE axios result", response)
-            console.log("axios result", response.data)
+            /* console.log("RESPONSE axios result", response)
+            console.log("axios result", response.data) */
             navigation.goBack();
             
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
       const delete_clase = async () => {
@@ -231,7 +231,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                 [
                     {
                         text: 'Cancelar',
-                        onPress: () => console.log('Cancelado'),
+                        /* onPress: () => console.log('Cancelado'), */
                         style: 'cancel',
                     },
                     {
@@ -248,7 +248,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                 { cancelable: false }
             );
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
     const go_off_clase = async () => {
@@ -260,7 +260,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                 [
                     {
                         text: 'Cancelar',
-                        onPress: () => console.log('Cancelado'),
+                        /* onPress: () => console.log('Cancelado'), */
                         style: 'cancel',
                     },
                     {
@@ -277,60 +277,68 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                 { cancelable: false }
             );
         } catch (error) {
-            console.error("Error:", error);
+           /*  console.error("Error:", error); */
         }
       };
 
     return (
     <View style ={styles.container}>        
         <View style={styles.form}> 
-            {/* DATE  */}
-            {showPicker && (<DateTimePicker  
-            timeZoneName={'America/Santiago'}
-            locale="es"         
-            mode="date"
-            display='spinner'
-            value={newDate_date}
-            onChange={onChange}
-            style = {styles.datePicker}
-            />
-            )}
-            {showPicker && Platform.OS === "ios" && (
-                <View
-                    style = {{ flexDirection:"row",
-                    justifyContent: 'space-around'}}
-                >
-                    <TouchableOpacity style={[
-                        styles.button,
-                        styles.pickerButton,
-                        { backgroundColor: "#11182711"}
-                    ]}
-                    onPress = {toggleDatepicker}
+            <View style={styles.inputContainer}>
+                <View style={{width:'15%'}}>
+                    <Text style={styles.placeholderText}>Fecha: </Text>
+                </View>
+                
+                <View style={styles.onlyinputContainer}>
+                {/* DATE  */}
+                {showPicker && (<DateTimePicker  
+                timeZoneName={'America/Santiago'}
+                locale="es"         
+                mode="date"
+                display='spinner'
+                value={newDate_date}
+                onChange={onChange}
+                style = {styles.datePicker}
+                />
+                )}
+                {showPicker && Platform.OS === "ios" && (
+                    <View
+                        style = {{ flexDirection:"row",
+                        justifyContent: 'space-around'}}
                     >
-                        <Text style={[
-                            styles.buttonText,
-                            { color: "#075985"}
+                        <TouchableOpacity style={[
+                            styles.button,
+                            styles.pickerButton,
+                            { backgroundColor: "#11182711"}
                         ]}
-                        >Cancel</Text>
+                        onPress = {toggleDatepicker}
+                        >
+                            <Text style={[
+                                styles.buttonText,
+                                { color: "#075985"}
+                            ]}
+                            >Cancel</Text>
 
-                    </TouchableOpacity>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={[
-                        styles.button,
-                        styles.pickerButton,
-                        
-                    ]}
-                    onPress = {confirmIOSDate}
-                    >
-                        <Text style={[
-                            styles.buttonText,                            
+                        <TouchableOpacity style={[
+                            styles.button,
+                            styles.pickerButton,
+                            
                         ]}
-                        >Confirm</Text>
+                        onPress = {confirmIOSDate}
+                        >
+                            <Text style={[
+                                styles.buttonText,                            
+                            ]}
+                            >Confirm</Text>
 
-                    </TouchableOpacity>
+                        </TouchableOpacity>
 
                 </View>
-            )}
+            
+                )}               
+            
             {!showPicker && (
                 <Pressable onPress = {toggleDatepicker}>
                     
@@ -346,9 +354,15 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                 </Pressable>
             )}
 
-
-
+                    
+                </View>
+            </View>
             {/* TIME */}
+            <View style={styles.inputContainer}>
+                <View style={{width:'15%'}}>
+                    <Text style={styles.placeholderText}>Hora_inicio: </Text>
+                </View>
+                <View style={styles.onlyinputContainer}>
             {showPickerTime && (<DateTimePicker  
             timeZoneName={'America/Santiago'}          
             mode="time"
@@ -395,7 +409,7 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                 </View>
             )}
             {!showPickerTime && (
-                <Pressable onPress = {toggleTimepicker}>
+                <Pressable onPress = {toggleTimepicker} style={{width:'80%'}}>
                     
                     <TextInput
                         style={styles.input}
@@ -408,7 +422,14 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                         />
                 </Pressable>
             )}  
+        </View>
+        </View>
         {/* TIME2 */}
+        <View style={styles.inputContainer}>
+            <View style={{width:'15%'}}>
+                <Text style={styles.placeholderText}>Hora_fin: </Text>
+            </View>
+                <View style={styles.onlyinputContainer}>
         {showPickerTimeEnd && (<DateTimePicker  
             timeZoneName={'America/Santiago'}          
             mode="time"
@@ -468,30 +489,25 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                         />
                 </Pressable>
             )}
+            </View>
+        </View>
         <View style={styles.inputContainer}>
-            <Text style={styles.placeholderText}>Número Máximo Estudiantes</Text>
+            <View style={{width:'15%'}}>
+                <Text style={styles.placeholderText}>Número Máximo Estudiantes</Text>
+            </View>
             <View style={styles.onlyinputContainer}>       
                 <TextInput style={styles.input} placeholder={new_num_max_alumnos.toString()} onChangeText={(text: string) => setNew_num_max_alumnos(text)} value={new_num_max_alumnos} />
             </View>
         </View>
         <View style={styles.inputContainer}>
-            <Text style={styles.placeholderText}>Label</Text>
+            <View style={{width:'15%'}}>
+                <Text style={styles.placeholderText}>Label</Text>
+            </View>
             <View style={styles.onlyinputContainer}>       
                 <TextInput style={styles.input} placeholder={label} onChangeText={(text: string) => setNew_label(text)} value={new_label} />
             </View>
         </View>
-        <View style={styles.ContainerRow}>
-            <View style={styles.pickerRight}>
-                <Picker
-                    selectedValue={new_mode}
-                    onValueChange={(itemValue, itemIndex) =>
-                    setNew_mode(itemValue)
-                    }>
-                <Picker.Item label="público" value="publico" />
-                <Picker.Item label="moderado" value="moderado" />
-                <Picker.Item label="privado" value="privado" />
-                </Picker>                                              
-            </View>
+        <View style={styles.ContainerRow}>            
             <View style={styles.pickerRight}>
                 <Picker
                     selectedValue={new_estado}
@@ -504,18 +520,23 @@ const ConfigClaseProfesoresScreen = ({ navigation, route }:ConfigClaseProps) => 
                 </Picker>                                              
             </View>
         </View>
-        <Button onPress={patch_clase} title="Guardar" />
-        <View style={styles.buttonContainer}>
+        <View style={{alignItems:'center'}}>
+            <TouchableOpacity style={styles.editbutton} onPress={patch_clase}>        
+                <Text style={styles.text_edit_button}>Guardar</Text>
+            </TouchableOpacity>
+        </View>            
+        
+        {/* <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={delete_clase} style={styles.deleteButton}>
                 <Text style={styles.buttonText2}>Borrar clase</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={go_off_clase} style={styles.deleteButton}>
                 <Text style={styles.buttonText2}>Salir de la clase</Text>
             </TouchableOpacity> 
-        </View>
+        </View> */}
 
             
-           
+        
         </View>
     </View>
   );
@@ -533,13 +554,13 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',// Ajusta el margen según sea necesario
-        width:150
+        width:'100%',
     },
     onlyinputContainer: {
         flexDirection: 'column',
-        alignItems: 'center',// Ajusta el margen según sea necesario
-        width:150,        
-        marginLeft:50
+        alignItems: 'baseline',// Ajusta el margen según sea necesario
+        width:'80%',        
+        marginLeft:40,
     },
     placeholderText: {
         width:100,
@@ -557,19 +578,24 @@ const styles = StyleSheet.create({
     },
     form: {
         gap: 10,
-        width:'60%',
+        width:'100%',
+        
     },
     input: {
         height: 44,
         borderWidth: 1,
         borderRadius: 4,
         padding: 10,
+        width:200,
         backgroundColor: '#fff',
 
     },
     container: {
         alignItems: 'flex-start',
-        width: '100%',
+        flex: 1,
+        justifyContent: 'space-between', // Alinea los elementos de manera uniforme verticalmente
+        paddingHorizontal: 20, // Espacio horizontal en los lados de la pantalla
+        paddingBottom: 20, // Espacio inferior
 
     },
     button:{
@@ -589,6 +615,7 @@ const styles = StyleSheet.create({
     datePicker: {
         height: 120,
         marginTop: -10,
+        width:'90%',
     },
     pickerButton: {
         paddingHorizontal: 20,
@@ -608,6 +635,22 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
+    editbutton: {
+        position:"relative",
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:90,
+        height:40,
+        backgroundColor:'#c2f4be',
+        borderRadius:50,
+        marginTop:5,
+      },
+    text_edit_button: {
+        fontSize: 9, 
+        padding:8         
+      },
 
 
 });

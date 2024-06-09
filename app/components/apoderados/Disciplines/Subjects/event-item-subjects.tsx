@@ -27,14 +27,15 @@ const EventItemSubjects: React.FC<EventItemProps> = ({subject_id,subject_name,na
                     <Image style={styles_card.imageStyle} source = {require('../../../../screens/images/Cancha.jpg')} />
                         <View style={styles_card.infoStyle}>
                             <Text style={styles_card.titleStyle}>{subject_name}</Text>
-                            <Text style={styles_card.categoryStyle}>{mode} {cant_estudiantes_actuales}/{num_max_students} </Text>
+                            <Text style={styles_card.categoryStyle}>{cant_estudiantes_actuales}/{num_max_students} </Text>
 
                             <View style={styles_card.iconLabelStyle}>
-                            <AntDesign name="pushpin" size={24} color="black" />
-                            <AntDesign name="pushpin" size={24} color="black" />
-                            <Text>{rolled? 'Inscrito' : 'No Inscrito'}</Text>
-                            </View>
-                        </View>
+                                <Image 
+                                    style={styles_card.statusImageStyle} 
+                                    source={rolled ? require('../../../../screens/images/Inscrito-sin-fondo.png') : require('../../../../screens/images/No-inscrito-sin-fondo.png')} 
+                                />
+                                </View>                        
+                            </View>                        
                 </View>
             </View>
         </TouchableOpacity>

@@ -20,9 +20,26 @@ export const styles = StyleSheet.create({
     height: '100%',
     
   },
+  box_buttons: {        
+    width: '25%',
+    height: '15%',
+    
+  },
   title: {
     fontSize: 22, 
     padding:8
+     
+  },
+  principalTitle: {
+    fontSize: 36, 
+    padding:2,
+    fontWeight: 'bold',  
+     
+  },
+  subjectTitle: {
+    fontSize: 20, 
+    padding:2,
+    fontWeight: 'bold',  
      
   },
   subtitle: {
@@ -81,8 +98,8 @@ export const styles = StyleSheet.create({
     
   container_list: {        
     flex: 1,
-    backgroundColor: '#fff',
     alignItems:"center",
+    width:'80%',
           // justifyContent: 'center',
   },
   box_left: {        
@@ -130,9 +147,22 @@ export const styles = StyleSheet.create({
     borderRadius:50,
     marginTop:5,
   },
+  editbutton2: {
+    position:"relative",
+    borderWidth:1,
+    borderColor:'rgba(0,0,0,0.2)',
+    alignItems:'center',
+    justifyContent:'center',
+    width:130,
+    height:30,
+    backgroundColor:'#c2f4be',
+    borderRadius:50,
+    marginTop:5,
+  },
   scrollViewContent: {
     paddingVertical: 20,
     paddingHorizontal: 5,
+    backgroundColor: 'fff',
   },
   screen: {
     padding: 20,
@@ -140,12 +170,13 @@ export const styles = StyleSheet.create({
 }) 
 
 const deviceWidth = Math.round(Dimensions.get('window').width);
+const deviceHeight = Math.round(Dimensions.get('window').height);
 const offset = 40;
 const offset2 = 80;
 const radius = 20;
 export const styles_card = StyleSheet.create({
   container: {
-    width: deviceWidth - 20,
+    width: '100%',
     alignItems: 'center',
     marginTop: 25,
     marginBottom:25,
@@ -153,9 +184,9 @@ export const styles_card = StyleSheet.create({
     //borderColor:"black",
   },
   cardContainer: {
-    width: deviceWidth - offset,
+    width: '100%',
     backgroundColor: '#00b4fc',
-    height: 200,
+    height: deviceHeight * 0.25,
     borderRadius: radius,
 
     shadowColor: '#000',
@@ -168,8 +199,8 @@ export const styles_card = StyleSheet.create({
     elevation: 9,
   },
   imageStyle: {
-    height: 100,
-    width: deviceWidth - offset,
+    height: deviceHeight * 0.15,
+    width: '100%',
     borderTopLeftRadius: radius,
     borderTopRightRadius: radius,
     opacity: 0.9,
@@ -189,7 +220,13 @@ export const styles_card = StyleSheet.create({
   },
   iconLabelStyle: {
     flexDirection: 'row',
-    marginTop: 10,
+    height:'25%',
+  },
+  statusImageStyle: {
+    width: 90, // ajusta según sea necesario
+    height: 40, // ajusta según sea necesario
+    resizeMode: 'contain',
+
   },
 });
 export const styles_card_horario = StyleSheet.create({
@@ -227,11 +264,11 @@ export const styles_card_horario = StyleSheet.create({
     alignSelf: 'center',
   },
   titleStyle: {
-    fontSize: 20,
+    fontSize: 26,
     fontWeight: '400',
   },
   categoryStyle: {
-    fontWeight: '200',
+    fontWeight: '300',
   },
   infoStyle: {
     marginHorizontal: 10,

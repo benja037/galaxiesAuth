@@ -20,11 +20,11 @@ const StudentsConfigProfesoresScreen = ({ navigation, route }:EditSubjectAlumnos
     const fetchData = async () => {
     try {        
         const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/students/`, {});           
-        console.log("Fetchdata1");
+        /* console.log("Fetchdata1"); */
         setAlumnos(response.data);    
-        console.log("ALUMNOS:", response.data);        
+        /* console.log("ALUMNOS:", response.data);  */       
     } catch (error) {
-        console.error("Error:", error);            
+        /* console.error("Error:", error);  */           
     }
     }
 

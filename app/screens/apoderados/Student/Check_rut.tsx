@@ -102,11 +102,11 @@ const CheckRutProfileApoderadosScreen = ({ navigation, route }:CheckRutProps) =>
           const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/students/check-rut/${document_type}/${document_number}/`,{});
       
           const message = response.data.message; // Asumiendo que la respuesta de la API contiene un campo "message"
-          console.log("rut",document_number,"axios result", message);
+          /* console.log("rut",document_number,"axios result", message); */
       
           if (message === STUDENT_ALREADY_LINKED) {
             // Si el usuario ya está vinculado, no hacer nada o mostrar un mensaje de error
-            console.error("Error: El usuario ya está vinculado a otro propietario.");
+            /* console.error("Error: El usuario ya está vinculado a otro propietario."); */
             alert("El usuario ya está vinculado a otro propietario.");
           } else if (message === STUDENT_NOT_FOUND) {
             // Si el usuario no está en los registros, navegar a Add_student
@@ -115,10 +115,10 @@ const CheckRutProfileApoderadosScreen = ({ navigation, route }:CheckRutProps) =>
             navigation.pop();
           } else {
             // Manejar cualquier otro caso o mensaje
-            console.error("Error inesperado:", message);
+            /* console.error("Error inesperado:", message); */
           }
         } catch (error) {
-          console.error("Error:", error);
+          /* console.error("Error:", error); */
           alert("Hubo un error al verificar el RUT. Por favor, inténtalo de nuevo.");
         }
       };
@@ -142,8 +142,8 @@ const CheckRutProfileApoderadosScreen = ({ navigation, route }:CheckRutProps) =>
                 }}
             >
                 {(props: FormikProps<FormData>) => ( 
-                <View>
-                    <View>           
+                <View>                    
+                    <View style={styles.inputContainer}>
                         <View style={styles.pickerLeft}>
                             <Picker
                                 selectedValue={props.values.document_type}
@@ -154,10 +154,6 @@ const CheckRutProfileApoderadosScreen = ({ navigation, route }:CheckRutProps) =>
                                 <Picker.Item label="pasaporte" value="pasaporte" />
                             </Picker>                                              
                         </View>
-                        
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <Text style={styles.placeholderText}>Documento(rut o pasaporte): </Text>
                         <View style={styles.onlyinputContainer}>
                             <TextInput
                             placeholder='rut o pasaporte (11.111.111-0)'
@@ -192,8 +188,7 @@ const CheckRutProfileApoderadosScreen = ({ navigation, route }:CheckRutProps) =>
 const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
-        alignItems: 'center',// Ajusta el margen según sea necesario
-        width:150
+        alignItems: 'center',
     },
     onlyinputContainer: {
         flexDirection: 'column',
@@ -209,7 +204,7 @@ const styles = StyleSheet.create({
     },
     pickerLeft: {
         width:150,
-        height:300,        
+        height:250,        
     },
     pickerRigth: {
         width:200,
@@ -223,7 +218,7 @@ const styles = StyleSheet.create({
     },
     input: {        
         height: 40, // Ajusta la altura según sea necesario
-        width:250,
+        width:200,
         borderColor: '#ccc', // Ajusta el color del borde según sea necesario
         borderWidth: 1, // Ajusta el grosor del borde según sea necesario
         borderRadius: 5, // Ajusta el radio del borde según sea necesario
@@ -244,10 +239,8 @@ const styles = StyleSheet.create({
         width:'65   %',
     },    
     container: {
-        alignItems: 'flex-start',
-        width: '100%',
-        marginLeft:10
-
+        flex: 1,
+        justifyContent: 'center',
     },
     button:{
         height:50,

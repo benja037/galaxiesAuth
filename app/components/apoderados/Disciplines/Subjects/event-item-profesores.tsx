@@ -17,7 +17,7 @@ const EventItemProfesores: React.FC<EventItemProfesoresProps> = ({ profesor_id,f
     return (       
         <TouchableOpacity key ={profesor_id} style = { styles.card }>
             <View>
-                <Text style={styles.itemText}> {profesor_id} {firstname} {lastname}</Text>
+                <Text style={styles.itemText}> {firstname} {lastname}</Text>
             </View>
             
         </TouchableOpacity>

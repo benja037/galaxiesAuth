@@ -69,11 +69,11 @@ const AddStudentProfileApoderadosScreen: React.FC<AddStudentProps> = ({ navigati
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/students/post-user-students/`, {gender:gender,date_of_birth:date_of_birth,firstname:firstname,lastname:lastname,phone_number:phone_number,document_type:document_type,document_number:document_number
                 
             });
-            console.log("axios result", response.data)
+            /* console.log("axios result", response.data) */
             navigation.dispatch(pushAction);
             
         } catch (error) {
-            console.error("Error:", error);
+           /*  console.error("Error:", error); */
         }
       };
     /* const handleCheckboxChange = async () => {

@@ -25,13 +25,13 @@ const EventItemStudentsSelectGroup: React.FC<EventItemAlumnosProps> = ({ grupo_i
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/${grupo_id}/students/`, {student_pk:alumno_id
                 
             });
-            console.log("axios result", response.data)
+            /* console.log("axios result", response.data) */
             handleRemoveFromList(alumno_id);
    
             //navigation.goBack();
             
         } catch (error:any) {
-            console.error("Errors:", error);            
+            /* console.error("Errors:", error); */            
             if (error.response.data) {
                 //console.log("axios result", error.response.data)
                 alert(error.response.data.message);
@@ -43,8 +43,8 @@ const EventItemStudentsSelectGroup: React.FC<EventItemAlumnosProps> = ({ grupo_i
         post_alumno()
       };
     return ( 
-        <View> 
-            <View>
+        <View style={{flexDirection:'row',marginTop:15}}> 
+            <View style={{width:'70%'}}>
                 <TouchableOpacity key ={alumno_id} style = { styles.card } onPress={()=>navigation.navigate("Alumno_perfil",{alumno_id})}>
                     <View>
                         <Text style={styles.itemText}> {alumno_id} {firstname} {lastname}</Text>
@@ -52,9 +52,9 @@ const EventItemStudentsSelectGroup: React.FC<EventItemAlumnosProps> = ({ grupo_i
                     
                 </TouchableOpacity>
             </View>
-            <View>
-                <TouchableOpacity  onPress={handlePostStudent}>
-                    <Text>Agregar</Text>
+            <View style = {{marginLeft:15}}>
+                <TouchableOpacity style={styles.addButtonTouch}  onPress={handlePostStudent}>
+                    <Text style={styles.addButtonTouch}>Agregar</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -70,9 +70,22 @@ const styles = StyleSheet.create({
         padding: 10,
         alignSelf: 'stretch',
         marginBottom:2,
+        flex:1,
     },
     itemText: {
         textAlign: 'left',
+    },
+    addButtonTouch: {
+        backgroundColor: 'green', // yellow background
+        width:"100%",
+        padding: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    addButtonText: {
+        fontSize: 9,
+        color: '#231f20',
+        fontWeight: 'bold',
     },
 })
 

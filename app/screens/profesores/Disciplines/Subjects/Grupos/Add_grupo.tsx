@@ -19,13 +19,13 @@ const AddGrupoProfesoresScreen = ({ navigation, route }:GrupoProps) => {
             //console.log("DAYYY",{selectedDay})
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/`, {name:name_group})
                 
-            console.log("GRUPO AGREGADO")
+            /* console.log("GRUPO AGREGADO") */
             //console.log("RESPONSE axios result", response)
             //console.log("axios result", response.data)
             navigation.goBack();
             
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
 

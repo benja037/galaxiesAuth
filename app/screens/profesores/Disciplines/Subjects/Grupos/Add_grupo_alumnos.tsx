@@ -26,11 +26,11 @@ const EditGrupoAlumnosProfesoresScreen = ({ navigation, route }:EditGrupoAlumnos
     const fetchData = async () => {
     try {        
         const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/${grupo_id}/no-students/`, {});           
-        console.log("Fetchdata1");
+        /* console.log("Fetchdata1"); */
         setAlumnos(response.data);    
-        console.log("ALUMNOS Fuera:", response.data);        
+        /* console.log("ALUMNOS Fuera:", response.data); */        
     } catch (error) {
-        console.error("Error:", error);            
+        /* console.error("Error:", error);   */          
     }
     }
     

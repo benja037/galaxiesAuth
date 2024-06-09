@@ -39,6 +39,7 @@ import * as SecureStore from 'expo-secure-store'
 import RequestSubjectProfesoresScreen from './profesores/Disciplines/Subjects/Request/Request_subject';
 import GrupoSubjectProfesoresScreen from './profesores/Disciplines/Subjects/Grupos/Grupo_subject';
 import RequestClassProfesoresScreen from './profesores/Disciplines/Subjects/Clases/Request_class';
+import AlumnoDetailGrupoProfesoresScreen from './profesores/Disciplines/Subjects/Grupos/Alumno_perfil_grupo';
 
 
 
@@ -57,12 +58,13 @@ export type RootStackParamList = {
   'Alumno_perfil':{alumno_id:string}
   'Alumno_perfil_subject':{alumno_id:string,subject_id:string}
   'Alumno_perfil_clase':{alumno_id:string,subject_id:string,clase_id:string}
+  'Alumno_perfil_grupo':{alumno_id:string,subject_id:string,grupo_id:string}
   'Grupo_detail':{subject_id:string,grupo_id:string}
   'Add_grupo':{subject_id:string}
   'Clase_detail':{clase_id:string,subject_id:string}
   'Clase_config':{subject_id:string,clase_id:string,num_max_alumnos:string,mode:string,state:string,date:string,time_start:string,time_end:string,label:string};
   'Add_clase':{subject_id:string}  
-  'Profile':{user_id:string}
+  'Profile':{}
   'Students':any;
   'Add_student_apoderado':{document_type:string,document_number:string};
   'Add_student_profesor':any;
@@ -85,32 +87,33 @@ const ProfesorStack = () => {
       color: '#fff',
       fontWeight: '600',
     },
-    headerTintColor:'blue',
+    headerTintColor:'blue',     // Define el color de fondo de la pantalla
     }}>
     
-    <Stack2.Screen name='Disciplines' component={DisciplinesProfesoresScreen} options ={{headerTitle: 'Disciplina'}}></Stack2.Screen>
-    <Stack2.Screen name='Subjects' component={SubjectsProfesoresScreen} options ={{}}></Stack2.Screen>
-    <Stack2.Screen name='Add_subject' component={AddSubjectProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Subjects_detail' component={SubjectDetailProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Subject_informe' component={SubjectInformeProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Subject_config' component={ConfigSubjectProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Grupo_detail' component={GrupoDetailProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Requests_subject' component={RequestSubjectProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Requests_class' component={RequestClassProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Grupo_subject' component={GrupoSubjectProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Alumno_perfil' component={AlumnoDetailProfesoresScreen}></Stack2.Screen>  
-    <Stack2.Screen name='Alumno_perfil_subject' component={AlumnoDetailSubjectProfesoresScreen}></Stack2.Screen>  
-    <Stack2.Screen name='Alumno_perfil_clase' component={AlumnoDetailClaseProfesoresScreen}></Stack2.Screen>  
-    <Stack2.Screen name='Edit_subject_alumnos' component={EditSubjectAlumnosProfesoresScreen}></Stack2.Screen>  
-    <Stack2.Screen name='Edit_clase_alumnos' component={EditClaseAlumnosProfesoresScreen}></Stack2.Screen>  
-    <Stack2.Screen name='Edit_grupo_alumnos' component={EditGrupoAlumnosProfesoresScreen}></Stack2.Screen>  
-    <Stack2.Screen name='Add_grupo' component={AddGrupoProfesoresScreen}></Stack2.Screen>  
-    <Stack2.Screen name='Clase_detail' component={ClaseDetailProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Clase_config' component={ConfigClaseProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Add_clase' component={AddClaseProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Profile' component={Profile}></Stack2.Screen>
-    <Stack2.Screen name='Students' component={StudentsConfigProfesoresScreen}></Stack2.Screen>
-    <Stack2.Screen name='Add_student_profesor' component={AddStudentProfesoresScreen}></Stack2.Screen>
+    <Stack2.Screen name='Disciplines' component={DisciplinesProfesoresScreen} options ={{headerTitle: 'Disciplinas',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Subjects' component={SubjectsProfesoresScreen} options ={{headerTitle: 'Asignaturas',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Add_subject' component={AddSubjectProfesoresScreen} options ={{headerTitle: 'Añadir Asignatura',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Subjects_detail' component={SubjectDetailProfesoresScreen} options ={{headerTitle: 'Asignatura',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Subject_informe' component={SubjectInformeProfesoresScreen} options ={{headerTitle: 'Informe Asignatura',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Subject_config' component={ConfigSubjectProfesoresScreen} options ={{headerTitle: 'Configurar Asistencia',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Grupo_detail' component={GrupoDetailProfesoresScreen} options ={{headerTitle: 'Grupo',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Requests_subject' component={RequestSubjectProfesoresScreen} options ={{headerTitle: 'Solicitudes Asignatura',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Requests_class' component={RequestClassProfesoresScreen} options ={{headerTitle: 'Solicitudes Clase',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Grupo_subject' component={GrupoSubjectProfesoresScreen} options ={{headerTitle: 'Grupos de la Asignatura',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Alumno_perfil' component={AlumnoDetailProfesoresScreen}  options ={{headerTitle: 'Perfil Estudiante',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>  
+    <Stack2.Screen name='Alumno_perfil_subject' component={AlumnoDetailSubjectProfesoresScreen}  options ={{headerTitle: 'Perfil Estudiante',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>  
+    <Stack2.Screen name='Alumno_perfil_clase' component={AlumnoDetailClaseProfesoresScreen} options ={{headerTitle: 'Perfil Estudiante',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>  
+    <Stack2.Screen name='Alumno_perfil_grupo' component={AlumnoDetailGrupoProfesoresScreen} options ={{headerTitle: 'Perfil Estudiante',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>  
+    <Stack2.Screen name='Edit_subject_alumnos' component={EditSubjectAlumnosProfesoresScreen} options ={{headerTitle: 'Estudiantes Asignatura',contentStyle: { backgroundColor: '#fff' }}} ></Stack2.Screen>  
+    <Stack2.Screen name='Edit_clase_alumnos' component={EditClaseAlumnosProfesoresScreen} options ={{headerTitle: 'Estudiantes Clase',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>  
+    <Stack2.Screen name='Edit_grupo_alumnos' component={EditGrupoAlumnosProfesoresScreen} options ={{headerTitle: 'Estudiantes Grupo',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>  
+    <Stack2.Screen name='Add_grupo' component={AddGrupoProfesoresScreen} options ={{headerTitle: 'Añadir Grupo',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>  
+    <Stack2.Screen name='Clase_detail' component={ClaseDetailProfesoresScreen} options ={{headerTitle: 'Clase',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Clase_config' component={ConfigClaseProfesoresScreen} options ={{headerTitle: 'Configurar Clase',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Add_clase' component={AddClaseProfesoresScreen} options ={{headerTitle: 'Añadir clase',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Profile' component={Profile} options ={{headerTitle: 'Cuenta',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Students' component={StudentsConfigProfesoresScreen} options ={{headerTitle: 'Estudiantes',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+    <Stack2.Screen name='Add_student_profesor' component={AddStudentProfesoresScreen} options ={{headerTitle: 'Agregar Estudiante',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
     
      
     
@@ -132,11 +135,11 @@ const ApoderadoStack = () => {
       headerTintColor:'blue',
       }}>
         
-      <Stack2.Screen name='Disciplines' component={DisciplinesApoderadosScreen} options ={{headerTitle: 'Disciplina'}}></Stack2.Screen>
-      <Stack2.Screen name='Subjects' component={SubjectsApoderadosScreen} options ={{}}></Stack2.Screen>
-      <Stack2.Screen name='Subjects_detail' component={SubjectDetailApoderadosScreen}></Stack2.Screen>
-      <Stack2.Screen name='Clase_detail' component={ClaseDetailApoderadosScreen}></Stack2.Screen>
-      <Stack2.Screen name='Profile' component={Profile}></Stack2.Screen>      
+      <Stack2.Screen name='Disciplines' component={DisciplinesApoderadosScreen} options ={{headerTitle: 'Disciplinas',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+      <Stack2.Screen name='Subjects' component={SubjectsApoderadosScreen} options ={{headerTitle: 'Asignaturas',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+      <Stack2.Screen name='Subjects_detail' component={SubjectDetailApoderadosScreen} options ={{headerTitle: 'Asignatura',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+      <Stack2.Screen name='Clase_detail' component={ClaseDetailApoderadosScreen} options ={{headerTitle: 'Clase',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>
+      <Stack2.Screen name='Profile' component={Profile} options ={{headerTitle: 'Cuenta',contentStyle: { backgroundColor: '#fff' }}}></Stack2.Screen>      
          
         
     </Stack2.Navigator>
@@ -154,7 +157,7 @@ const ApoderadoStack = () => {
           onLogout(); // Intenta llamar a onLogout
         }
       } catch (error) {
-        console.error('Error al cerrar sesión:', error); // Maneja cualquier error que ocurra durante el cierre de sesión
+        /* console.error('Error al cerrar sesión:', error); */ // Maneja cualquier error que ocurra durante el cierre de sesión
       }
     };
     const handleNavigation = (screenName: keyof RootStackParamList) => {
@@ -167,7 +170,7 @@ const ApoderadoStack = () => {
               selectProfile(null); // Permitir null              
           }
       } catch (error) {
-          console.error('Error al cambiar de perfil:', error); // Maneja cualquier error que ocurra durante el cambio de perfil
+          /* console.error('Error al cambiar de perfil:', error); */ // Maneja cualquier error que ocurra durante el cambio de perfil
       }
   };
     
@@ -220,14 +223,14 @@ const Home = () => {
       
     }}>
       {authState && (authState.user_type === 'profesor' || authState.user_type === 'admin') && (
-        <Drawer.Screen name="ProfesorStack" component={ProfesorStack} options={{
+        <Drawer.Screen name="Profesor" component={ProfesorStack} options={{
           headerStyle: {
             backgroundColor: '#012677', // Cambia el color de fondo del header
           }
         }}/>
       )}      
       {authState && authState.user_type === 'apoderado' && (
-        <Drawer.Screen name="ApoderadoStack" component={ApoderadoStack} options={{
+        <Drawer.Screen name="Apoderado" component={ApoderadoStack} options={{
           headerStyle: {
             backgroundColor: '#012677', // Cambia el color de fondo del header
           },

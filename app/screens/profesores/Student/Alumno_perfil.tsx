@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import * as SecureStore from 'expo-secure-store'
-import { ScrollView,Text,Button, View } from "react-native";
+import { ScrollView,Text,Button, View,StyleSheet } from "react-native";
 import { useSafeAreaFrame } from "react-native-safe-area-context";
 
 
@@ -35,7 +35,7 @@ const AlumnoDetailProfesoresScreen: React.FC<DetailAlumnoProps> = ({navigation,r
                     Authorization: `Bearer ${token}` 
                 }
             });
-            console.log("ALUMNO_RETRIEVE",response.data)
+            /* console.log("ALUMNO_RETRIEVE",response.data) */
             setDate_of_birth(response.data.date_of_birth)
             setFirstname(response.data.firstname)
             setLastname(response.data.lastname)
@@ -45,7 +45,7 @@ const AlumnoDetailProfesoresScreen: React.FC<DetailAlumnoProps> = ({navigation,r
             setDocument_type(response.data.document_type)
            
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
             
         }
        
@@ -59,31 +59,51 @@ const AlumnoDetailProfesoresScreen: React.FC<DetailAlumnoProps> = ({navigation,r
                     Authorization: `Bearer ${token}` 
                 }
             });
-            console.log("ALUMNO_RETRIEVE",response.data)
+            /* console.log("ALUMNO_RETRIEVE",response.data) */
             setDate_of_birth(response.data.date_of_birth)
             setFirstname(response.data.firstname)
             setLastname(response.data.lastname)
             setGender(response.data.gender)
            
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
             
         }
        
     }
     return ( 
-        <View>
-            <Text>ID: {alumno_id}</Text>           
-            <Text>Nombre: {firstname}</Text>           
-            <Text>Apellido: {lastname}</Text>           
-            <Text>Fecha de Nacimiento: {date_of_birth}</Text>
-            <Text>Género: {gender}</Text>
-            <Text>Phone_number: {phone_number}</Text>
-            <Text>Document_type: {document_type}</Text>
-            <Text>Document_number: {document_number}</Text>
-            
+        <View style={{flex:1,alignItems:'center'}}>
+            <View style={styles2.headerInfo}>
+                <Text>ID: {alumno_id}</Text>           
+                <Text>Nombre: {firstname}</Text>           
+                <Text>Apellido: {lastname}</Text>           
+                <Text>Fecha de Nacimiento: {date_of_birth}</Text>
+                <Text>Género: {gender}</Text>
+                <Text>Phone_number: {phone_number}</Text>
+                <Text>Document_type: {document_type}</Text>
+                <Text>Document_number: {document_number}</Text>            
+            </View>
         </View>
+        
         
     );
 }
 export default AlumnoDetailProfesoresScreen;
+
+const styles2 = StyleSheet.create({
+    headerInfo: {
+        marginBottom: 10,
+        marginTop:10,
+        padding: 10,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        width:'90%'
+    
+    },
+    headerText: {
+        fontSize: 18,
+        color: '#333',
+    },
+}
+);

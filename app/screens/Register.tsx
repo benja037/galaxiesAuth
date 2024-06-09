@@ -35,16 +35,38 @@ const initialValues: FormData = {
     lastname: '',
     password: '',
     email: '',
-    gender: 'hombre',
+    gender: 'Hombre',
     user_type: 'apoderado',
     confirmPassword: '',
     phone_number:'',
     document_type:'rut',
     document_number:'',
 };
+const formatRut = (rut: string) => {
+    // Eliminar puntos y guiones
+    rut = rut.replace(/\./g, '').replace(/\-/g, '');
+
+    // Separar el número y el dígito verificador
+    let rutNumber = rut.slice(0, -1);
+    let rutDV = rut.slice(-1).toUpperCase();
+
+    // Formatear el número
+    let formattedRut = '';
+    while (rutNumber.length > 3) {
+        formattedRut = '.' + rutNumber.slice(-3) + formattedRut;
+        rutNumber = rutNumber.slice(0, -3);
+    }
+    formattedRut = rutNumber + formattedRut;
+
+    // Agregar el guion y el dígito verificador
+    formattedRut = formattedRut + '-' + rutDV;
+
+    return formattedRut;
+};
+// Función para validar el RUT
 const validateRut = (rut:any) => {
-    // Eliminar puntos y guión (caracteres de formato)
-    rut = rut.replace(/\./g,'').replace(/\-/g,'');
+    // Eliminar puntos y guión
+    rut = rut.replace(/\./g, '').replace(/\-/g, '');
 
     // Separar el número y el dígito verificador
     let rutNumber = rut.slice(0, -1);
@@ -91,6 +113,9 @@ const SignupSchema = Yup.object().shape({
         .oneOf([Yup.ref('password')],'Tu contraseñas no coinciden'),  
     document_number: Yup.string()     
         .test('is-rut-valid', 'Invalid RUT', (value) => validateRut(value)) 
+        .transform((value, originalValue) => {
+            return validateRut(originalValue) ? formatRut(originalValue) : originalValue;
+        })
         .required('Required'),
 });
 const Register = () => {    
@@ -130,11 +155,11 @@ const Register = () => {
         };
     // We automatically call the login after a succesful registration
     const register_post = async (formData:FormData) => {
-        const { date_of_birth,user_type,firstname, lastname, password, email, gender,phone_number } = formData;
-        console.log("date_of_birth",date_of_birth,user_type,firstname, lastname, password, email, gender,phone_number)
-        const result = await onRegister!(password,email,date_of_birth,user_type,firstname,lastname,gender,phone_number);
+        const { date_of_birth,user_type,firstname, lastname, password, email, gender,phone_number,document_type,document_number } = formData;
+        /* console.log("date_of_birth",date_of_birth,user_type,firstname, lastname, password, email, gender,phone_number) */
+        const result = await onRegister!(password,email,date_of_birth,user_type,firstname,lastname,gender,phone_number,document_type,document_number);
         if (result && result.error) {
-            console.log(result)
+            /* console.log(result) */
             alert(result.msg.error);
         } else {            
             login(formData)
@@ -144,6 +169,7 @@ const Register = () => {
 
     return (
     <View style ={styles.container}>        
+        <View style={{marginTop:45,marginLeft:5}}>
         <Formik
                 initialValues={initialValues}
                 validationSchema={SignupSchema}
@@ -345,17 +371,22 @@ const Register = () => {
                         </View>                        
                         
                     </View>
+                    <View style={{alignItems:'center'}}>
+                        <TouchableOpacity style = {styles.button}onPress={() => props.handleSubmit()}>
+                            <Text style={styles.textButton}>Registrar</Text>
+                        </TouchableOpacity>  
+                    </View>
                     
                     
-                            <Button onPress={() => props.handleSubmit()} title="Submit" />
-                        </View>
+                            
+                    </View>
 
                     )}
                         
                             
             </Formik>   
         
-       
+        </View>       
     </View>
   );
 };
@@ -434,21 +465,26 @@ const styles = StyleSheet.create({
         width:'65   %',
     },    
     container: {
+        flex: 1,
         alignItems: 'flex-start',
-        width: '95%',
-        marginLeft:10,
-        marginTop:45,
+        backgroundColor:'#fff',
         
 
     },
-    button:{
-        height:50,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 50,
-        marginTop: 10,
-        marginBottom: 15,
-        backgroundColor: '#075985'
+    button:{       
+        alignItems: 'center', 
+        justifyContent: 'center',
+        height:40,
+        width:100,
+        borderRadius: 5,        
+        backgroundColor: '#012677',
+    },
+    textButton:{
+        fontSize: 14,
+        lineHeight: 21,
+        fontWeight: 'bold',
+        letterSpacing: 0.25,
+        color: 'white',
     },
     buttonText: {
         fontSize: 14,

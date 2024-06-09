@@ -23,7 +23,7 @@ const SubjectsProfesoresScreen: React.FC<SubjectProps> = ({ navigation, route })
    
     useFocusEffect(      
       React.useCallback(() => { 
-        console.log("SubjectsProfesoresScreen")           
+        /* console.log("SubjectsProfesoresScreen")     */       
         fetchData2()                     
     },[])
   );
@@ -34,7 +34,7 @@ const SubjectsProfesoresScreen: React.FC<SubjectProps> = ({ navigation, route })
     const fetchData2 = async () => {
       try {          
           const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/disciplines/${discipline_id}/subjects/`, {});
-          console.log("ALL subcjects:", response.data);
+          /* console.log("ALL subcjects:", response.data); */
           setData(response.data );
           //setData(response.data.subjects_from_teacher );
           /* ALL subcjects: [{"course_id": 1, "id": 1, "profesores": [[Object]], "subject_name": "Tenis 1999-2000"}
@@ -42,7 +42,7 @@ const SubjectsProfesoresScreen: React.FC<SubjectProps> = ({ navigation, route })
            "subject_name": "Tenis 2000-2001A"}, {"course_id": 1, "id": 7, "profesores": [], "subject_name": "tenis2.0"}, {"course_id": 1,
             "id": 8, "profesores": [], "subject_name": "tenis9"}, {"course_id": 1, "id": 9, "profesores": [], "subject_name": "Tenis pilates"}, {"course_id": 1, "id": 14, "profesores": [], "subject_name": "Tenis Imaginario3"}, {"course_id": 1, "id": 15, "profesores": [], "subject_name": "Creado"}, {"course_id": 1, "id": 16, "profesores": [], "subject_name": "Hola"}, {"course_id": 1, "id": 17, "profesores": [], "subject_name": "Holaa"}, {"course_id": 1, "id": 18, "profesores": [], "subject_name": "Probabdo"}, {"course_id": 1, "id": 19, "profesores": [], "subject_name": "SSSSS"}, {"course_id": 1, "id": 20, "profesores": [], "subject_name": "SSSSS"}, {"course_id": 1, "id": 21, "profesores": [], "subject_name": "SSSSSaaa"}, {"course_id": 1, "id": 22, "profesores": [], "subject_name": "SSSSSaaa"}, {"course_id": 1, "id": 25, "profesores": [], "subject_name": "Eeey"}] */
       } catch (error) {
-          console.error("Error:", error);
+          /* console.error("Error:", error); */
       } finally {
         setLoading(false);
     }
@@ -59,7 +59,7 @@ const SubjectsProfesoresScreen: React.FC<SubjectProps> = ({ navigation, route })
       <View style = {styles.container}>
         <View style = {styles.container_up}>
           <View style = {styles.box_left}>
-            <Text>{discipline_name}</Text>        
+            <Text style={styles.principalTitle}>{discipline_name}</Text>        
           </View>  
           <View style = {styles.box_right}>
             <TouchableOpacity style={styles.circularbutton} onPress={() => navigation.navigate("Add_subject",{discipline_id})}>        

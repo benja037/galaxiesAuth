@@ -25,13 +25,13 @@ const EventItemStudentsSelectGroup: React.FC<EventItemAlumnosProps> = ({ grupo_i
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/${grupo_id}/students/`, {student_pk:alumno_id
                 
             });
-            console.log("axios result", response.data)
+            /* console.log("axios result", response.data) */
             handleRemoveFromList(alumno_id);
    
             //navigation.goBack();
             
         } catch (error:any) {
-            console.error("Errors:", error);            
+            /* console.error("Errors:", error); */            
             if (error.response.data) {
                 //console.log("axios result", error.response.data)
                 alert(error.response.data.message);

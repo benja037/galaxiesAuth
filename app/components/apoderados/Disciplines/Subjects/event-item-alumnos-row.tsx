@@ -20,7 +20,7 @@ const EventItemAlumnosRow: React.FC<EventItemAlumnosRowProps> = ({ subject_id,al
     return (       
         <TouchableOpacity key ={alumno_id} style = { styles.card }>
             <View>
-                <Text style={styles.itemText}> {alumno_id} {firstname} {lastname}</Text>
+                <Text style={styles.itemText}>{firstname} {lastname}</Text>
             </View>           
             
         </TouchableOpacity>

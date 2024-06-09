@@ -9,9 +9,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import axios from "axios";
 import { styles } from "../../../styles/stylesheet";
 import { useAuth } from "../../../context/AuthContext";
-/* interface SubjectProps {    
-    navigation: NativeStackNavigationProp<RootStackParamList>;
-  } */
+
 
 type DisciplinesProps = NativeStackScreenProps<RootStackParamList, 'Disciplines'>;
 
@@ -36,7 +34,7 @@ const DisciplinesProfesoresScreen: React.FC<DisciplinesProps> = ({ navigation, r
             //EJEMPLO: data courses: [{"course_name": "Clases de Tenis", "id": 1}, {"course_name": "Futbol", "id": 2}, {"course_name": "Padel", "id": 3}, {"course_name": "Rugby", "id": 4}]
             setData(response.data);
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         } finally {
           setLoading(false);
       }
@@ -54,7 +52,7 @@ const DisciplinesProfesoresScreen: React.FC<DisciplinesProps> = ({ navigation, r
         <View style = {styles.container_up}>
           <View style = {styles.box_left}>
             {/* <Text>Bienvenido {authState?.user_type} que es Profesor: {authState?.firstname}</Text> */}        
-            <Text>Bienvenido Profesor: {authState?.firstname} {selectedProfile?.firstname}</Text>        
+            {/* <Text>Bienvenido: {authState?.firstname} {selectedProfile?.firstname}</Text> */}        
           </View>            
         </View>
         <View style={styles.container_list}>                

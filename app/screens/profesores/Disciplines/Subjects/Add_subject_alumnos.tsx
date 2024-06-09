@@ -1,4 +1,4 @@
-import { View, Image, Text, Button, StyleSheet, TextInput, Pressable, Platform, Touchable, TouchableOpacity } from 'react-native'
+import { View, Image, Text, Button, StyleSheet, TextInput, Pressable, Platform, Touchable, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store'
@@ -16,6 +16,7 @@ type EditSubjectAlumnosProps = NativeStackScreenProps<RootStackParamList, 'Edit_
 const EditSubjectAlumnosProfesoresScreen = ({ navigation, route }:EditSubjectAlumnosProps) => {
     const { subject_id } = route.params;        
     const [alumnos, setAlumnos] = useState<alumno[]>([])
+    const [loading, setLoading] = useState(true);  
     useFocusEffect(
         React.useCallback(() => {            
             fetchData();                
@@ -25,11 +26,14 @@ const EditSubjectAlumnosProfesoresScreen = ({ navigation, route }:EditSubjectAlu
     const fetchData = async () => {
     try {        
         const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/no-students/`, {});           
-        console.log("Fetchdata1");
+        /* console.log("Fetchdata1"); */
         setAlumnos(response.data);    
-        console.log("ALUMNOS Fuera:", response.data);        
+        /* console.log("ALUMNOS Fuera:", response.data);       */  
     } catch (error) {
-        console.error("Error:", error);            
+        /* console.error("Error:", error);     */        
+    }
+    finally {
+        setLoading(false);
     }
     }
     
@@ -38,9 +42,22 @@ const EditSubjectAlumnosProfesoresScreen = ({ navigation, route }:EditSubjectAlu
         setAlumnos(updatedData2);
       };
 
+    if (loading) {
+        return (
+            <View style={styles.container}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
     return (
-    <View style ={styles.container}>        
-        <EventList_students_select data2= {alumnos} navigation={navigation} subject_id={subject_id} handleRemoveFromList={handleRemoveFromList}/>
+    <View style ={styles.container}>    
+        {alumnos.length === 0 ? (
+        <Text style={styles.message}>No hay más alumnos en la asignatura para agregar</Text>
+        ) : (
+        <View style ={{marginTop:15}}>
+            <EventList_students_select data2= {alumnos} navigation={navigation} subject_id={subject_id} handleRemoveFromList={handleRemoveFromList}/>
+        </View>    
+        )}
     </View>
   );
 };
@@ -49,6 +66,10 @@ const styles = StyleSheet.create({
         width:'25%',
         height:'25%',
         resizeMode: 'contain',
+    },
+    message: {
+        fontSize: 18,
+        color: 'gray',
     },
     form: {
         gap: 10,

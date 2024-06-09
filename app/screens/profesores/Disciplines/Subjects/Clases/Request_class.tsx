@@ -33,11 +33,11 @@ const RequestClassProfesoresScreen: React.FC<DetailSubjectsProps> = ({ navigatio
     const fetchData2 = async () => {
         try {            
             const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/class/${clase_id}/requests/`, {});
-            console.log("Fetchdata2");
-            console.log("Lista Requests of Subject:", response.data);
+            /* console.log("Fetchdata2");
+            console.log("Lista Requests of Subject:", response.data); */
             setRequestList(response.data);
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         } finally {
             setLoading(false);
         }
@@ -53,7 +53,7 @@ const RequestClassProfesoresScreen: React.FC<DetailSubjectsProps> = ({ navigatio
             });
             fetchData2(); // Refrescar la lista después de aceptar.
         } catch (error) {
-            console.error("Error al aceptar la solicitud:", error);
+           /*  console.error("Error al aceptar la solicitud:", error); */
         }
     };
 
@@ -67,7 +67,7 @@ const RequestClassProfesoresScreen: React.FC<DetailSubjectsProps> = ({ navigatio
             });
             fetchData2(); // Refrescar la lista después de rechazar.
         } catch (error) {
-            console.error("Error al rechazar la solicitud:", error);
+            /* console.error("Error al rechazar la solicitud:", error); */
         }
     };
 

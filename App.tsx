@@ -39,9 +39,9 @@ export const Layout = () => {
           </>
         ) : authState.user_type === 'apoderado' && !selectedProfile ? (
           <>
-          <Stack.Screen name='Choose_student' component={MustChooseStudentProfileApoderadosScreen} />
-          <Stack.Screen name='Add_student_apoderado' component={AddStudentProfileApoderadosScreen}/>
-          <Stack.Screen name='Check_rut' component={CheckRutProfileApoderadosScreen} />
+          <Stack.Screen name='Choose_student' component={MustChooseStudentProfileApoderadosScreen} options ={{contentStyle: { backgroundColor: '#fff' }}}/>
+          <Stack.Screen name='Add_student_apoderado' component={AddStudentProfileApoderadosScreen} options ={{contentStyle: { backgroundColor: '#fff' }}}/>
+          <Stack.Screen name='Check_rut' component={CheckRutProfileApoderadosScreen} options ={{contentStyle: { backgroundColor: '#fff' }}} />
           </>
 
           

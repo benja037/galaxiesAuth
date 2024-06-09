@@ -18,16 +18,17 @@ interface EventListAlumnosRowProps {
   data2: alumno[];
   navigation: NativeStackNavigationProp<RootStackParamList>;
   subject_id:string;
+  grupo_id:string;
 }
 const NUM_ROWS = 3;
 
 
-const EventList_alumnos_row_grupo: React.FC<EventListAlumnosRowProps> = ({subject_id,data2,navigation}) => {    
-  console.log("SUBJECT_ID",subject_id)
+const EventList_alumnos_row_grupo: React.FC<EventListAlumnosRowProps> = ({subject_id,grupo_id,data2,navigation}) => {    
+  /* console.log("SUBJECT_ID",subject_id) */
   const renderRow = ({ item }: { item: alumno[]}) => (
     <View style={styles.row} >
       {item.map((alumno, index) => (   
-        <EventItemAlumnosRowGrupo key = {alumno.id} alumno_id={alumno.id} firstname={alumno.firstname} lastname={alumno.lastname} subject_id={subject_id} navigation={navigation}/>
+        <EventItemAlumnosRowGrupo key={alumno.id} alumno_id={alumno.id} firstname={alumno.firstname} lastname={alumno.lastname} subject_id={subject_id} navigation={navigation} grupo_id={grupo_id}/>
       ))}
     </View>
   );

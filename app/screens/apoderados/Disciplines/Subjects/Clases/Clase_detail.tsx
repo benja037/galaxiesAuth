@@ -1,6 +1,6 @@
 import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
 import { useEffect, useLayoutEffect,useState } from "react";
-import { View, Text, StyleSheet, FlatList, Button, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { View, Text, StyleSheet, FlatList, Button, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../../../Home";
@@ -10,6 +10,7 @@ import * as SecureStore from 'expo-secure-store'
 import { styles } from "../../../../../styles/stylesheet";
 import EventListSRowClass from "../../../../../components/apoderados/Disciplines/Subjects/Clases/event-list-row-s-class";
 import { useAuth } from "../../../../../context/AuthContext";
+import EventListAsistencias from "../../../../../components/apoderados/Disciplines/Subjects/Clases/event-list-asistencias";
 
 type ClaseDetailProps = NativeStackScreenProps<RootStackParamList,'Clase_detail'>; 
 
@@ -26,15 +27,16 @@ const ClaseDetailApoderadosScreen: React.FC<ClaseDetailProps> = ({navigation,rou
     const [teachers, setTeachers] = useState([])
     const [num_max_alumnos, setNum_max_alumnos] = useState('')
     const [mode, setMode] = useState('')
-    const [label, setLabel] = useState('')
-    const [request,setRequest] = useState(false);
+    const [label, setLabel] = useState('')    
     const [loading, setLoading] = useState(true);        
+    const [loading2, setLoading2] = useState(true);        
     const [isRolled,setIsRolled] = useState(false)
     
    // const [data2, setData2] = React.useState<any>(null); // Usando un estado para almacenar los datos obtenidos
     useFocusEffect(
         React.useCallback(() => {            
-        fetchData()                      
+        fetchData()    
+        fetchData2()                  
     },[])
     );
 
@@ -42,12 +44,12 @@ const ClaseDetailApoderadosScreen: React.FC<ClaseDetailProps> = ({navigation,rou
         try {
             const token = await SecureStore.getItemAsync('tikin');
   
-            const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/class/${clase_id}/`, {
+            const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/apoderados/subjects/${subject_id}/class/${clase_id}/?student_id=${selectedProfile?.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}` 
                 }
             });
-            console.log("ClaseDetail:", response.data);
+            /* console.log("ClaseDetail:", response.data); */
             setDate(response.data.date)          
             setTime_start(response.data.time_start)
             setTime_end(response.data.time_end)
@@ -57,95 +59,100 @@ const ClaseDetailApoderadosScreen: React.FC<ClaseDetailProps> = ({navigation,rou
             setNum_max_alumnos(response.data.num_max_students)
             setMode(response.data.mode)
             setLabel(response.data.label)
-
+            setIsRolled(response.data.rolled)
 
             //setData(response.data.subjects_from_teacher );
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
+        } finally{
+            setLoading(false)
         }
        
     }
-    const handleInscribirse = async () => {
+    const fetchData2 = async() => {
         try {
-            await inscribirse();
-            if(mode=='publico'){
-                setIsRolled(true);
-            }
-            if(mode=='moderado'){
-                setRequest(true);
-            }
+            const token = await SecureStore.getItemAsync('tikin');
+  
+            const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/class/${clase_id}/attendances/`, {
+                headers: {
+                    Authorization: `Bearer ${token}` 
+                }
+            });
+            /* console.log("Asistencias:", response.data); */
+            setAsistencias(response.data)   
+            
             
         } catch (error) {
-            console.error("Error al inscribirse:", error);
+            /* console.error("Error:", error); */
+        } finally{
+            setLoading2(false)
         }
+       
     }
 
-    const desinscribirseConfirmed  = async () => {
-        try {
-            await desinscribirse();
-            setIsRolled(false);
+    const ChangePreviousStateTrue= async() => {
+        try {           
+            const response = await axios.patch(`https://catolica-backend.vercel.app/apiv1/apoderados/class/${clase_id}/change-previous-state/?student_id=${selectedProfile?.id}`, {user_previous_state:'asistire'
+               
+            });         
+            
         } catch (error) {
-            console.error("Error al desinscribirse:", error);
-        }
-    }
-
-    const inscribirse = async () => {        
-        await axios.post(`https://catolica-backend.vercel.app/apiv1/apoderados/subjects/${subject_id}/class/${clase_id}/students-auto-add/?student_id=${selectedProfile?.id}`,{});
-    }
-
-    const desinscribirse = async () => {        
-        await axios.delete(`https://catolica-backend.vercel.app/apiv1/apoderados/subjects/${subject_id}/class/${clase_id}/students-auto-remove/`, {
-            params: {student_id: selectedProfile?.id}
-        });
-    }
-    const handleDesinscribirse = async () => {
-        try {
+            /* console.error("Error:", error); */
+        }finally{
             Alert.alert(
-                "Confirmación",
-                "¿Estás seguro que deseas desinscribirte?",
-                [
-                    {
-                        text: "Cancelar",
-                        onPress: () => console.log("Cancelado"),
-                        style: "cancel"
-                    },
-                    { text: "Sí", onPress: () => desinscribirseConfirmed() }
-                ],
-                { cancelable: false }
-            );
-        } catch (error) {
-            console.error("Error al desinscribirse:", error);
+                'Se ha enviado tu respuesta', 
+            )     
+            fetchData2()          
         }
+       
     }
-
-
-
+    const ChangePreviousStateFalse = async() => {
+        try {           
+            const response = await axios.patch(`https://catolica-backend.vercel.app/apiv1/apoderados/class/${clase_id}/change-previous-state/?student_id=${selectedProfile?.id}`, {user_previous_state:'no-asistire'
+               
+            });         
+            
+        } catch (error) {
+            /* console.error("Error:", error); */
+        } finally{
+            Alert.alert(
+                'Se ha enviado tu respuesta', 
+            )     
+            fetchData2()          
+        }
+       
+    }
+    
+    if (loading || loading2) {
+        return (
+            <View style={styles.screen}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
     if(!isRolled){
         return (
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.container_header}>
                     <View style={styles.box_header_left}>                                       
-                        <Text>{num_max_alumnos}{mode}{state}</Text>
+                        <Text style={styles.title}>Label: {label}</Text>
                     </View>
+                    
                 </View>
-                <View style={styles.sub_container}>
-                    <Text>{isRolled ? 'Inscrito' : 'No inscrito'}</Text>
-                    {mode === 'publico' && alumnos.length < Number(num_max_alumnos) && (
-                        <Button title="Inscribirse" onPress={handleInscribirse} />
-                    )}
-                    {mode === 'moderado' && !request && alumnos.length < Number(num_max_alumnos) && (
-                        <Button title="Solicitar Inscribirse" onPress={handleInscribirse} />
-                    )}
-                    {mode === 'moderado' && request && (
-                        <Text>Solicitud en espera</Text>
-                    )}
-                    {mode === 'privado' && (
-                        <Text>Esta Asignatura es privada, solicita directamente a un profesor que te agregue</Text>
-                    )}
-                    {alumnos.length >= Number(num_max_alumnos) && (
-                        <Text>No se pueden inscribir más estudiantes.</Text>
-                    )}
+                <View style={styles2.headerInfo}>
+                    <Text style={styles2.headerText}>Máximo de Alumnos: {num_max_alumnos}</Text>
+                    <Text style={styles2.headerText}>Modo:{mode}</Text>
+                    <Text style={styles2.headerText}>Estado:{state}</Text>
+                    <Text style={styles2.headerText}>Fecha: {date}</Text>
+                    <Text style={styles2.headerText}>Hora de Inicio: {time_start}</Text>
+                    <Text style={styles2.headerText}>Hora de Fin: {time_end}</Text>
+                    <Text style={styles2.headerText}>Estado: {state}</Text>
+                    <Text style={styles2.headerText}></Text>
+                    
+
                 </View>
+                <Text style={styles2.notEnrolledMessage}>No estás inscrito a esta clase</Text>
+                
             </ScrollView>
         );
     } else{
@@ -158,16 +165,32 @@ const ClaseDetailApoderadosScreen: React.FC<ClaseDetailProps> = ({navigation,rou
                     <Text style={styles.title}>Label: {label}</Text>
                 </View>                
             </View> 
+            <View style={styles2.headerInfo}>
+                    <Text style={styles2.headerText}>Máximo de Alumnos: {num_max_alumnos}</Text>
+                    <Text style={styles2.headerText}>Modo: {mode}</Text>
+                    <Text style={styles2.headerText}>Estado: {state}</Text>
+                    <Text style={styles2.headerText}>Fecha: {date}</Text>
+                    <Text style={styles2.headerText}>Hora de Inicio: {time_start}</Text>
+                    <Text style={styles2.headerText}>Hora de Fin: {time_end}</Text>
+                    <Text style={styles2.headerText}>Estado: {state}</Text>
+                
+                    
+
+                </View>
             <View>
-                <Text>{num_max_alumnos}{mode}</Text>                
-                <Button title="Desinscribirse" onPress={handleDesinscribirse} />
+                 
+                <TouchableOpacity style={styles.editbutton} onPress={ChangePreviousStateTrue}>        
+                    <Text style={styles.text_edit_button}>Asistiré</Text>
+                </TouchableOpacity>            
+                <TouchableOpacity style={styles.editbutton} onPress={ChangePreviousStateFalse}>        
+                    <Text style={styles.text_edit_button}>No asistiré</Text>
+                </TouchableOpacity>            
+                
             </View>
                         
             <Text style={styles.subtitle}>Lista de Alumnos</Text>            
-            <View>    
-                <Text>{clase_id} {date} {time_start}  {state}</Text>
-                <EventListSRowClass data2={alumnos} navigation={navigation} clase_id={clase_id} subject_id={subject_id}/>
-                
+            <View>                    
+                <EventListAsistencias data2={asistencias} navigation={navigation} subject_id={subject_id}/>
                 
             </View> 
             
@@ -189,5 +212,27 @@ const ClaseDetailApoderadosScreen: React.FC<ClaseDetailProps> = ({navigation,rou
 export default ClaseDetailApoderadosScreen
 ;
 const styles2 = StyleSheet.create({
-    container: { flex: 1 }
+    container: { 
+        flex: 1 
+    },
+    notEnrolledMessage: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#ff0000',
+        marginTop: 10,
+    },
+    headerInfo: {
+        marginTop: 20,
+        marginBottom: 20,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+    
+    },
+    headerText: {
+        fontSize: 18,
+        color: '#333',
+    },
   });
