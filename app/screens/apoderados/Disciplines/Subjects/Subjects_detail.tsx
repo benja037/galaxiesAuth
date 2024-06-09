@@ -45,6 +45,7 @@ interface Clase {
     label:string;
     num_max_students:string;
     mode:string;
+    rolled:boolean;
 
   }
 
@@ -55,8 +56,8 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
     const { subject_id } = route.params;    
     const [subject_name,setSubject_name] = useState("");
     const [num_max_alumnos,setNum_max_alumnos] = useState('');
-    const [mode,setMode] = useState('');
-    const [request,setRequest] = useState(false);
+    const [mode,setMode] = useState('privado');
+    
     const [isFinished,setIsFinished] = useState(false);
     
     
@@ -80,14 +81,13 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
                 setLoading(false);
             };
             getData();
-            console.log("Rolled",isRolled)
-            console.log("Request",request)
-            console.log("Mode",mode)
+            /* console.log("Rolled",isRolled) */
+            
         }, [isRolled])
     );
     
     useEffect(() => {   
-        console.log("Primera Fecha")   
+        /* console.log("Primera Fecha") */   
         if(selectedDate){
             setSelectedDateString(formatDate(selectedDate));       
             setFormattedDate(moment(selectedDate).format('dddd, DD MMMM YYYY'));
@@ -110,19 +110,18 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
         try {
             const token = await SecureStore.getItemAsync('tikin');  
             const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/apoderados/subjects/${subject_id}/?student_id=${selectedProfile?.id}`, {});           
-            console.log("Fetchdata1");
-            console.log("SUBJECT DETAIL:", response.data);            
+            /* console.log("Fetchdata1"); */
+            /* console.log("SUBJECT DETAIL:", response.data);   */          
             setAlumnos(response.data.students );            
             setProfesores(response.data.teachers);
             setSubject_name(response.data.subject_name);
             setNum_max_alumnos(response.data.num_max_students);
-            setMode(response.data.mode);
-            setRequest(response.data.request);
+            setMode(response.data.mode);            
             setIsFinished(response.data.finished);
             setIsRolled(response.data.rolled);
             
         } catch (error) {
-            console.error("Error:", error);            
+            /* console.error("Error:", error);  */           
         }
        
     }
@@ -147,17 +146,17 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
             if(selectedDateString != ""){
                 setIsLoadingClases(true);            
                 
-                const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/class-date/${selectedDateString}/`, {});    
+                const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/apoderados/subjects/${subject_id}/class-date/${selectedDateString}/?student_id=${selectedProfile?.id}`, {});    
                 //Necesito una url que me obtenga todas las clases de un subject filtrados por dia y despues para alumno un url que obtenga todas las clases que tiene el para cierto dia
                 //Seria mejor que cada clase tenga un subject y que en vez de existir horario... o no se en vez de tener los.
                 //NONO el pensamiento de ayer era que si es un alumno en clase particular el horario fuese 1 alumno y la asistencia 1 alumno, que pasa con fech
-                console.log("CLASES FETCH CLASES",response.data);
+               /*  console.log("CLASES FETCH CLASES",response.data); */
                 setClasses(response.data);
             }
             
           
         } catch (error) {
-          console.error('Error al obtener las clases:', error);
+          /* console.error('Error al obtener las clases:', error); */
         } finally {
             setIsLoadingClases(false);
         }
@@ -165,67 +164,15 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
 
    
     const handleDateSelected = (date: Date) => {
-        console.log("CAMBIO DATES");
+        /* console.log("CAMBIO DATES"); */
         const newSelectedDateString = formatDate(date);
         const newFormattedDate = moment(newSelectedDateString).format('dddd D [de] MMMM YYYY');
 
         setSelectedDate(date);
         setSelectedDateString(newSelectedDateString);
         setFormattedDate(newFormattedDate);
-        console.log("SELECTED_DATE", date, "SELECTED_DATE_STRING", newSelectedDateString, "FORMATTED_DATE", newFormattedDate);
+        /* console.log("SELECTED_DATE", date, "SELECTED_DATE_STRING", newSelectedDateString, "FORMATTED_DATE", newFormattedDate); */
     };
-    const handleInscribirse = async () => {
-        try {
-            await inscribirse();
-            if(mode=='publico'){
-                setIsRolled(true);
-            }
-            if(mode=='moderado'){
-                setRequest(true);
-            }
-            
-        } catch (error) {
-            console.error("Error al inscribirse:", error);
-        }
-    }
-
-    const desinscribirseConfirmed  = async () => {
-        try {
-            await desinscribirse();
-            setIsRolled(false);
-        } catch (error) {
-            console.error("Error al desinscribirse:", error);
-        }
-    }
-
-    const inscribirse = async () => {        
-        await axios.post(`https://catolica-backend.vercel.app/apiv1/apoderados/subjects/${subject_id}/students-auto-add/?student_id=${selectedProfile?.id}`,{});
-    }
-
-    const desinscribirse = async () => {        
-        await axios.delete(`https://catolica-backend.vercel.app/apiv1/apoderados/subjects/${subject_id}/students-auto-remove/`, {
-            params: {student_id: selectedProfile?.id}
-        });
-    }
-    const handleDesinscribirse = async () => {
-        try {
-            Alert.alert(
-                "Confirmación",
-                "¿Estás seguro que deseas desinscribirte?",
-                [
-                    {
-                        text: "Cancelar",
-                        onPress: () => console.log("Cancelado"),
-                        style: "cancel"
-                    },
-                    { text: "Sí", onPress: () => desinscribirseConfirmed() }
-                ],
-                { cancelable: false }
-            );
-        } catch (error) {
-            console.error("Error al desinscribirse:", error);
-        }
-    }
     
     if (loading) {
         return (
@@ -246,29 +193,17 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
         return (
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.container_header}>
-                    <View style={styles.box_header_left}>
-                        <Text style={styles.title}>{subject_name}</Text>                   
-                        <Text>{num_max_alumnos}{mode}{isFinished}</Text>
+                    <View style={styles2.box_header_left}>
+                    <Text style={styles.subjectTitle}>{subject_name}</Text>
                     </View>
+                </View>     
+                <View style={styles2.headerInfo}>
+                    <Text style={styles2.headerText}>Máximo de Alumnos: {num_max_alumnos}</Text>
+                    <Text style={styles2.headerText}>Modo: {mode}</Text>
+                    <Text style={styles2.headerText}>{isFinished ? 'Terminado' : 'En curso'}</Text>
                 </View>
-                <View style={styles.sub_container}>
-                    <Text>{isRolled ? 'Inscrito' : 'No inscrito'}</Text>
-                    {mode === 'publico' && alumnos.length < Number(num_max_alumnos) && (
-                        <Button title="Inscribirse" onPress={handleInscribirse} />
-                    )}
-                    {mode === 'moderado' && !request && alumnos.length < Number(num_max_alumnos) && (
-                        <Button title="Solicitar Inscribirse" onPress={handleInscribirse} />
-                    )}
-                    {mode === 'moderado' && request && (
-                        <Text>Solicitud en espera</Text>
-                    )}
-                    {mode === 'privado'  && (
-                        <Text>Esta Asignatura es privada, solicita directamente a un profesor que te agregue</Text>
-                    )}
-                    {alumnos.length >= Number(num_max_alumnos) && (
-                        <Text>No se pueden inscribir más estudiantes.</Text>
-                    )}
-                </View>
+                    <Text style={styles2.notEnrolledMessage}>No estás inscrito a esta asignatura</Text>
+        
             </ScrollView>
         );
     } else{
@@ -278,28 +213,27 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
             <View style={styles.container_header}>
                 <View style = {styles.box_header_left}>
-                    <Text style={styles.title}>{subject_name}</Text>
-                </View>
-                
-                
-            </View>
-            <View>
-                
-                <Text>{num_max_alumnos}{mode}{isFinished}</Text>
-                <Text>{isFinished ? 'Terminado' : 'En curso'}</Text>
-                <Button title="Desinscribirse" onPress={handleDesinscribirse} />
-            </View>
-            <View>
-                <Text>Lista de Profesores</Text>
+                    <Text style={styles.subjectTitle}>{subject_name}</Text>
+                </View> 
             </View>
             
+            <View style={styles2.headerInfo}>
+                <Text style={styles2.headerText}>Máximo de Alumnos: {num_max_alumnos}</Text>
+                <Text style={styles2.headerText}>Modo: {mode}</Text>
+                <Text style={styles2.headerText}>{isFinished ? 'Terminado' : 'En curso'}</Text>
+            </View>
+            <View >
+                <Text style={styles2.subtitle}>Profesor</Text>
+            </View>
+
             <View>
                 <EventListProfesores data={profesores} navigation={navigation} />
             </View>
-                  
-            <Text style={styles.subtitle}>Lista de Alumnos</Text>            
-            <EventList_alumnos_row data2={alumnos} navigation = {navigation} subject_id={subject_id} />
-            
+            <View>
+                <Text style={styles2.subtitle}>Lista de Alumnos</Text>            
+                <EventList_alumnos_row data2={alumnos} navigation = {navigation} subject_id={subject_id} />
+            </View>  
+                 
             
             <View style={styles2.container}>
                 <CalendarStrip
@@ -321,13 +255,11 @@ const SubjectDetailApoderadosScreen: React.FC<DetailSubjectsProps> = ({navigatio
             {/* Mostrar las clases solo si no está cargando */}
             {!isLoadingClases && (
                 <View style={{ padding: 20 }}>
-                    {/* <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Clases del día: {selectedDateString ? selectedDateString : 'Ninguna'}</Text> */}
-                    <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Clases del día: {formattedDate ? formattedDate : 'Ninguna'}</Text>
-                    <View style={styles2.container_class}>
-                        <ClasesEventList data={classes} navigation={navigation} subject_id={subject_id}/>                    
-                    </View>
-                    
+                <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Clases del día: {formattedDate || 'Ninguna'}</Text>
+                <View style={styles2.container_class}>
+                    <ClasesEventList data={classes} navigation={navigation} subject_id={subject_id} />
                 </View>
+            </View>
             )}
             
         </ScrollView>
@@ -343,8 +275,68 @@ const styles2 = StyleSheet.create({
     },
     container_class : {               
         marginBottom:5,
-        backgroundColor:"#e8e9d8"
+        backgroundColor:"#fff"
         
+    },
+    container_boxes_row : {               
+        width:'95%',
+        height:'8%',      
+        flexDirection:'row',
+        flexWrap:'wrap',     
+    },
+    sectionRow : {               
+        width:'95%',
+        height:'5%',      
+        flexDirection:'row',
+        flexWrap:'wrap',     
+    },
+    headerInfo: {
+        marginTop: 20,
+        marginBottom: 20,
+        padding: 10,
+        backgroundColor: '#fff',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+    
+    },
+    headerText: {
+        fontSize: 18,
+        color: '#333',
+    },
+    addButton: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    addButtonTouch: {
+        backgroundColor: '#FFD700', // yellow background
+        width:"55%",
+        padding: 15,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    addButtonText: {
+        fontSize: 18,
+        color: '#3343CE',
+        fontWeight: 'bold',
+    },
+    section:{
+        alignItems: 'center',
+        paddingBottom:40,
+    },
+    subtitle: {
+        fontSize: 20, 
+        padding:8,  
+        fontWeight: 'bold',       
+    },
+    box_header_left: {
+        flex: 1,
+    },
+    notEnrolledMessage: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#ff0000',
+        marginTop: 10,
     },
 }
 );

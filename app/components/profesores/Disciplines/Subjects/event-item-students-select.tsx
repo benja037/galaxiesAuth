@@ -23,13 +23,13 @@ const EventItemStudentsSelect: React.FC<EventItemAlumnosProps> = ({ subject_id,a
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/students/`, {student_pk:alumno_id
                 
             });
-            console.log("axios result", response.data)
+            /* console.log("axios result", response.data) */
             handleRemoveFromList(alumno_id);
    
             //navigation.goBack();
             
         } catch (error:any) {
-            console.error("Errors:", error);            
+            /* console.error("Errors:", error);   */          
             if (error.response.data) {
                 //console.log("axios result", error.response.data)
                 alert(error.response.data.message);
@@ -41,18 +41,18 @@ const EventItemStudentsSelect: React.FC<EventItemAlumnosProps> = ({ subject_id,a
         post_alumno()
       };
     return ( 
-        <View> 
-            <View>
-                <TouchableOpacity key ={alumno_id} style = { styles.card } onPress={()=>navigation.navigate("Alumno_perfil",{alumno_id})}>
+        <View style={{flexDirection:'row'}}> 
+            <View style={{width:'40%'}}>
+                <TouchableOpacity key ={alumno_id} style = { styles2.card } onPress={()=>navigation.navigate("Alumno_perfil",{alumno_id})}>
                     <View>
-                        <Text style={styles.itemText}> {alumno_id} {firstname} {lastname}</Text>
+                        <Text> {alumno_id} {firstname} {lastname}</Text>
                     </View>
                     
                 </TouchableOpacity>
             </View>
-            <View>
-                <TouchableOpacity  onPress={handleRemoveStudent}>
-                    <Text>Agregar</Text>
+            <View style = {{marginLeft:15}}>
+                <TouchableOpacity style={styles2.addButtonTouch}  onPress={handleRemoveStudent}>
+                    <Text style={styles2.addButtonText}>Agregar</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -60,7 +60,7 @@ const EventItemStudentsSelect: React.FC<EventItemAlumnosProps> = ({ subject_id,a
      );
 }
 
-const styles = StyleSheet.create({
+const styles2 = StyleSheet.create({
     card: {
         borderWidth: 1,
         borderColor: '#c5c5c5',
@@ -68,9 +68,19 @@ const styles = StyleSheet.create({
         padding: 10,
         alignSelf: 'stretch',
         marginBottom:2,
+        flex:1,
     },
-    itemText: {
-        textAlign: 'left',
+    addButtonTouch: {
+        backgroundColor: 'green', // yellow background
+        width:"100%",
+        padding: 12,
+        borderRadius: 10,
+        alignItems: 'center',
+    },
+    addButtonText: {
+        fontSize: 9,
+        color: '#231f20',
+        fontWeight: 'bold',
     },
 })
 

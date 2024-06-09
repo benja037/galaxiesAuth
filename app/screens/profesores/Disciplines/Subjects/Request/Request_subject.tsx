@@ -38,11 +38,11 @@ const RequestSubjectProfesoresScreen: React.FC<DetailSubjectsProps> = ({ navigat
                     Authorization: `Bearer ${token}`
                 }
             });
-            console.log("Fetchdata2");
-            console.log("Lista Requests of Subject:", response.data);
+            /* console.log("Fetchdata2");
+            console.log("Lista Requests of Subject:", response.data); */
             setRequestList(response.data);
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         } finally {
             setLoading(false);
         }
@@ -58,7 +58,7 @@ const RequestSubjectProfesoresScreen: React.FC<DetailSubjectsProps> = ({ navigat
             });
             fetchData2(); // Refrescar la lista después de aceptar.
         } catch (error) {
-            console.error("Error al aceptar la solicitud:", error);
+            /* console.error("Error al aceptar la solicitud:", error); */
         }
     };
 
@@ -72,7 +72,7 @@ const RequestSubjectProfesoresScreen: React.FC<DetailSubjectsProps> = ({ navigat
             });
             fetchData2(); // Refrescar la lista después de rechazar.
         } catch (error) {
-            console.error("Error al rechazar la solicitud:", error);
+            /* console.error("Error al rechazar la solicitud:", error); */
         }
     };
 

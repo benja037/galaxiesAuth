@@ -20,24 +20,24 @@ const SubjectInformeProfesoresScreen: React.FC<InformeSubjectsProps> = ({ naviga
     try {
       const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/info/`);
       setData(response.data);
-      console.log(response.data);
+      /* console.log(response.data); */
     } catch (error) {
-      console.error("Error:", error);
+      /* console.error("Error:", error); */
     }
   }
   const postInformeMail = async () => {
     try {
       const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/info-mail/`);   
     } catch (error) {
-      console.error("Error:", error);
+      /* console.error("Error:", error); */
     }
   }
 
   const renderItem = ({ item }: { item: Item }) => {
     const [id, { firstname, lastname, True, False }] = item;
     const chartData = [
-      { x: 'True', y: True },
-      { x: 'False', y: False }
+      { x: 'Asistencias', y: True },
+      { x: 'Inasistencias', y: False }
     ];
 
     return (
@@ -56,8 +56,8 @@ const SubjectInformeProfesoresScreen: React.FC<InformeSubjectsProps> = ({ naviga
 
   return (
     <View style={styles.container}>
-        <TouchableOpacity onPress={postInformeMail}>
-                <Text>Enviar Asistencias del subject al Mail</Text>
+        <TouchableOpacity onPress={postInformeMail} style={styles.addButtonTouch}>
+                <Text style={styles.addButtonText}>Enviar Asistencias del subject al Mail</Text>
         </TouchableOpacity> 
         <FlatList
             data={Object.entries(data)}
@@ -80,6 +80,18 @@ const styles = StyleSheet.create({
   itemContainer: {
     marginBottom: 20,
   },
+  addButtonTouch: {
+    backgroundColor: '#FFD700', // yellow background
+    width:"55%",
+    padding: 15,
+    borderRadius: 10,
+    alignItems:'center'
+},
+addButtonText: {
+    fontSize: 18,
+    color: '#3343CE',
+    fontWeight: 'bold',
+},
 });
 
 export default SubjectInformeProfesoresScreen;

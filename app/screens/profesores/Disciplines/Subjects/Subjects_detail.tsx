@@ -1,5 +1,5 @@
  import { useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useLayoutEffect,useState } from "react";
+import { useCallback, useEffect, useLayoutEffect,useState } from "react";
 import { View, Text, StyleSheet, FlatList, Button, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
 import { HeaderBackButton } from "@react-navigation/elements";
 import { NativeStackNavigationProp, NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -63,7 +63,6 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
       
     const [alumnos, setAlumnos] = useState([])
     const [profesores, setProfesores] = useState([])
-    const [grupos, setGrupos] = useState<Item[]>([]);  
 
     const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
     const [selectedDateString,setSelectedDateString] = useState("");
@@ -71,21 +70,21 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
     const [classes, setClasses] = useState<Clase[]>([]);
    
     useFocusEffect(
-        React.useCallback(() => {
-            console.log("SubjectDetailProfesoresScreen")
-            async function getData() {
-                await fetchData();                       
-                setLoading(false)                
-            }getData()                           
-        },[])
-        );
-    useFocusEffect(
-        React.useCallback(() => {
-        fetchData2(); 
-        },[isRolled])
+        useCallback(() => {
+            const getData = async () => {
+                await fetchData();
+                setLoading(false);
+            };
+            getData();
+            /* console.log("Rolled",isRolled) */
+            
+        }, [isRolled])
     );
+    
+            
+   
     useEffect(() => {   
-        console.log("Primera Fecha")   
+        /* console.log("Primera Fecha") */   
         if(selectedDate){
             setSelectedDateString(formatDate(selectedDate));       
             setFormattedDate(moment(selectedDate).format('dddd, DD MMMM YYYY'));
@@ -93,6 +92,7 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
       
                
     }, []);
+
     useFocusEffect(
         React.useCallback(() => {
         if(isRolled){        
@@ -108,8 +108,8 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
         try {
             const token = await SecureStore.getItemAsync('tikin');  
             const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/`, {});           
-            console.log("Fetchdata1");
-            console.log("SUBJECT DETAIL:", response.data);
+            /* console.log("Fetchdata1"); */
+            /* console.log("SUBJECT DETAIL:", response.data); */
             setAlumnos(response.data.students );            
             setProfesores(response.data.teachers);
             setSubject_name(response.data.subject_name);
@@ -118,24 +118,11 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
             setIsFinished(response.data.finished);
             setIsRolled(response.data.rolled)
         } catch (error) {
-            console.error("Error:", error);            
+            /* console.error("Error:", error);    */         
         }
        
     }
-    const fetchData2 = async() => {
-        try {
-            const token = await SecureStore.getItemAsync('tikin');
-  
-            const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/`, {});
-           
-            console.log("Fetchdata2");
-            console.log("Grupos:", response.data);
-            setGrupos(response.data);          
-        } catch (error) {
-            console.error("Error:", error);            
-        }
-       
-    }
+
     const formatDate = (rawDate: Date | string) => {
         let date = new Date(rawDate);
         let year = date.getFullYear();
@@ -160,13 +147,13 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
                 //Necesito una url que me obtenga todas las clases de un subject filtrados por dia y despues para alumno un url que obtenga todas las clases que tiene el para cierto dia
                 //Seria mejor que cada clase tenga un subject y que en vez de existir horario... o no se en vez de tener los.
                 //NONO el pensamiento de ayer era que si es un alumno en clase particular el horario fuese 1 alumno y la asistencia 1 alumno, que pasa con fech
-                console.log("CLASES FETCH CLASES",response.data);
+                /* console.log("CLASES FETCH CLASES",response.data); */
                 setClasses(response.data);
             }
             
           
         } catch (error) {
-          console.error('Error al obtener las clases:', error);
+          /* console.error('Error al obtener las clases:', error); */
         } finally {
             setIsLoadingClases(false);
         }
@@ -174,14 +161,14 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
 
    
     const handleDateSelected = (date: Date) => {
-        console.log("CAMBIO DATES");
+        /* console.log("CAMBIO DATES"); */
         const newSelectedDateString = formatDate(date);
         const newFormattedDate = moment(newSelectedDateString).format('dddd D [de] MMMM YYYY');
 
         setSelectedDate(date);
         setSelectedDateString(newSelectedDateString);
         setFormattedDate(newFormattedDate);
-        console.log("SELECTED_DATE", date, "SELECTED_DATE_STRING", newSelectedDateString, "FORMATTED_DATE", newFormattedDate);
+        /* console.log("SELECTED_DATE", date, "SELECTED_DATE_STRING", newSelectedDateString, "FORMATTED_DATE", newFormattedDate); */
     };
     
     if (loading) {
@@ -196,7 +183,7 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.container_header}>
                     <View style = {styles.box_header_left}>
-                        <Text style={styles.title}>{subject_name}</Text>
+                        <Text style={styles.subjectTitle}>{subject_name}</Text>
                     </View>
                 </View>
                 <View style={styles.sub_container}>
@@ -208,10 +195,10 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
     
     
     return ( 
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView contentContainerStyle={styles2.scrollViewContent}>
             <View style={styles.container_header}>
                 <View style = {styles.box_header_left}>
-                    <Text style={styles.title}>{subject_name}</Text>
+                    <Text style={styles.subjectTitle}>{subject_name}</Text>
                 </View>                
                 
             </View>
@@ -221,29 +208,40 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
                 </TouchableOpacity> 
                 <TouchableOpacity style={styles.editbutton} onPress={() => navigation.navigate("Subject_informe",{subject_id})}>        
                     <Text style={styles.text_edit_button}>Informe</Text>
-                </TouchableOpacity>         
-                <TouchableOpacity style={styles.editbutton} onPress={() => navigation.navigate("Requests_subject",{subject_id})}>        
-                    <Text style={styles.text_edit_button}>Solicitudes</Text>
-                </TouchableOpacity>      
+                </TouchableOpacity>                         
                 <TouchableOpacity style={styles.editbutton} onPress={() => navigation.navigate("Grupo_subject",{subject_id})}>        
                     <Text style={styles.text_edit_button}>Grupos</Text>
                 </TouchableOpacity>      
             </View>
-            <View>
-                <Text>{num_max_alumnos}{mode}{isFinished}</Text>
-                <Text>{isFinished ? 'Terminado' : 'En curso'}</Text>
+            <View style={styles2.headerInfo}>
+                <Text style={styles2.headerText}>Máximo de Alumnos: {num_max_alumnos}</Text>
+                <Text style={styles2.headerText}>Modo: {mode}</Text>
+                <Text style={styles2.headerText}>{isFinished ? 'Terminado' : 'En curso'}</Text>
             </View>
-            <View>
-                <Text>Lista de Profesores</Text>
+            
+            
+            <View >
+                <Text style={styles2.subtitle}>Profesor</Text>
             </View>
             
             <View>
                 <EventListProfesores data={profesores} navigation={navigation} />
             </View>
-                  
-            <Text style={styles.subtitle}>Lista de Alumnos</Text>            
+            <View style={styles2.sectionRow}>
+                <View>
+                    <Text style={styles2.subtitle}>Lista de Alumnos</Text> 
+                </View> 
+                <View>
+                    <TouchableOpacity style={styles.editbutton2} onPress={()=>navigation.navigate('Edit_subject_alumnos',{subject_id})}>        
+                        <Text style={styles.text_edit_button}>Agregar Estudiantes</Text>
+                    </TouchableOpacity>
+                </View>  
+            </View>
+               
+                       
             <EventList_alumnos_complete data2={alumnos} navigation = {navigation} subject_id={subject_id} />
-            <Button title='Agregar Estudiantes' onPress={()=>navigation.navigate('Edit_subject_alumnos',{subject_id})}/>
+              
+           
             
             <View style={styles2.container}>
                 <CalendarStrip
@@ -257,9 +255,21 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
                 />
             </View>
             {isLoadingClases && (
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <ActivityIndicator size="large" color="#0000ff" />
+                <View style={{padding: 20 }}>
+                    <View style={{padding:9}}>
+                        <ActivityIndicator size="large" color="#0000ff" />
+                    </View>
+                    
+                    <View style={styles2.container_class}>    
+                        <View style={{alignItems:'center'}}>
+                            <TouchableOpacity style={styles2.addButtonTouch} onPress={() => navigation.navigate('Add_clase',{subject_id})}>
+                                <Text style={styles2.addButtonText}>Añadir Clase  </Text> 
+                            </TouchableOpacity>
+                        </View>                    
+                        
+                    </View>
                 </View>
+                
             )}
 
             {/* Mostrar las clases solo si no está cargando */}
@@ -270,14 +280,21 @@ const SubjectDetailProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigatio
                     <View style={styles2.container_class}>
                         <ClasesEventList data={classes} navigation={navigation} subject_id={subject_id}/>                    
                     </View>
+                    <View style={{alignItems:'center'}}>
+                        <TouchableOpacity style={styles2.addButtonTouch} onPress={() => navigation.navigate('Add_clase',{subject_id})}>
+                            <Text style={styles2.addButtonText}>Añadir Clase  </Text> 
+                        </TouchableOpacity>
+                    </View>
+                    
+                    
+                    
                     
                 </View>
             )}
-            <View>
-                <TouchableOpacity onPress={() => navigation.navigate('Add_clase',{subject_id})}>
-                    <Text>Añadir Clase  </Text> 
-                </TouchableOpacity>
+            <View style={styles2.section_clases}>
+                
             </View>
+            
         </ScrollView>
     );
 }
@@ -291,14 +308,66 @@ const styles2 = StyleSheet.create({
     },
     container_class : {               
         marginBottom:5,
-        backgroundColor:"#e8e9d8"
+
         
     },
     container_boxes_row : {               
-        width:'95%',
-        height:'8%',      
+        width:'95%',      
+        flexDirection:'row',
+        flexWrap:'wrap',  
+    },
+    sectionRow : {               
+        width:'95%',      
         flexDirection:'row',
         flexWrap:'wrap',     
+    },
+    headerInfo: {
+        marginBottom: 10,
+        marginTop:10,
+        padding: 10,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#ccc',
+    
+    },
+    headerText: {
+        fontSize: 18,
+        color: '#333',
+    },
+    addButton: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    addButtonTouch: {
+        backgroundColor: '#FFD700', // yellow background
+        width:"55%",
+        padding: 15,
+        borderRadius: 10,
+        alignItems:'center'
+    },
+    addButtonText: {
+        fontSize: 18,
+        color: '#3343CE',
+        fontWeight: 'bold',
+    },
+    section:{
+        alignItems: 'center',
+        paddingBottom:40,
+    },
+    section_clases:{
+        alignItems: 'center',
+        paddingBottom:40,
+    },
+    subtitle: {
+        fontSize: 20, 
+        padding:8,  
+        fontWeight: 'bold',       
+    },
+    scrollViewContent: {
+        paddingVertical: 20,
+        paddingHorizontal: 5,
+        backgroundColor: 'fff',
+        flexGrow: 1
     },
 }
 );

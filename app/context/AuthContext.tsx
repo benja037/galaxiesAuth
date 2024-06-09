@@ -13,7 +13,7 @@ interface AuthProps {
     profiles?: Profile[];
     selectedProfile?: Profile | null;
     authState?: { token:string | null; authenticated: boolean | null; firstname: string | null; user_type: string | null};
-    onRegister?: (password:string,email:string,date_of_birth:string,user_type:string,firstname:string,lastname:string,gender:string,phone_number:string) => Promise<any>;
+    onRegister?: (password:string,email:string,date_of_birth:string,user_type:string,firstname:string,lastname:string,gender:string,phone_number:string,document_type:string,document_number:string) => Promise<any>;
     onLogin?: (email:string, password:string) => Promise<any>;
     onLogout?: () => Promise<any>;
     fetchProfiles?: () => Promise<any>;
@@ -87,7 +87,7 @@ export const AuthProvider = ({children}: any) =>{
                         isRefreshing = true;
                         try {
                             const refreshToken = await SecureStore.getItemAsync(REFRESH_TOKEN_KEY);
-                            console.log("refreshToken",refreshToken)
+                            /* console.log("refreshToken",refreshToken) */
                             const response = await axios.post('https://catolica-backend.vercel.app/auth/jwt/refresh/', { refresh: refreshToken });
                             const newAccessToken = response.data.access;
                             axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
@@ -125,7 +125,7 @@ export const AuthProvider = ({children}: any) =>{
         try {
             const result = await axios.get(`https://catolica-backend.vercel.app/apiv1/students/get-user-students/`);
             setProfiles(result.data);
-            console.log("result fetch Profiles", result.data)
+            /* console.log("result fetch Profiles", result.data) */
             return result;
         } catch (e) {
             return { error: true, msg: (e as any).response.data };
@@ -141,10 +141,10 @@ export const AuthProvider = ({children}: any) =>{
         }
       };
 
-    const register = async(password:string,email:string,date_of_birth:string,user_type:string,firstname:string,lastname:string,gender:string,phone_number:string) => {
+    const register = async(password:string,email:string,date_of_birth:string,user_type:string,firstname:string,lastname:string,gender:string,phone_number:string,document_type:string,document_number:string) => {
         try{
-            const result = await axios.post('https://catolica-backend.vercel.app/auth/signup/', { password,email,date_of_birth,user_type,firstname,lastname,gender,phone_number}); 
-            console.log("axios result", result.data)      
+            const result = await axios.post('https://catolica-backend.vercel.app/auth/signup/', { password:password,email:email,date_of_birth:date_of_birth,user_type:user_type,firstname:firstname,lastname:lastname,gender:gender,phone_number:phone_number,document_type:document_type,document_number:document_number}); 
+            /* console.log("axios result", result.data)       */
             return result     
         }   catch (e) {
             
@@ -157,7 +157,7 @@ export const AuthProvider = ({children}: any) =>{
             //console.log("email", email)
             //console.log("password", password)
             const result = await axios.post('https://catolica-backend.vercel.app/auth/login/', {email:email, password:password});            
-            console.log("axios result", result.data)
+            /* console.log("axios result", result.data) */
 
             setAuthState({
                 token: result.data.tokens.access,

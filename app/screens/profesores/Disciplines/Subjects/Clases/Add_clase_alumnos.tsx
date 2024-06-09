@@ -25,11 +25,11 @@ const EditClaseAlumnosProfesoresScreen = ({ navigation, route }:EditClaseAlumnos
     const fetchData = async () => {
     try {        
         const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/class/${clase_id}/no-students/`, {});           
-        console.log("Fetchdata1");
+        /* console.log("Fetchdata1"); */
         setAlumnos(response.data);    
-        console.log("ALUMNOS Fuera:", response.data);        
+       /*  console.log("ALUMNOS Fuera:", response.data);    */     
     } catch (error) {
-        console.error("Error:", error);            
+        /* console.error("Error:", error);    */         
     }
     }
     
@@ -39,10 +39,15 @@ const EditClaseAlumnosProfesoresScreen = ({ navigation, route }:EditClaseAlumnos
       };
 
     return (
-    <View style ={styles.container}>        
-        <EventList_students_select_class data2= {alumnos} navigation={navigation} subject_id={subject_id} clase_id = {clase_id} handleRemoveFromList={handleRemoveFromList}/>
-    </View>
-  );
+        <View>
+            {alumnos.length === 0 ? (
+            <Text style={styles.message}>No hay más alumnos en la asignatura para agregar</Text>
+            ) : (
+            <View style ={styles.container}>        
+                <EventList_students_select_class data2= {alumnos} navigation={navigation} subject_id={subject_id} clase_id = {clase_id} handleRemoveFromList={handleRemoveFromList}/>
+            </View>
+        )}
+        </View>)
 };
 const styles = StyleSheet.create({
     image: {
@@ -50,6 +55,10 @@ const styles = StyleSheet.create({
         height:'25%',
         resizeMode: 'contain',
     },
+    message: {
+        fontSize: 18,
+        color: 'gray',
+      },
     form: {
         gap: 10,
         width:'60%',

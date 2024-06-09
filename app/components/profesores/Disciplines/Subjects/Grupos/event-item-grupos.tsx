@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     },
     cardContainer: {
       width: '90%',
-      backgroundColor: '#ffeaad',
+      backgroundColor: '#3bb1ce',
       height: 70,
       borderRadius:20,
       marginLeft:5,

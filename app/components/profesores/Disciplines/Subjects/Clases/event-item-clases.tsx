@@ -32,12 +32,7 @@ interface ClasesEventItemProps {
                             <Text style={styles_card_horario.categoryStyle}> Fecha: {date}</Text>
                             <Text style={styles_card_horario.categoryStyle}> Hora de inicio: {time_start}</Text>
                             <Text style={styles_card_horario.categoryStyle}> Hora de fin: {time_end}</Text>
-                            <Text style={styles_card_horario.categoryStyle}> Estado: {state}</Text>
-                            <Text style={styles_card_horario.categoryStyle}> {mode} {num_max_students} </Text>
-
-                            <View style={styles_card_horario.iconLabelStyle}>
-                            
-                            </View>
+                            <Text style={styles_card_horario.categoryStyle}> Estado: {state}</Text>                            
                         </View>
                 </View>
             </View>

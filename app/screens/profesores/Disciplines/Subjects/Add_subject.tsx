@@ -12,7 +12,7 @@ const AddSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
     const {discipline_id} = route.params;
     const [subject_name, setSubject_name] = useState('');  
     const [num_max_alumnos,setNum_max_alumnos] = useState('')
-    const [mode,setMode] = useState('')
+    const [mode,setMode] = useState('privado')
 
     
     const post_subject = async () => {
@@ -20,11 +20,11 @@ const AddSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/disciplines/${discipline_id}/subjects/`, {subject_name:subject_name,num_max_students:num_max_alumnos,mode:mode
                 
             });
-            console.log("axios result", response.data)
+            /* console.log("axios result", response.data) */
             navigation.goBack();
             
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
     /* const handleCheckboxChange = async () => {
@@ -36,29 +36,19 @@ const AddSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
             <View style={styles.inputContainer}>
                 <Text style={styles.placeholderText}>Nombre Asignatura:</Text>
                 <View style={styles.onlyinputContainer}>
-                    <TextInput style={styles.input} placeholder="subject_name" onChangeText={(text: string) => setSubject_name(text)} value={subject_name} />    
+                    <TextInput style={styles.input} placeholder="Nombre Asignatura" onChangeText={(text: string) => setSubject_name(text)} value={subject_name} />    
                 </View>
             </View>
         
             <View style={styles.inputContainer}>
                 <Text style={styles.placeholderText}>Número Máximo Estudiantes</Text>
                 <View style={styles.onlyinputContainer}>       
-                    <TextInput style={styles.input} placeholder="num_max_alumnos" onChangeText={(text: string) => setNum_max_alumnos(text)} value={num_max_alumnos} />
+                    <TextInput style={styles.input} placeholder="numero max. alumnos" onChangeText={(text: string) => setNum_max_alumnos(text)} value={num_max_alumnos} />
                 </View>
             </View>
-            <View style={styles.pickerRight}>
-            <Picker
-                selectedValue={mode}
-                onValueChange={(itemValue, itemIndex) =>
-                setMode(itemValue)
-                }>
-            <Picker.Item label="público" value="publico" />
-            <Picker.Item label="moderado" value="moderado" />
-            <Picker.Item label="privado" value="privado" />
-            </Picker>                                              
-        </View>        
-            <Button onPress={post_subject} title="Crear" />
-           
+            <TouchableOpacity style={styles.editbutton} onPress={post_subject}>        
+                <Text style={styles.text_edit_button}>Crear</Text>
+            </TouchableOpacity>           
         </View>
     </View>
   );
@@ -132,6 +122,22 @@ const styles = StyleSheet.create({
     checkbox: {
         margin: 8,
     },
+    editbutton: {
+        position:"relative",
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:90,
+        height:40,
+        backgroundColor:'#c2f4be',
+        borderRadius:50,
+        marginTop:5,
+    },
+    text_edit_button: {
+        fontSize: 9, 
+        padding:8         
+      },
 
 
 });

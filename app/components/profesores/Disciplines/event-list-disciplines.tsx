@@ -27,17 +27,11 @@ interface EventListDisciplinesProps{
     );
   
     return (
-      <View>
+      <View style={{width:'100%'}}>
         <FlatList
           data={data}
           keyExtractor={item => item.id}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={() => console.log('refreshing...')}
-            />
-          }
+          renderItem={renderItem}          
         />
       </View>
     );

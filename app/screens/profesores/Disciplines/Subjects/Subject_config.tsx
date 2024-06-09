@@ -21,11 +21,11 @@ const ConfigSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
             const response = await axios.patch(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/`, {subject_name:newSubject_name,num_max_students:newNum_max_alumnos,mode:newMode,finished:newIsfinished
                 
             });
-            console.log("axios result", response.data)
+            /* console.log("axios result", response.data) */
             navigation.goBack();
             
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
     const delete_subject = async () => {
@@ -37,7 +37,7 @@ const ConfigSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
                 [
                     {
                         text: 'Cancelar',
-                        onPress: () => console.log('Cancelado'),
+                        /* onPress: () => console.log('Cancelado'), */
                         style: 'cancel',
                     },
                     {
@@ -54,7 +54,7 @@ const ConfigSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
                 { cancelable: false }
             );
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
     const go_off_subject = async () => {
@@ -66,7 +66,7 @@ const ConfigSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
                 [
                     {
                         text: 'Cancelar',
-                        onPress: () => console.log('Cancelado'),
+                        /* onPress: () => console.log('Cancelado'), */
                         style: 'cancel',
                     },
                     {
@@ -83,7 +83,7 @@ const ConfigSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
                 { cancelable: false }
             );
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
     /* const handleCheckboxChange = async () => {
@@ -104,34 +104,28 @@ const ConfigSubjectProfesoresScreen = ({ navigation, route }:SubjectProps) => {
                     <TextInput style={styles.input} placeholder={newNum_max_alumnos} onChangeText={(text: string) => setNewNum_max_alumnos(text)} value={newNum_max_alumnos} />
                 </View>                       
             </View>
-            <View style={styles.pickerRight}>
-            <Picker
-                selectedValue={newMode}
-                onValueChange={(itemValue, itemIndex) =>
-                setNewMode(itemValue)
-                }>
-            <Picker.Item label="público" value="publico" />
-            <Picker.Item label="moderado" value="moderado" />
-            <Picker.Item label="privado" value="privado" />
-            </Picker>                                              
-        </View>  
-            <View style={styles.inputContainer}>               
+            <View style={styles.inputContainer}>
+                <Text style={styles.placeholderText}>Terminado</Text>
                 <View style={styles.onlyinputContainer}>     
                     <Checkbox style={styles.checkbox} value={newIsfinished} onValueChange={setNewIsfinished}/>
-                </View>                       
-            </View>            
-                    <Button onPress={patch_subject} title="Guardar" />
+                </View>                   
+            </View>                                             
+                       
+            <TouchableOpacity style={styles.editbutton} onPress={patch_subject}>        
+                <Text style={styles.text_edit_button}>Guardar</Text>
+            </TouchableOpacity>
+                    
                 
            
         </View>
-        <View style={styles.buttonContainer}>
+        {/* <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={delete_subject} style={styles.deleteButton}>
                 <Text style={styles.buttonText2}>Delete</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={go_off_subject} style={styles.deleteButton}>
                 <Text style={styles.buttonText2}>Salir de la asignatura</Text>
             </TouchableOpacity> 
-        </View>
+        </View> */}
     </View>
   );
 };
@@ -221,6 +215,22 @@ const styles = StyleSheet.create({
         color: 'white',
         fontWeight: 'bold',
     },
+    editbutton: {
+        position:"relative",
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:90,
+        height:40,
+        backgroundColor:'#c2f4be',
+        borderRadius:50,
+        marginTop:5,
+      },
+    text_edit_button: {
+        fontSize: 9, 
+        padding:8         
+      },
 
 
 });

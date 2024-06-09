@@ -27,7 +27,7 @@ interface EventListDisciplinesProps{
     );
   
     return (
-      <View>
+      <View style={{width:'100%'}}>
         <FlatList
           data={data}
           keyExtractor={item => item.id}

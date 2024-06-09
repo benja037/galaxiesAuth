@@ -37,10 +37,10 @@ const GrupoDetailProfesoresScreen: React.FC<GrupoDetailProps> = ({navigation,rou
             const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/${grupo_id}/`, {});            
             setAlumnos(response.data.students );
             setGroup_name(response.data.name );
-            console.log("ALUMNOS",response.data.alumnos)            
+            /* console.log("ALUMNOS",response.data.alumnos)   */          
             
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         } finally {
             setLoading(false);
         }
@@ -58,18 +58,18 @@ const GrupoDetailProfesoresScreen: React.FC<GrupoDetailProps> = ({navigation,rou
 
     if (loading) {
         return (
-            <View style={styles.screen}>
+            <View style={styles2.screen}>
                 <ActivityIndicator size="large" color="#0000ff" />
             </View>
         );
     }
     return ( 
-        <View style={styles.screen}>
-            <Text>{group_name}</Text>
+        <View style={styles2.screen}>
+            <Text style={{fontSize:22,marginBottom:15}}>{group_name}</Text>
             <Text>Lista de Alumnos:</Text>
-            <EventList_alumnos_row_grupo data2={alumnos} navigation={navigation} subject_id={subject_id} />   
-            <TouchableOpacity onPress={()=> navigation.navigate("Edit_grupo_alumnos",{grupo_id,subject_id})}>
-                <Text>Agregar Alumnos</Text>
+            <EventList_alumnos_row_grupo data2={alumnos} navigation={navigation} subject_id={subject_id} grupo_id={grupo_id} />   
+            <TouchableOpacity style={styles2.editbutton} onPress={()=> navigation.navigate("Edit_grupo_alumnos",{grupo_id,subject_id})}>
+                <Text style={styles2.text_edit_button}>Agregar Alumnos</Text>
             </TouchableOpacity>        
             
         </View>
@@ -79,8 +79,25 @@ const GrupoDetailProfesoresScreen: React.FC<GrupoDetailProps> = ({navigation,rou
  
 export default GrupoDetailProfesoresScreen
 ;
-const styles = StyleSheet.create({
+const styles2 = StyleSheet.create({
     screen: {
         padding: 20,
-    }
+    },
+    editbutton: {
+        position:"relative",
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:130,
+        height:40,
+        backgroundColor:'#c2f4be',
+        borderRadius:50,
+        marginTop:5,
+      },
+    text_edit_button: {
+        fontSize: 12, 
+        padding:8
+         
+      },
 })

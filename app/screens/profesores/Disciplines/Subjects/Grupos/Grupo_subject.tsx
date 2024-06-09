@@ -44,11 +44,11 @@ const GrupoSubjectProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigation
   
             const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/`, {});
            
-            console.log("Fetchdata2");
-            console.log("Grupos:", response.data);
+            /* console.log("Fetchdata2");
+            console.log("Grupos:", response.data); */
             setGrupos(response.data);          
         } catch (error) {
-            console.error("Error:", error);            
+            /* console.error("Error:", error);      */       
         }
        
     }
@@ -56,16 +56,24 @@ const GrupoSubjectProfesoresScreen: React.FC<DetailSubjectsProps> = ({navigation
 
     
     return ( 
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <ScrollView contentContainerStyle={styles2.scrollViewContent}>
+            
             <View style={styles.container_header}>
                 <View style = {styles.box_header_left}>
                     <Text style={styles.title}>Grupos</Text>
                 </View>                
             </View>             
             <GrupoEventList data={grupos} navigation={navigation} subject_id={subject_id} />  
-            <View style={styles.box_right}>
-                <Button title='Agregar Grupo' onPress={()=>navigation.navigate('Add_grupo',{subject_id})}/>
+            <View style={styles2.sectionButton}>
+                <View style={{alignItems:'center'}}>
+                    <TouchableOpacity style={styles2.addButtonTouch} onPress={()=>navigation.navigate('Add_grupo',{subject_id})}>
+                        <Text style={styles2.addButtonText}> Agregar Grupo </Text> 
+                    </TouchableOpacity>
+                </View>
+            
             </View> 
+            
+            
       
             
         
@@ -82,6 +90,13 @@ const styles2 = StyleSheet.create({
     container: { 
         flex: 1 
     },
+    scrollViewContent: { 
+        flex: 1 
+    },
+    sectionButton: { 
+        height:'20%',
+
+    },
     container_class : {               
         marginBottom:5,
         backgroundColor:"#e8e9d8"
@@ -92,6 +107,17 @@ const styles2 = StyleSheet.create({
         height:'8%',      
         flexDirection:'row',
         flexWrap:'wrap',     
+    }, 
+    addButtonTouch: {
+        backgroundColor: '#c2f4be', // yellow background
+        width:"45%",
+        padding: 15,
+        borderRadius: 10,
+    },
+    addButtonText: {
+        fontSize: 18,
+        color: 'black',
+        fontWeight: 'bold',
     },
 }
 );

@@ -38,13 +38,7 @@ const EventList_students_select_group: React.FC<EventListAlumnosProps> = ({grupo
         <FlatList
           data={data2}
           keyExtractor={item => item.id}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={() => console.log('refreshing...')}
-            />
-          }
+          renderItem={renderItem}          
         />
       </View>
     );

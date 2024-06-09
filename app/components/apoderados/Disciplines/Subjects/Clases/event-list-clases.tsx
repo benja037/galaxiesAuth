@@ -15,6 +15,7 @@ interface Item {
     num_max_students:string;
     mode:string;
     label:string;
+    rolled:boolean;
 
   }  
 
@@ -29,7 +30,7 @@ interface ClaseListProps {
     
     const renderItem = ({ item }: { item: Item }) => (
       <View>
-        <ClasesEventItem  subject_id = {subject_id} clase_id = {item.id} date = {item.date} time_start={item.time_start} time_end={item.time_end} state ={item.state} label={item.label} mode={item.mode} num_max_students={item.num_max_students} navigation={navigation}/>
+        <ClasesEventItem  subject_id={subject_id} clase_id={item.id} date={item.date} time_start={item.time_start} time_end={item.time_end} state={item.state} label={item.label} mode={item.mode} num_max_students={item.num_max_students} navigation={navigation} rolled={item.rolled}/>
       </View>
     );
   

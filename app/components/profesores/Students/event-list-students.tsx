@@ -34,13 +34,7 @@ const EventList_alumnos_complete: React.FC<EventListAlumnosProps> = ({data2,navi
         <FlatList
           data={data2}
           keyExtractor={item => item.id}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={() => console.log('refreshing...')}
-            />
-          }
+          renderItem={renderItem}          
         />
       </View>
     );

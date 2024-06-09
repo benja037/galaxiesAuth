@@ -22,56 +22,22 @@ interface EventItemAlumnosProps {
 
 const EventItemAlumnosAsistencias: React.FC<EventItemAlumnosProps> = ({subject_id,asistencia_id,alumno_id,firstname,lastname,state,user_previous_state, navigation }) => {
     const [isChecked, setIsChecked] = useState(state);
-    console.log("estado", state, " de", firstname)
-    const handleCheckboxChange = async () => {
-        if (isChecked==false){
-            setIsChecked(true); // Cambia el estado del checkbox
-            console.log("estadoo_ischecked",isChecked)
-            // Aquí colocarías la lógica para hacer la solicitud PUT
-            try {
-                const token = await SecureStore.getItemAsync('tikin');
-    
-                const response = await axios.put(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/attendances/${asistencia_id}/`, {state:true,
-                    headers: {
-                        Authorization: `Bearer ${token}` 
-                    }
-                });
-                console.log("PUT:", response.data);            
-        
-            } catch (error) {
-                console.error("Error:", error);            
-            } 
-        } else {
-            setIsChecked(false); // Cambia el estado del checkbox
-            console.log("estadoo_ischecked",isChecked)
-            try {
-                const token = await SecureStore.getItemAsync('tikin');
-    
-                const response = await axios.put(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/attendances/${asistencia_id}/`, {state:false,
-                    headers: {
-                        Authorization: `Bearer ${token}` 
-                    }
-                });
-                console.log("PUT:", response.data);            
-        
-            } catch (error) {
-                console.error("Error:", error);            
-            } 
-        }
-    }
+    /* console.log("estado", state, " de", firstname)  */   
     return (      
         
         <View style={styles.row}>
             <View style={styles.box_left}>
-                <Text>{firstname} {lastname} {state}</Text>
+                <Text>{firstname} {lastname} ({user_previous_state}) {state}</Text>
                 
             </View> 
             <View style={styles.box_right}>
-                <Checkbox style={styles.checkbox} value={isChecked} onValueChange={handleCheckboxChange} />
+            {isChecked ? (
+                <Text>Presente</Text>
+            ) : (
+                <Text>Ausente</Text>
+            )}
             </View>
-        </View>
-            
-       
+        </View>      
        
      );
 }

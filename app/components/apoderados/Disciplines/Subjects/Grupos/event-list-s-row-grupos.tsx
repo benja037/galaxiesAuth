@@ -23,7 +23,7 @@ const NUM_ROWS = 3;
 
 
 const EventList_alumnos_row_grupo: React.FC<EventListAlumnosRowProps> = ({subject_id,data2,navigation}) => {    
-  console.log("SUBJECT_ID",subject_id)
+ /*  console.log("SUBJECT_ID",subject_id) */
   const renderRow = ({ item }: { item: alumno[]}) => (
     <View style={styles.row} >
       {item.map((alumno, index) => (   

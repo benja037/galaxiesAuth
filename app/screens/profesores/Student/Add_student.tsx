@@ -117,11 +117,11 @@ const AddStudentProfesoresScreen = ({ navigation, route }:AddStudentProps) => {
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/students/`, {gender:gender,date_of_birth:date_of_birth,firstname:firstname,lastname:lastname,phone_number:phone_number,document_type:document_type,document_number:document_number
                 
             });
-            console.log("axios result", response.data)
+            /* console.log("axios result", response.data) */
             navigation.goBack();
             
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
     /* const handleCheckboxChange = async () => {
@@ -295,7 +295,7 @@ const AddStudentProfesoresScreen = ({ navigation, route }:AddStudentProps) => {
                         
                     </View>
                     <View style={styles.inputContainer}>
-                        <Text style={styles.placeholderText}>Documento(rut o pasaporte): </Text>
+                        <Text style={styles.placeholderText}>Documento (rut o pasaporte): </Text>
                         <View style={styles.onlyinputContainer}>
                             <TextInput
                             placeholder='rut o pasaporte (11.111.111-0)'
@@ -313,10 +313,13 @@ const AddStudentProfesoresScreen = ({ navigation, route }:AddStudentProps) => {
                             )}   
                         </View>                     
                     </View>    
-                    
-                    
-                            <Button onPress={() => props.handleSubmit()} title="Submit" />
-                        </View>
+                    <View style={{alignItems:'center'}}>
+                        <TouchableOpacity style={styles.editbutton} onPress={() => props.handleSubmit()}>        
+                            <Text style={styles.text_edit_button}>Agregar</Text>
+                        </TouchableOpacity>         
+                    </View>
+                        
+                    </View>
 
                     )}
                         
@@ -383,7 +386,7 @@ const styles = StyleSheet.create({
     },    
     container: {       
         width: '100%',
-        marginTop:100,
+        alignContent:'flex-end',
 
     },
     button:{
@@ -407,6 +410,22 @@ const styles = StyleSheet.create({
     },
     pickerButton: {
         paddingHorizontal: 20,
+    },
+    editbutton: {
+        position:"relative",
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:90,
+        height:40,
+        backgroundColor:'#c2f4be',
+        borderRadius:50,
+        marginTop:5,
+    },
+    text_edit_button: {
+        fontSize: 9, 
+        padding:8         
     },
 
 

@@ -28,22 +28,16 @@ interface EventListSubjectsProps {
     
     const renderItem = ({ item }: { item: Item }) => (
       <View>
-        <EventItemSubject subject_id={item.id} subject_name={item.subject_name} navigation={navigation} mode={item.mode} num_max_students={item.num_max_students} cant_estudiantes_actuales={item.students.length}/>
+        <EventItemSubject subject_id={item.id} subject_name={item.subject_name} navigation={navigation} rolled={item.rolled} num_max_students={item.num_max_students} cant_estudiantes_actuales={item.students.length}/>
       </View>
     );
   
     return (
-      <View>
+      <View style={{width:'100%'}}>
         <FlatList
           data={data}
           keyExtractor={item => item.id}
-          renderItem={renderItem}
-          refreshControl={
-            <RefreshControl
-              refreshing={false}
-              onRefresh={() => console.log('refreshing...')}
-            />
-          }
+          renderItem={renderItem}          
         />
       </View>
     );

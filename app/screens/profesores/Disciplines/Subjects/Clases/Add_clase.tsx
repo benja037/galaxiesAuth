@@ -35,7 +35,7 @@ const AddClaseProfesoresScreen = ({ navigation, route }:AddClaseProps) => {
     const [showPickerTimeEnd, setShowPickerTimeEnd] = useState(false);
     const [num_max_alumnos,setNum_max_alumnos] = useState('')
     const [label,setLabel] = useState('')
-    const [mode,setMode] = useState('publico')
+    const [mode,setMode] = useState('privado')
     const [grupos,setGrupos] = useState<Grupo[]>([]);
     const [selectedGroup,setSelectedGroup] = useState('')
     
@@ -161,11 +161,11 @@ const AddClaseProfesoresScreen = ({ navigation, route }:AddClaseProps) => {
   
             const response = await axios.get(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/groups/`, {});
            
-            console.log("Fetchdata2");
-            console.log("Grupos:", response.data);
+            /* console.log("Fetchdata2");
+            console.log("Grupos:", response.data); */
             setGrupos(response.data);          
         } catch (error) {
-            console.error("Error:", error);            
+            /* console.error("Error:", error);  */           
         }
        
     }
@@ -175,99 +175,111 @@ const AddClaseProfesoresScreen = ({ navigation, route }:AddClaseProps) => {
     
     const post_clase = async () => {
         try {          
-            console.log("DATETIME",time)            
+            /* console.log("DATETIME",time)   */          
             const response = await axios.post(`https://catolica-backend.vercel.app/apiv1/subjects/${subject_id}/class/`, {date:dateString,time_start:selectedTime,time_end:selectedTimeEnd,num_max_students:num_max_alumnos,mode:mode,label:label,state:'proximamente',group_id:selectedGroup
                 
             });
-            console.log("RESPONSE axios result", response)
-            console.log("axios result", response.data)
+            /* console.log("RESPONSE axios result", response)
+            console.log("axios result", response.data) */
             navigation.goBack();
             
         } catch (error) {
-            console.error("Error:", error);
+            /* console.error("Error:", error); */
         }
       };
 
     return (
     <View style ={styles.container}>        
         <View style={styles.form}> 
-            {/* DATE  */}
-            {showPicker && (<DateTimePicker  
-            timeZoneName={'America/Santiago'}
-            locale="es"         
-            mode="date"
-            display='spinner'
-            value={date}
-            onChange={onChange}
-            style = {styles.datePicker}
-            />
-            )}
-            {showPicker && Platform.OS === "ios" && (
-                <View
-                    style = {{ flexDirection:"row",
-                    justifyContent: 'space-around'}}
-                >
-                    <TouchableOpacity style={[
-                        styles.button,
-                        styles.pickerButton,
-                        { backgroundColor: "#11182711"}
-                    ]}
-                    onPress = {toggleDatepicker}
-                    >
-                        <Text style={[
-                            styles.buttonText,
-                            { color: "#075985"}
-                        ]}
-                        >Cancel</Text>
-
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={[
-                        styles.button,
-                        styles.pickerButton,
-                        
-                    ]}
-                    onPress = {confirmIOSDate}
-                    >
-                        <Text style={[
-                            styles.buttonText,                            
-                        ]}
-                        >Confirm</Text>
-
-                    </TouchableOpacity>
-
+            <View style={styles.inputContainer}>
+                <View style={styles.onlytextContainer}>
+                    <Text style={styles.placeholderText}>Fecha</Text>
                 </View>
-            )}
-            {!showPicker && (
-                <Pressable onPress = {toggleDatepicker}>
-                    
-                    <TextInput
-                        style={styles.input}
-                        placeholder={formatDate(date)}
-                        value = {dateString}
-                        onChangeText = {setDateString}
-                        placeholderTextColor={'#11182744'}
-                        editable={false}
-                        onPressIn = {toggleDatepicker}
-                        />
-                </Pressable>
-            )}
+                <View style={{flexDirection:"column",width:'100%'}}>
+                    {/* DATE  */}
+                {showPicker && (<DateTimePicker  
+                timeZoneName={'America/Santiago'}
+                locale="es"         
+                mode="date"
+                display='spinner'
+                value={date}
+                onChange={onChange}
+                style = {styles.datePicker}
+                />
+                )}
+                {showPicker && Platform.OS === "ios" && (
+                    <View
+                        style = {{ flexDirection:"row",
+                        justifyContent: 'center'}}
+                    >
+                        <TouchableOpacity style={[
+                            styles.button,
+                            styles.pickerButton,
+                            { backgroundColor: "#11182711"}
+                        ]}
+                        onPress = {toggleDatepicker}
+                        >
+                            <Text style={[
+                                styles.buttonText,
+                                { color: "#075985"}
+                            ]}
+                            >Cancel</Text>
 
+                        </TouchableOpacity>
 
+                        <TouchableOpacity style={[
+                            styles.button,
+                            styles.pickerButton,
+                            
+                        ]}
+                        onPress = {confirmIOSDate}
+                        >
+                            <Text style={[
+                                styles.buttonText,                            
+                            ]}
+                            >Confirm</Text>
 
+                        </TouchableOpacity>
+
+                    </View>
+                )}
+                {!showPicker && (
+                    <Pressable onPress = {toggleDatepicker} style={{width:'60%'}}>
+                        <View style={styles.onlyinputTimeContainer}>
+                            <TextInput
+                                style={styles.input}
+                                placeholder={formatDate(date)}
+                                value = {dateString}
+                                onChangeText = {setDateString}
+                                placeholderTextColor={'#11182744'}
+                                editable={false}
+                                onPressIn = {toggleDatepicker}
+                                />
+                        </View>
+                    </Pressable>
+                )}
+                </View>
+                
+
+            </View>
+            
             {/* TIME */}
+            <View style={styles.inputContainer}>
+                <View style={styles.onlytextContainer}>
+                    <Text style={styles.placeholderText}>Hora de Inicio</Text>
+                </View>
             {showPickerTime && (<DateTimePicker  
             timeZoneName={'America/Santiago'}          
             mode="time"
             display='spinner'
             value={time}
             onChange={onChangeTime}
-            style = {styles.datePicker}
+            style = {styles.timePicker}
             />
             )}
             {showPickerTime && Platform.OS === "ios" && (
                 <View
-                    style = {{ flexDirection:"row",
+                    style = {{ flexDirection:"column",
                     justifyContent: 'space-around'}}
                 >
                     <TouchableOpacity style={[
@@ -302,32 +314,38 @@ const AddClaseProfesoresScreen = ({ navigation, route }:AddClaseProps) => {
                 </View>
             )}
             {!showPickerTime && (
-                <Pressable onPress = {toggleTimepicker}>
-                    
-                    <TextInput
-                        style={styles.input}
-                        placeholder='12:00:00'
-                        value = {selectedTime}
-                        onChangeText = {setSelectedTime}
-                        placeholderTextColor={'#11182744'}
-                        editable={false}
-                        onPressIn = {toggleTimepicker}
-                        />
+                <Pressable onPress = {toggleTimepicker} style={{width:'60%'}}>
+                    <View style={styles.onlyinputTimeContainer}>           
+                        <TextInput
+                            style={styles.input}
+                            placeholder='12:00:00'
+                            value = {selectedTime}
+                            onChangeText = {setSelectedTime}
+                            placeholderTextColor={'#11182744'}
+                            editable={false}
+                            onPressIn = {toggleTimepicker}
+                            />
+                    </View>
                 </Pressable>
             )}  
+        </View>
         {/* TIME2 */}
+        <View style={styles.inputContainer}>
+            <View style={styles.onlytextContainer}>
+                <Text style={styles.placeholderText}>Hora de Fin</Text>
+            </View>
         {showPickerTimeEnd && (<DateTimePicker  
             timeZoneName={'America/Santiago'}          
             mode="time"
             display='spinner'
             value={timeEnd}
             onChange={onChangeTimeEnd}
-            style = {styles.datePicker}
+            style = {styles.timePicker}
             />
             )}
             {showPickerTimeEnd && Platform.OS === "ios" && (
                 <View
-                    style = {{ flexDirection:"row",
+                    style = {{ flexDirection:"column",
                     justifyContent: 'space-around'}}
                 >
                     <TouchableOpacity style={[
@@ -335,7 +353,7 @@ const AddClaseProfesoresScreen = ({ navigation, route }:AddClaseProps) => {
                         styles.pickerButton,
                         { backgroundColor: "#11182711"}
                     ]}
-                    onPress = {toggleTimepicker}
+                    onPress = {toggleTimeEndpicker}
                     >
                         <Text style={[
                             styles.buttonText,
@@ -362,43 +380,39 @@ const AddClaseProfesoresScreen = ({ navigation, route }:AddClaseProps) => {
                 </View>
             )}
             {!showPickerTimeEnd && (
-                <Pressable onPress = {toggleTimeEndpicker}>
-                    
-                    <TextInput
-                        style={styles.input}
-                        placeholder='12:00:00'
-                        value = {selectedTimeEnd}
-                        onChangeText = {setSelectedTimeEnd}
-                        placeholderTextColor={'#11182744'}
-                        editable={false}
-                        onPressIn = {toggleTimeEndpicker}
-                        />
+                <Pressable onPress = {toggleTimeEndpicker} style={{width:'60%'}}>
+                    <View style={styles.onlyinputTimeContainer}>
+                        <TextInput
+                            style={styles.input}
+                            placeholder='12:00:00'
+                            value = {selectedTimeEnd}
+                            onChangeText = {setSelectedTimeEnd}
+                            placeholderTextColor={'#11182744'}
+                            editable={false}
+                            onPressIn = {toggleTimeEndpicker}
+                            />
+                    </View>
                 </Pressable>
             )}
+        </View>
         <View style={styles.inputContainer}>
-            <Text style={styles.placeholderText}>Número Máximo Estudiantes</Text>
+            <View style={styles.onlytextContainer}>
+                <Text style={styles.placeholderText}>Número Máximo Estudiantes</Text>
+            </View>
             <View style={styles.onlyinputContainer}>       
-                <TextInput style={styles.input} placeholder="num_max_alumnos" onChangeText={(text: string) => setNum_max_alumnos(text)} value={num_max_alumnos} />
+                <TextInput style={styles.input} placeholder="num max. alumnos" onChangeText={(text: string) => setNum_max_alumnos(text)} value={num_max_alumnos} />
             </View>
         </View>
         <View style={styles.inputContainer}>
-            <Text style={styles.placeholderText}>Label</Text>
+            <View style={styles.onlytextContainer}>
+                <Text style={styles.placeholderText}>Titulo</Text>
+            </View>            
             <View style={styles.onlyinputContainer}>       
-                <TextInput style={styles.input} placeholder="label" onChangeText={(text: string) => setLabel(text)} value={label} />
+                <TextInput style={styles.input} placeholder="Titulo" onChangeText={(text: string) => setLabel(text)} value={label} />
             </View>
         </View>
         <View style={styles.ContainerRow}>
-        <View style={styles.pickerRight}>
-            <Picker
-                selectedValue={mode}
-                onValueChange={(itemValue, itemIndex) =>
-                setMode(itemValue)
-                }>
-            <Picker.Item label="público" value="publico" />
-            <Picker.Item label="moderado" value="moderado" />
-            <Picker.Item label="privado" value="privado" />
-            </Picker>                                              
-        </View>
+        
         <View style={styles.picker2}>
             <Picker
                 selectedValue={selectedGroup}
@@ -413,10 +427,12 @@ const AddClaseProfesoresScreen = ({ navigation, route }:AddClaseProps) => {
         </View>
 
         </View>
-        
+        <TouchableOpacity style={styles.editbutton} onPress={post_clase}>        
+            <Text style={styles.text_edit_button}>Crear</Text>
+        </TouchableOpacity>
 
 
-            <Button onPress={post_clase} title="Crear" />
+         
            
         </View>
     </View>
@@ -439,13 +455,21 @@ const styles = StyleSheet.create({
     inputContainer: {
         flexDirection: 'row',
         alignItems: 'center',// Ajusta el margen según sea necesario
-        width:150
+        width:'100%',
     },
     onlyinputContainer: {
         flexDirection: 'column',
         alignItems: 'center',// Ajusta el margen según sea necesario
-        width:150,        
-        marginLeft:50
+        width:'60%', 
+    },
+    onlyinputTimeContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',// Ajusta el margen según sea necesario
+        width:'100%', 
+    },
+    onlytextContainer: {
+        alignItems:'baseline',// Ajusta el margen según sea necesario
+        width:'30%',    
     },
     placeholderText: {
         width:100,
@@ -464,14 +488,14 @@ const styles = StyleSheet.create({
     form: {
         padding:20,
         gap: 10,
-        width:'60%',
+        width:'100%',
     },
     input: {
         height: 44,
+        width: '100%',
         borderWidth: 1,
         borderRadius: 4,
         padding: 10,
-        backgroundColor: '#fff',
 
     },
     container: {
@@ -497,10 +521,31 @@ const styles = StyleSheet.create({
     },
     datePicker: {
         height: 120,
+        width: '75%',
         marginTop: -10,
+    },
+    timePicker: {
+        height: 120,
+        width: '45%',
     },
     pickerButton: {
         paddingHorizontal: 20,
+    },
+    editbutton: {
+        position:"relative",
+        borderWidth:1,
+        borderColor:'rgba(0,0,0,0.2)',
+        alignItems:'center',
+        justifyContent:'center',
+        width:90,
+        height:40,
+        backgroundColor:'#c2f4be',
+        borderRadius:50,
+        marginTop:5,
+    },
+    text_edit_button: {
+        fontSize: 9, 
+        padding:8         
     },
 
 

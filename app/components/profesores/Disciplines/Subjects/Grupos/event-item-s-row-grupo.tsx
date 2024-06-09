@@ -13,12 +13,13 @@ interface EventItemAlumnosRowProps {
     lastname:string;    
     navigation: NativeStackNavigationProp<RootStackParamList>;  
     subject_id:string;
+    grupo_id:string
 }  
 
-const EventItemAlumnosRowGrupo: React.FC<EventItemAlumnosRowProps> = ({ subject_id,alumno_id,firstname,lastname, navigation}) => {
+const EventItemAlumnosRowGrupo: React.FC<EventItemAlumnosRowProps> = ({ subject_id,grupo_id,alumno_id,firstname,lastname, navigation}) => {
     
     return (       
-        <TouchableOpacity key ={alumno_id} style = { styles.card } onPress={()=>navigation.navigate("Alumno_perfil_subject",{alumno_id,subject_id})}>
+        <TouchableOpacity key ={alumno_id} style = { styles.card } onPress={()=>navigation.navigate("Alumno_perfil_grupo",{alumno_id,subject_id,grupo_id})}>
             <View>
                 <Text style={styles.itemText}> {alumno_id} {firstname} {lastname}</Text>
             </View>           
